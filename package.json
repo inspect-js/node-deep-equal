@@ -28,6 +28,6 @@
         "email" : "mail@substack.net",
         "url" : "http://substack.net"
     },
-    "license" : "MIT/X11",
+    "license" : "MIT",
     "engine" : { "node" : ">=0.4" }
 }
