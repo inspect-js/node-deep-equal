@@ -3,6 +3,9 @@ deep-equal
 
 Node's `assert.deepEqual() algorithm` as a standalone module.
 
+This module is around [5 times faster](https://gist.github.com/2790507)
+than wrapping `assert.deepEqual()` in a `try/catch`.
+
 [![build status](https://secure.travis-ci.org/substack/node-deep-equal.png)](http://travis-ci.org/substack/node-deep-equal)
 
 example
