@@ -3,6 +3,8 @@ deep-equal
 
 Node's `assert.deepEqual() algorithm` as a standalone module.
 
+[![build status](https://secure.travis-ci.org/substack/node-deep-equal.png)](http://travis-ci.org/substack/node-deep-equal)
+
 example
 =======
 
