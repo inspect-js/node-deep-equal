@@ -12,7 +12,8 @@
         "test" : "tap test/*.js"
     },
     "devDependencies" : {
-        "tap" : "0.0.x"
+        "tap" : "~0.3.0",
+        "tape" : "~0.0.5"
     },
     "repository" : {
         "type" : "git",
@@ -28,6 +29,5 @@
         "email" : "mail@substack.net",
         "url" : "http://substack.net"
     },
-    "license" : "MIT",
-    "engine" : { "node" : ">=0.4" }
+    "license" : "MIT"
 }
