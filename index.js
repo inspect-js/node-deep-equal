@@ -1,3 +1,12 @@
+(function( factory ) {
+  if (typeof define !== 'undefined' && define.amd) {
+    define([], factory);
+  } else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = factory();
+  } else {
+    window.deepEqual = factory();
+  }
+})(function() {
 var pSlice = Array.prototype.slice;
 var Object_keys = typeof Object.keys === 'function'
     ? Object.keys
@@ -8,7 +17,7 @@ var Object_keys = typeof Object.keys === 'function'
     }
 ;
 
-var deepEqual = module.exports = function (actual, expected) {
+var deepEqual = function (actual, expected) {
   // 7.1. All identical values are equivalent, as determined by ===.
   if (actual === expected) {
     return true;
@@ -82,3 +91,6 @@ function objEquiv(a, b) {
   }
   return true;
 }
+
+return deepEqual;
+});
