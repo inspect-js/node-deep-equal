@@ -13,6 +13,12 @@ var deepEqual = module.exports = function (actual, expected) {
   if (actual === expected) {
     return true;
 
+  } else if(typeof(expected) == 'function') {
+    return actual.constructor === expected;
+
+  } else if(typeof(actual) == 'function') {
+    return expected.constructor === actual;
+    
   } else if (actual instanceof Date && expected instanceof Date) {
     return actual.getTime() === expected.getTime();
 
