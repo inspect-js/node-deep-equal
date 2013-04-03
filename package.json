@@ -12,6 +12,10 @@
     "tests-only": "tape test/*.js",
     "test": "npm run tests-only"
   },
+  "dependencies": {
+    "is-arguments": "^1.0.4",
+    "object-keys": "^1.1.1"
+  },
   "devDependencies": {
     "tape": "^4.11.0"
   },

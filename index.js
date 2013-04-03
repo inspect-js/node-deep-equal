@@ -1,6 +1,6 @@
 var pSlice = Array.prototype.slice;
-var objectKeys = require('./lib/keys.js');
-var isArguments = require('./lib/is_arguments.js');
+var objectKeys = require('object-keys');
+var isArguments = require('is-arguments');
 
 var deepEqual = module.exports = function (actual, expected, opts) {
   if (!opts) opts = {};
