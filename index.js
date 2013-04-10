@@ -16,6 +16,9 @@ var deepEqual = module.exports = function (actual, expected) {
   } else if (actual instanceof Date && expected instanceof Date) {
     return actual.getTime() === expected.getTime();
 
+  } else if (isNumberNaN(actual)) {
+    return isNumberNaN(expected);
+
   // 7.3. Other pairs that do not both pass typeof value == 'object',
   // equivalence is determined by ==.
   } else if (typeof actual != 'object' && typeof expected != 'object') {
@@ -40,9 +43,15 @@ function isArguments(object) {
   return Object.prototype.toString.call(object) == '[object Arguments]';
 }
 
+function isNumberNaN(value) {
+  // NaN === NaN -> false
+  return typeof value == 'number' && value !== value;
+}
+
 function objEquiv(a, b) {
   if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
     return false;
+
   // an identical 'prototype' property.
   if (a.prototype !== b.prototype) return false;
   //~~~I've managed to break Object.keys through screwy arguments passing.
