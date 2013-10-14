@@ -1,5 +1,4 @@
-deep-equal
-==========
+# deep-equal
 
 Node's `assert.deepEqual() algorithm` as a standalone module.
 
@@ -10,8 +9,7 @@ than wrapping `assert.deepEqual()` in a `try/catch`.
 
 [![build status](https://secure.travis-ci.org/substack/node-deep-equal.png)](http://travis-ci.org/substack/node-deep-equal)
 
-example
-=======
+# example
 
 ``` js
 var equal = require('deep-equal');
@@ -27,13 +25,13 @@ console.dir([
 ]);
 ```
 
-methods
-=======
+# methods
 
+``` js
 var deepEqual = require('deep-equal')
+```
 
-deepEqual(a, b, opts)
----------------------
+## deepEqual(a, b, opts)
 
 Compare objects `a` and `b`, returning whether they are equal according to a
 recursive equality algorithm.
@@ -42,8 +40,7 @@ If `opts.strict` is `true`, use strict equality (`===`) to compare leaf nodes.
 The default is to use coercive equality (`==`) because that's how
 `assert.deepEqual()` works by default.
 
-install
-=======
+# install
 
 With [npm](http://npmjs.org) do:
 
@@ -51,8 +48,7 @@ With [npm](http://npmjs.org) do:
 npm install deep-equal
 ```
 
-test
-====
+# test
 
 With [npm](http://npmjs.org) do:
 
@@ -60,7 +56,6 @@ With [npm](http://npmjs.org) do:
 npm test
 ```
 
-license
-=======
+# license
 
 MIT. Derived largely from node's assert module.
