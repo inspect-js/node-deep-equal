@@ -21,3 +21,12 @@ test('nested nulls', function (t) {
     t.ok(equal([ null, null, null ], [ null, null, null ]));
     t.end();
 });
+
+test('strict equal', function (t) {
+    t.notOk(equal(
+        [ { a: 3 }, { b: 4 } ],
+        [ { a: '3' }, { b: '4' } ],
+        { strict: true }
+    ));
+    t.end();
+});
