@@ -8,7 +8,7 @@ var Object_keys = typeof Object.keys === 'function'
     }
 ;
 
-var deepEqual = module.exports = function (actual, expected) {
+var deepEqual = module.exports = function (actual, expected, strict) {
   // 7.1. All identical values are equivalent, as determined by ===.
   if (actual === expected) {
     return true;
@@ -19,7 +19,7 @@ var deepEqual = module.exports = function (actual, expected) {
   // 7.3. Other pairs that do not both pass typeof value == 'object',
   // equivalence is determined by ==.
   } else if (typeof actual != 'object' && typeof expected != 'object') {
-    return actual == expected;
+    return strict ? actual === expected : actual == expected;
 
   // 7.4. For all other Object pairs, including Array objects, equivalence is
   // determined by having the same number of owned properties (as verified
@@ -28,7 +28,7 @@ var deepEqual = module.exports = function (actual, expected) {
   // corresponding key, and an identical 'prototype' property. Note: this
   // accounts for both named and indexed properties on Arrays.
   } else {
-    return objEquiv(actual, expected);
+    return objEquiv(actual, expected, strict);
   }
 }
 
@@ -40,7 +40,7 @@ function isArguments(object) {
   return Object.prototype.toString.call(object) == '[object Arguments]';
 }
 
-function objEquiv(a, b) {
+function objEquiv(a, b, strict) {
   if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
     return false;
   // an identical 'prototype' property.
@@ -53,7 +53,7 @@ function objEquiv(a, b) {
     }
     a = pSlice.call(a);
     b = pSlice.call(b);
-    return deepEqual(a, b);
+    return deepEqual(a, b, strict);
   }
   try {
     var ka = Object_keys(a),
@@ -78,7 +78,7 @@ function objEquiv(a, b) {
   //~~~possibly expensive deep test
   for (i = ka.length - 1; i >= 0; i--) {
     key = ka[i];
-    if (!deepEqual(a[key], b[key])) return false;
+    if (!deepEqual(a[key], b[key], strict)) return false;
   }
   return true;
 }
