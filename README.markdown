@@ -32,11 +32,15 @@ methods
 
 var deepEqual = require('deep-equal')
 
-deepEqual(a, b)
----------------
+deepEqual(a, b, opts)
+---------------------
 
 Compare objects `a` and `b`, returning whether they are equal according to a
 recursive equality algorithm.
+
+If `opts.strict` is `true`, use strict equality (`===`) to compare leaf nodes.
+The default is to use coercive equality (`==`) because that's how
+`assert.deepEqual()` works by default.
 
 install
 =======
