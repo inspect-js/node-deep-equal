@@ -9,11 +9,10 @@
         "test" : "test"
     },
     "scripts" : {
-        "test" : "tap test/*.js"
+        "test" : "tape test/*.js"
     },
     "devDependencies" : {
-        "tap" : "~0.3.0",
-        "tape" : "~0.0.5"
+        "tape" : "~2.3.2"
     },
     "repository" : {
         "type" : "git",
