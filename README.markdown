@@ -5,9 +5,9 @@ Node's `assert.deepEqual() algorithm` as a standalone module.
 This module is around [5 times faster](https://gist.github.com/2790507)
 than wrapping `assert.deepEqual()` in a `try/catch`.
 
-[![browser support](http://ci.testling.com/substack/node-deep-equal.png)](http://ci.testling.com/substack/node-deep-equal)
+[![browser support](https://ci.testling.com/substack/node-deep-equal.png)](https://ci.testling.com/substack/node-deep-equal)
 
-[![build status](https://secure.travis-ci.org/substack/node-deep-equal.png)](http://travis-ci.org/substack/node-deep-equal)
+[![build status](https://secure.travis-ci.org/substack/node-deep-equal.png)](https://travis-ci.org/substack/node-deep-equal)
 
 # example
 
