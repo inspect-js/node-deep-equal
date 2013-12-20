@@ -30,3 +30,18 @@ test('strict equal', function (t) {
     ));
     t.end();
 });
+
+
+test('arguments class', function (t) {
+    t.deepEqual(
+        (function(){return arguments})(1,2,3),
+        (function(){return arguments})(1,2,3),
+        "compares arguments"
+    )
+    t.notDeepEqual(
+        (function(){return arguments})(1,2,3),
+        [1,2,3],
+        "differenciates array and arguments"
+    )
+    t.end();
+});

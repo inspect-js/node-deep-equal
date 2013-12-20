@@ -37,8 +37,23 @@ function isUndefinedOrNull(value) {
   return value === null || value === undefined;
 }
 
-function isArguments(object) {
-  return Object.prototype.toString.call(object) == '[object Arguments]';
+var supportsArgumentsClass = (function(){
+  return Object.prototype.toString.call(arguments)
+}) == '[object Arguments]';
+
+if(supportsArgumentsClass) {
+  var isArguments = function(object) {
+    return Object.prototype.toString.call(object) == '[object Arguments]';
+  }
+} else {
+  var isArguments = function(object){
+    return object &&
+      typeof object == 'object' &&
+      typeof object.length == 'number' &&
+      Object.prototype.hasOwnProperty.call(object, 'callee') &&
+      !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
+      false;
+  }
 }
 
 function objEquiv(a, b, opts) {
