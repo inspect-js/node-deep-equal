@@ -32,15 +32,15 @@ test('strict equal', function (t) {
 });
 
 test('arguments class', function (t) {
-    t.deepEqual(
+    t.ok(equal(
         (function(){return arguments})(1,2,3),
         (function(){return arguments})(1,2,3),
         "compares arguments"
-    )
-    t.notDeepEqual(
+    ));
+    t.notOk(equal(
         (function(){return arguments})(1,2,3),
         [1,2,3],
         "differenciates array and arguments"
-    )
+    ));
     t.end();
 });
