@@ -31,6 +31,15 @@ test('strict equal', function (t) {
     t.end();
 });
 
+test('non-objects', function (t) {
+    t.ok(equal(3, 3));
+    t.ok(equal('beep', 'beep'));
+    t.ok(equal('3', 3));
+    t.notOk(equal('3', 3, { strict: true }));
+    t.notOk(equal('3', [3]));
+    t.end();
+});
+
 test('arguments class', function (t) {
     t.ok(equal(
         (function(){return arguments})(1,2,3),
