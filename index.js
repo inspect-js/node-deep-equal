@@ -32,7 +32,6 @@ function isUndefinedOrNull(value) {
 }
 
 function objEquiv(a, b, opts) {
-  if (!opts) opts = {};
   if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
     return false;
   // an identical 'prototype' property.
