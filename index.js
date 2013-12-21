@@ -1,12 +1,5 @@
 var pSlice = Array.prototype.slice;
-var Object_keys = typeof Object.keys === 'function'
-    ? Object.keys
-    : function (obj) {
-        var keys = [];
-        for (var key in obj) keys.push(key);
-        return keys;
-    }
-;
+var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
 
 var deepEqual = module.exports = function (actual, expected, opts) {
@@ -55,8 +48,8 @@ function objEquiv(a, b, opts) {
     return deepEqual(a, b, opts);
   }
   try {
-    var ka = Object_keys(a),
-        kb = Object_keys(b),
+    var ka = objectKeys(a),
+        kb = objectKeys(b),
         key, i;
   } catch (e) {//happens when one is a string literal and the other isn't
     return false;

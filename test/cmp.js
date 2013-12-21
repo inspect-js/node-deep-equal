@@ -1,6 +1,7 @@
 var test = require('tape');
 var equal = require('../');
 var isArguments = require('../lib/is_arguments.js');
+var objectKeys = require('../lib/keys.js');
 
 test('equal', function (t) {
     t.ok(equal(
@@ -62,6 +63,11 @@ test('test the arguments shim', function (t) {
     t.ok(isArguments.unsupported((function(){return arguments})()));
     t.notOk(isArguments.unsupported([1,2,3]));
     
+    t.end();
+});
+
+test('test the keys shim', function (t) {
+    t.deepEqual(objectKeys.shim({ a: 1, b : 2 }), [ 'a', 'b' ]);
     t.end();
 });
 
