@@ -7,6 +7,7 @@ var Object_keys = typeof Object.keys === 'function'
         return keys;
     }
 ;
+var isArguments = require('./lib/is_arguments.js');
 
 var deepEqual = module.exports = function (actual, expected, opts) {
   if (!opts) opts = {};
@@ -35,25 +36,6 @@ var deepEqual = module.exports = function (actual, expected, opts) {
 
 function isUndefinedOrNull(value) {
   return value === null || value === undefined;
-}
-
-var supportsArgumentsClass = (function(){
-  return Object.prototype.toString.call(arguments)
-}) == '[object Arguments]';
-
-if(supportsArgumentsClass) {
-  var isArguments = function(object) {
-    return Object.prototype.toString.call(object) == '[object Arguments]';
-  }
-} else {
-  var isArguments = function(object){
-    return object &&
-      typeof object == 'object' &&
-      typeof object.length == 'number' &&
-      Object.prototype.hasOwnProperty.call(object, 'callee') &&
-      !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
-      false;
-  }
 }
 
 function objEquiv(a, b, opts) {
