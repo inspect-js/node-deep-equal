@@ -44,3 +44,10 @@ test('arguments class', function (t) {
     ));
     t.end();
 });
+
+test('dates', function (t) {
+    var d0 = new Date(1387585278000);
+    var d1 = new Date('Fri Dec 20 2013 16:21:18 GMT-0800 (PST)');
+    t.ok(equal(d0, d1));
+    t.end();
+});
