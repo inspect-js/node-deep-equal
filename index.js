@@ -31,7 +31,17 @@ function isUndefinedOrNull(value) {
   return value === null || value === undefined;
 }
 
+function isBuffer (x) {
+  if (!x || typeof x !== 'object' || typeof x.length !== 'number') return false;
+  if (typeof x.copy !== 'function' || typeof x.slice !== 'function') {
+    return false;
+  }
+  if (x.length > 0 && typeof x[0] !== 'number') return false;
+  return true;
+}
+
 function objEquiv(a, b, opts) {
+  var i, key;
   if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
     return false;
   // an identical 'prototype' property.
@@ -46,10 +56,19 @@ function objEquiv(a, b, opts) {
     b = pSlice.call(b);
     return deepEqual(a, b, opts);
   }
+  if (isBuffer(a)) {
+    if (!isBuffer(b)) {
+      return false;
+    }
+    if (a.length !== b.length) return false;
+    for (i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
   try {
     var ka = objectKeys(a),
-        kb = objectKeys(b),
-        key, i;
+        kb = objectKeys(b);
   } catch (e) {//happens when one is a string literal and the other isn't
     return false;
   }
