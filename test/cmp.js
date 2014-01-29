@@ -77,3 +77,8 @@ test('dates', function (t) {
     t.ok(equal(d0, d1));
     t.end();
 });
+
+test('buffers', function (t) {
+    t.ok(equal(Buffer('xyz'), Buffer('xyz')));
+    t.end();
+});
