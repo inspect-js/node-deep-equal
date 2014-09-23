@@ -52,6 +52,7 @@ function isBuffer(x) {
 function objEquiv(a, b, opts) {
   /* eslint max-statements: [2, 50] */
   var i, key;
+  if (typeof a !== typeof b) { return false; }
   if (isUndefinedOrNull(a) || isUndefinedOrNull(b)) { return false; }
 
   // an identical 'prototype' property.

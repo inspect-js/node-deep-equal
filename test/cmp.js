@@ -316,3 +316,15 @@ test('arrays and objects', function (t) {
 
   t.end();
 });
+
+test('functions', function (t) {
+  function f() {}
+
+  t.ok(equal(f, f), 'a function is equal to itself');
+  t.ok(equal(f, f, { strict: true }), 'strict: a function is equal to itself');
+
+  t.notOk(equal(function () {}, function () {}), 'two different functions are never equal');
+  t.notOk(equal(function () {}, function () {}, { strict: true }), 'strict: two different functions are never equal');
+
+  t.end();
+});
