@@ -82,3 +82,8 @@ test('buffers', function (t) {
     t.ok(equal(Buffer('xyz'), Buffer('xyz')));
     t.end();
 });
+
+test('booleans and arrays', function (t) {
+    t.notOk(equal(true, []));
+    t.end();
+})
