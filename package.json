@@ -1,6 +1,6 @@
 {
   "name": "deep-equal",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "description": "node's assert.deepEqual algorithm",
   "main": "index.js",
   "directories": {
