@@ -1,18 +1,22 @@
 var objectKeys = require('object-keys');
 var isArguments = require('is-arguments');
+var is = require('object-is');
 
 function deepEqual(actual, expected, options) {
   var opts = options || {};
-  // 7.1. All identical values are equivalent, as determined by ===.
-  if (actual === expected) {
-    return true;
 
-  } else if (actual instanceof Date && expected instanceof Date) {
+  // 7.1. All identical values are equivalent, as determined by ===.
+  if (opts.strict ? is(actual, expected) : actual === expected) {
+    return true;
+  }
+
+  if (actual instanceof Date && expected instanceof Date) {
     return actual.getTime() === expected.getTime();
+  }
 
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
-  } else if (!actual || !expected || (typeof actual != 'object' && typeof expected != 'object')) {
-    return opts.strict ? actual === expected : actual == expected;
+  if (!actual || !expected || (typeof actual != 'object' && typeof expected != 'object')) {
+    return opts.strict ? is(actual, expected) : actual == expected;
   }
 
   /*

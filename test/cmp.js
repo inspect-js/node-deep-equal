@@ -191,3 +191,40 @@ test('null == undefined', function (t) {
   t.notOk(equal(null, undefined, { strict: true }));
   t.end();
 });
+
+test('null == undefined', function (t) {
+  t.ok(equal(null, undefined), 'null == undefined');
+  t.ok(equal(undefined, null), 'undefined == null');
+  t.notOk(equal(null, undefined, { strict: true }), 'null !== undefined');
+  t.notOk(equal(undefined, null, { strict: true }), 'undefined !== null');
+  t.end();
+});
+
+test('NaNs', function (t) {
+  t.notOk(equal(NaN, NaN), 'NaN is not NaN');
+  t.ok(equal(NaN, NaN, { strict: true }), 'strict: NaN is NaN');
+
+  t.notOk(equal({ a: NaN }, { a: NaN }), 'two equiv objects with a NaN value are not equiv');
+  t.ok(equal({ a: NaN }, { a: NaN }, { strict: true }), 'strict: two equiv objects with a NaN value are equiv');
+
+  t.notOk(equal(NaN, 1), 'NaN !== 1');
+  t.notOk(equal(NaN, 1, { strict: true }), 'strict: NaN !== 1');
+
+  t.end();
+});
+
+test('zeroes', function (t) {
+  t.ok(equal(0, -0), '0 is -0');
+  t.ok(equal(-0, 0), '-0 is 0');
+
+  t.notOk(equal(0, -0, { strict: true }), 'strict: 0 is -0');
+  t.notOk(equal(-0, 0, { strict: true }), 'strict: -0 is 0');
+
+  t.ok(equal({ a: 0 }, { a: -0 }), 'two objects with a same-keyed 0/-0 value are equal');
+  t.ok(equal({ a: -0 }, { a: 0 }), 'two objects with a same-keyed -0/0 value are equal');
+
+  t.notOk(equal({ a: 0 }, { a: -0 }, { strict: true }), 'strict: two objects with a same-keyed 0/-0 value are equal');
+  t.notOk(equal({ a: -0 }, { a: 0 }, { strict: true }), 'strict: two objects with a same-keyed -0/0 value are equal');
+
+  t.end();
+});
