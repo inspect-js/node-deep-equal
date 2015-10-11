@@ -44,8 +44,8 @@ function objEquiv(a, b, opts) {
   var i, key;
   if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
     return false;
-  // an identical 'prototype' property.
-  if (a.prototype !== b.prototype) return false;
+  if (opts.strict && Object.getPrototypeOf(a) !== Object.getPrototypeOf(b))
+    return false;
   //~~~I've managed to break Object.keys through screwy arguments passing.
   //   Converting to array solves the problem.
   if (isArguments(a)) {
