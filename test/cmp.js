@@ -93,3 +93,16 @@ test('null == undefined', function (t) {
     t.notOk(equal(null, undefined, { strict: true }))
     t.end()
 })
+
+test('prototypes', function (t) {
+    function A() {}
+    function B() {}
+
+    t.ok(equal(new A, new A, { strict: true }))
+    t.notOk(equal(new A, new B, { strict: true }))
+
+    t.ok(equal(new A, new A))
+    t.ok(equal(new A, new B))
+    t.end()
+})
+
