@@ -33,6 +33,15 @@ test('strict equal', function (t) {
     t.end();
 });
 
+test('strict order equal', function (t) {
+    t.notOk(equal(
+        [ { a: 3, b: 4 } ],
+        [ { b: 4, a: 3 } ],
+        { strictOrder: true }
+    ));
+    t.end();
+});
+
 test('non-objects', function (t) {
     t.ok(equal(3, 3));
     t.ok(equal('beep', 'beep'));

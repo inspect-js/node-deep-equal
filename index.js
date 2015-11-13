@@ -77,8 +77,12 @@ function objEquiv(a, b, opts) {
   if (ka.length != kb.length)
     return false;
   //the same set of keys (although not necessarily the same order),
-  ka.sort();
-  kb.sort();
+
+  if(!opts.strictOrder){
+    ka.sort();
+    kb.sort();
+  }
+  
   //~~~cheap key test
   for (i = ka.length - 1; i >= 0; i--) {
     if (ka[i] != kb[i])

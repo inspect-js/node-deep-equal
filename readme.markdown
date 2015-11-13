@@ -40,6 +40,9 @@ If `opts.strict` is `true`, use strict equality (`===`) to compare leaf nodes.
 The default is to use coercive equality (`==`) because that's how
 `assert.deepEqual()` works by default.
 
+If `opts.strictOrder` is `true`, fail equality if objects keys are in a different order
+The default is `false` 
+
 # install
 
 With [npm](http://npmjs.org) do:
