@@ -93,3 +93,11 @@ test('null == undefined', function (t) {
     t.notOk(equal(null, undefined, { strict: true }))
     t.end()
 })
+
+test('regex', function (t) {
+    t.ok(equal('abcd', /cd$/, {regexp: true}))
+    t.notOk(equal('abcd', /cd$/))
+    t.notOk(equal('abcd', /^abd/))
+    t.end()
+})
+
