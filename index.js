@@ -3,6 +3,7 @@ var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
 
 var deepEqual = module.exports = function (actual, expected, opts) {
+    console.log(actual, expected)
   if (!opts) opts = {};
   // 7.1. All identical values are equivalent, as determined by ===.
   if (actual === expected) {
@@ -10,6 +11,14 @@ var deepEqual = module.exports = function (actual, expected, opts) {
 
   } else if (actual instanceof Date && expected instanceof Date) {
     return actual.getTime() === expected.getTime();
+
+  } else if (opts.regex && expected instanceof RegExp
+  && actual !== null && actual !== undefined && actual.constructor === String) {
+    return expected.test(actual)
+
+  } else if (opts.regex && actual instanceof RegExp
+  && expected !== null && expected !== undefined && expected.constructor === String) {
+    return actual.test(expected)
 
   // 7.3. Other pairs that do not both pass typeof value == 'object',
   // equivalence is determined by ==.
