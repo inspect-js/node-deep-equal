@@ -93,3 +93,33 @@ test('null == undefined', function (t) {
     t.notOk(equal(null, undefined, { strict: true }))
     t.end()
 })
+
+test('functions', function(t) {
+  var f1 = function() {},
+      f2 = function() {};
+
+  t.notOk(equal(f1, f2));
+  t.ok(equal(f1, f1));
+  t.ok(equal(f1, f2, { skip: 'functions'}));
+  t.end();
+})
+
+test('nested functions', function(t) {
+  var f1 = function() {},
+      f2 = function() {};
+
+  t.notOk(equal({'test': f1}, {'test':f2}));
+  t.ok(equal({'test': f1}, {'test':f1}));
+  t.ok(equal({'test': f1}, {'test':f2}, { skip: 'functions' }));
+  t.end();
+});
+
+test('arrays of functions', function(t) {
+  var f1 = function() {},
+      f2 = function() {};
+
+  t.notOk(equal([f1], [f2]));
+  t.ok(equal([f1], [f1]));
+  t.ok(equal([f1], [f2], { skip: 'functions' }));
+  t.end();
+});

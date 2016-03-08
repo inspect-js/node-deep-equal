@@ -13,6 +13,12 @@ var deepEqual = module.exports = function (actual, expected, opts) {
 
   // 7.3. Other pairs that do not both pass typeof value == 'object',
   // equivalence is determined by ==.
+  } else if (isFunction(actual) && isFunction(expected)) {
+    if (opts.skip === 'functions') {
+      return true
+    }
+
+    return actual == expected;
   } else if (!actual || !expected || typeof actual != 'object' && typeof expected != 'object') {
     return opts.strict ? actual === expected : actual == expected;
 
@@ -29,6 +35,10 @@ var deepEqual = module.exports = function (actual, expected, opts) {
 
 function isUndefinedOrNull(value) {
   return value === null || value === undefined;
+}
+
+function isFunction(value) {
+  return !!(value && value.constructor && value.call && value.apply);
 }
 
 function isBuffer (x) {
@@ -90,5 +100,6 @@ function objEquiv(a, b, opts) {
     key = ka[i];
     if (!deepEqual(a[key], b[key], opts)) return false;
   }
+
   return typeof a === typeof b;
 }
