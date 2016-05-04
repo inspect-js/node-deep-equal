@@ -3,6 +3,10 @@
   "version": "1.0.1",
   "description": "node's assert.deepEqual algorithm",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "directories": {
     "lib": ".",
     "example": "example",
