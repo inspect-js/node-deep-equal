@@ -59,10 +59,10 @@ test('arguments class', function (t) {
 test('test the arguments shim', function (t) {
     t.ok(isArguments.supported((function(){return arguments})()));
     t.notOk(isArguments.supported([1,2,3]));
-    
+
     t.ok(isArguments.unsupported((function(){return arguments})()));
     t.notOk(isArguments.unsupported([1,2,3]));
-    
+
     t.end();
 });
 
@@ -93,3 +93,31 @@ test('null == undefined', function (t) {
     t.notOk(equal(null, undefined, { strict: true }))
     t.end()
 })
+
+test('test objects', function (t) {
+    var a = { a: "A" };
+    var b = Object.create(a);
+    b.b = "B";
+    var c = Object.create(a);
+    c.b = "C";
+
+    t.notOk(equal(b, c));
+    t.end();
+});
+
+test('test objects', function (t) {
+    var d = new Date(1387585278000);
+    var e = new RegExp("abc");
+    t.notOk(equal(d, e));
+    t.end();
+});
+
+test('test RegExp !=', function (t) {
+    t.notOk(equal(/abc/, /xyz/));
+    t.end();
+});
+
+test('test RegExp ==', function (t) {
+    t.ok(equal(/abc/, /abc/));
+    t.end();
+});
