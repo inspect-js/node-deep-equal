@@ -228,3 +228,46 @@ test('zeroes', function (t) {
 
   t.end();
 });
+
+test('test objects', { skip: !Object.create }, function (t) {
+  var a = { a: 'A' };
+  var b = Object.create(a);
+  b.b = 'B';
+  var c = Object.create(a);
+  c.b = 'C';
+
+  t.notOk(equal(b, c), 'two objects with the same [[Prototype]] but a different own property are not equal');
+  t.notOk(equal(c, b), 'two objects with the same [[Prototype]] but a different own property are not equal');
+
+  t.notOk(equal(b, c, { strict: true }), 'strict: two objects with the same [[Prototype]] but a different own property are not equal');
+  t.notOk(equal(c, b, { strict: true }), 'strict: two objects with the same [[Prototype]] but a different own property are not equal');
+
+  t.end();
+});
+
+test('regexes vs dates', function (t) {
+  var d = new Date(1387585278000);
+  var r = /abc/;
+
+  t.notOk(equal(d, r), 'date and regex are not equal');
+  t.notOk(equal(r, d), 'regex and date are not equal');
+
+  t.notOk(equal(d, r, { strict: true }), 'strict: date and regex are not equal');
+  t.notOk(equal(r, d, { strict: true }), 'strict: regex and date are not equal');
+
+  t.end();
+});
+
+test('regexen', function (t) {
+  t.notOk(equal(/abc/, /xyz/), 'two different regexes are not equal');
+  t.notOk(equal(/xyz/, /abc/), 'two different regexes are not equal');
+  t.ok(equal(/abc/, /abc/), 'two same regexes are equal');
+  t.ok(equal(/xyz/, /xyz/), 'two same regexes are equal');
+
+  t.notOk(equal(/abc/, /xyz/, { strict: true }), 'strict: two different regexes are not equal');
+  t.notOk(equal(/xyz/, /abc/, { strict: true }), 'strict: two different regexes are not equal');
+  t.ok(equal(/abc/, /abc/, { strict: true }), 'strict: two same regexes are not equal');
+  t.ok(equal(/xyz/, /xyz/, { strict: true }), 'strict: two same regexes are not equal');
+
+  t.end();
+});

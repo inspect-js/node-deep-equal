@@ -1,6 +1,8 @@
 var objectKeys = require('object-keys');
 var isArguments = require('is-arguments');
 var is = require('object-is');
+var isRegex = require('is-regex');
+var flags = require('regexp.prototype.flags');
 
 function deepEqual(actual, expected, options) {
   var opts = options || {};
@@ -8,6 +10,15 @@ function deepEqual(actual, expected, options) {
   // 7.1. All identical values are equivalent, as determined by ===.
   if (opts.strict ? is(actual, expected) : actual === expected) {
     return true;
+  }
+
+  var actualIsRegex = isRegex(actual);
+  var expectedIsRegex = isRegex(expected);
+  if (actualIsRegex || expectedIsRegex) {
+    if (actualIsRegex !== expectedIsRegex) {
+      return false;
+    }
+    return actual.source === expected.source && flags(actual) === flags(expected);
   }
 
   if (actual instanceof Date && expected instanceof Date) {
