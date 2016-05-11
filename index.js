@@ -56,9 +56,15 @@ function objEquiv(a, b, opts) {
   if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
     return false;
 
-  Object.getPrototypeOf = Object.getPrototypeOf || function(obj) {
-    return obj.__proto__;
+  var abc = 5;
+  try {
+    Object.getPrototypeOf(abc);  // all ok ES6
+  } catch (e) {  // error ES5
+    Object.getPrototypeOf = function(obj) {
+        return obj.__proto__;
+    }
   }
+
   // an identical 'prototype' property.
   if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) return false;
   //~~~I've managed to break Object.keys through screwy arguments passing.
