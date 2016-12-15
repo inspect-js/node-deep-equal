@@ -93,3 +93,21 @@ test('null == undefined', function (t) {
     t.notOk(equal(null, undefined, { strict: true }))
     t.end()
 })
+
+test('ignore fields', function (t) {
+    t.notOk(equal(
+        { x : 5, y : [6] },
+        { x : 5, y : 6 }
+    ));
+    t.ok(equal(
+        { x : 5, y : [6] },
+        { x : 5, y : 6 },
+        { ignores : ['y']}
+    ));
+    t.notOk(equal(
+        { x : 5, y : [6] },
+        { x : 5, y : 6 },
+        { ignores : ['x']}
+    ));
+    t.end();
+})

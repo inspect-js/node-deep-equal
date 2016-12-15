@@ -88,6 +88,9 @@ function objEquiv(a, b, opts) {
   //~~~possibly expensive deep test
   for (i = ka.length - 1; i >= 0; i--) {
     key = ka[i];
+    if( opts.ignores && opts.ignores.indexOf(key) >= 0 ) {
+      continue;
+    }
     if (!deepEqual(a[key], b[key], opts)) return false;
   }
   return typeof a === typeof b;
