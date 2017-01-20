@@ -6,6 +6,7 @@
     "eqeqeq": 1,
     "func-style": [2, "declaration"],
     "indent": [2, 2],
+    "max-lines-per-function": [2, 75],
     "max-params": [2, 3],
     "strict": 1,
   },

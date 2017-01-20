@@ -15,7 +15,7 @@ function deepEqual(actual, expected, options) {
   }
 
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
-  if (!actual || !expected || (typeof actual != 'object' && typeof expected != 'object')) {
+  if (!actual || !expected || (typeof actual !== 'object' && typeof expected !== 'object')) {
     return opts.strict ? is(actual, expected) : actual == expected;
   }
 
@@ -79,6 +79,10 @@ function objEquiv(a, b, opts) {
     return true;
   }
 
+  if (typeof a !== typeof b) {
+    return false;
+  }
+
   try {
     var ka = objectKeys(a);
     var kb = objectKeys(b);
@@ -107,7 +111,7 @@ function objEquiv(a, b, opts) {
     }
   }
 
-  return typeof a === typeof b;
+  return true;
 }
 
 module.exports = deepEqual;
