@@ -1,5 +1,6 @@
 var test = require('tape');
 require('./_tape');
+var assign = require('object.assign');
 
 var equal = require('../');
 
@@ -348,5 +349,23 @@ test('Errors', function (t) {
   t.deepEqualTest(new Error('xyz'), new TypeError('xyz'), 'two errors of different types with the same message', false, false);
   t.deepEqualTest(new Error('xyz'), new Error('zyx'), 'two errors of the same type with a different message', false, false);
 
+  t.deepEqualTest(
+    new Error('a'),
+    assign(new Error('a'), { code: 10 }),
+    'two otherwise equal errors with different own properties',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('errors', function (t) {
+
+  t.end();
+});
+
+test('error = Object', function (t) {
+  t.notOk(equal(new Error('a'), { message: 'a' }));
   t.end();
 });
