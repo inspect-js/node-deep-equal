@@ -33,6 +33,7 @@ test('strict equal', function (t) {
 
 test('non-objects', function (t) {
   t.ok(equal(3, 3));
+  t.ok(equal(3, 3, { strict: true }));
   t.ok(equal('beep', 'beep'));
   t.ok(equal('3', 3));
   t.notOk(equal('3', 3, { strict: true }));
@@ -229,7 +230,7 @@ test('zeroes', function (t) {
   t.end();
 });
 
-test('test objects', { skip: !Object.create }, function (t) {
+test('Object.create', { skip: !Object.create }, function (t) {
   var a = { a: 'A' };
   var b = Object.create(a);
   b.b = 'B';
@@ -241,6 +242,16 @@ test('test objects', { skip: !Object.create }, function (t) {
 
   t.notOk(equal(b, c, { strict: true }), 'strict: two objects with the same [[Prototype]] but a different own property are not equal');
   t.notOk(equal(c, b, { strict: true }), 'strict: two objects with the same [[Prototype]] but a different own property are not equal');
+
+  t.end();
+});
+
+test('Object.create(null)', { skip: !Object.create }, function (t) {
+  t.ok(equal(Object.create(null), Object.create(null)), 'two empty null objects are deep equal');
+  t.ok(equal(Object.create(null), Object.create(null), { strict: true }), 'strict: two empty null objects are deep equal');
+
+  t.ok(equal(Object.create(null, { a: { value: 'b' } }), Object.create(null, { a: { value: 'b' } })), 'two null objects are deep equal');
+  t.ok(equal(Object.create(null, { a: { value: 'b' } }), Object.create(null, { a: { value: 'b' } }), { strict: true }), 'strict: two null objects are deep equal');
 
   t.end();
 });
