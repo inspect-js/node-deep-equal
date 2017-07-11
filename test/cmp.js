@@ -88,6 +88,13 @@ test('booleans and arrays', function (t) {
     t.end();
 })
 
+test('arrays of numbers and objects', function (t) {
+    Array.prototype.copy = () => { };
+
+    t.ok(equal([1, {}], [1, {}]));
+    t.end();
+})
+
 test('null == undefined', function (t) {
     t.ok(equal(null, undefined))
     t.notOk(equal(null, undefined, { strict: true }))

@@ -42,6 +42,17 @@ function isFunction(value) {
 }
 
 function isBuffer (x) {
+  // CA: For our purposes, we don't want to support diffing buffers. Recently we ran into an issue
+  // where someone was setting Array.prototype.copy, defining it as a function.
+  // Specifically, this is actually a feature of Ember.js: https://github.com/emberjs/ember.js/blob/v2.14.0/packages/ember-runtime/lib/system/native_array.js#L141
+  // This caused issues when we went to go diff our arrays:
+  // `equals([0, {}], [0, {}])` was returning false, since isBuffer was returning true. This
+  // library will shallow diff every element in a buffer, but since we're diffing an object inside
+  // the array, you could see how this would become a problem.
+  // It's worth noting this was specifically an issue only because of the existence of
+  // Array.prototype.copy combined with the first element in the array being a number.
+  return false;
+
   if (!x || typeof x !== 'object' || typeof x.length !== 'number') return false;
   if (typeof x.copy !== 'function' || typeof x.slice !== 'function') {
     return false;
