@@ -12,6 +12,16 @@ test('equal', function (t) {
     true,
     false
   );
+
+  t.deepEqualTest(
+    new Map([['a', 1], ['b', 2]]),
+    new Map([['b', 2], ['a', 1]]),
+    'two equal Maps',
+    true,
+    true,
+    false
+  );
+
   t.end();
 });
 
@@ -23,6 +33,23 @@ test('not equal', function (t) {
     false,
     false
   );
+
+  t.deepEqualTest(
+    new Map([['a', [1, 2]]]),
+    new Map([['a', [2, 1]]]),
+    'two Maps with inequal values on the same key',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    new Map([['a', 1]]),
+    new Map([['b', 1]]),
+    'two inequal Maps',
+    false,
+    false
+  );
+
   t.end();
 });
 
