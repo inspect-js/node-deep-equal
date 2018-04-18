@@ -50,7 +50,7 @@ function isBuffer(x) {
 }
 
 function objEquiv(a, b, opts) {
-  /* eslint max-statements: [2, 50] */
+  /* eslint max-statements: [2, 70] */
   var i, key;
   if (typeof a !== typeof b) { return false; }
   if (isUndefinedOrNull(a) || isUndefinedOrNull(b)) { return false; }
@@ -59,6 +59,14 @@ function objEquiv(a, b, opts) {
   if (a.prototype !== b.prototype) { return false; }
 
   if (isArguments(a) !== isArguments(b)) { return false; }
+
+  // TODO: replace when a cross-realm brand check is available
+  var aIsError = a instanceof Error;
+  var bIsError = b instanceof Error;
+  if (aIsError !== bIsError) { return false; }
+  if (aIsError || bIsError) {
+    if (a.name !== b.name || a.message !== b.message) { return false; }
+  }
 
   var aIsRegex = isRegex(a);
   var bIsRegex = isRegex(b);

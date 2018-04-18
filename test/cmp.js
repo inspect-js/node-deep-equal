@@ -342,3 +342,11 @@ test('functions', function (t) {
 
   t.end();
 });
+
+test('Errors', function (t) {
+  t.deepEqualTest(new Error('xyz'), new Error('xyz'), 'two errors of the same type with the same message', true, true, false);
+  t.deepEqualTest(new Error('xyz'), new TypeError('xyz'), 'two errors of different types with the same message', false, false);
+  t.deepEqualTest(new Error('xyz'), new Error('zyx'), 'two errors of the same type with a different message', false, false);
+
+  t.end();
+});
