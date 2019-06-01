@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 var equal = require('../');
 console.dir([
     equal(

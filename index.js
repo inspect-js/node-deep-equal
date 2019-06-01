@@ -1,8 +1,9 @@
-var pSlice = Array.prototype.slice;
-var objectKeys = require('./lib/keys.js');
-var isArguments = require('./lib/is_arguments.js');
+import {objectKeys} from './lib/keys.js';
+import {isArguments} from './lib/is_arguments.js';
 
-var deepEqual = module.exports = function (actual, expected, opts) {
+var pSlice = Array.prototype.slice;
+
+var deepEqual = function (actual, expected, opts) {
   if (!opts) opts = {};
   // 7.1. All identical values are equivalent, as determined by ===.
   if (actual === expected) {
@@ -92,3 +93,5 @@ function objEquiv(a, b, opts) {
   }
   return typeof a === typeof b;
 }
+
+export default deepEqual;

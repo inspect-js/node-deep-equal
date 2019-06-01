@@ -2,22 +2,36 @@
   "name": "deep-equal",
   "version": "1.0.1",
   "description": "node's assert.deepEqual algorithm",
-  "main": "index.js",
+  "main": "dist/index-umd.js",
+  "module": "dist/index-es.js",
   "directories": {
     "lib": ".",
     "example": "example",
     "test": "test"
   },
   "scripts": {
+    "eslint": "eslint .",
+    "rollup": "rollup -c",
     "test": "tape test/*.js"
   },
+  "engines": {
+    "node": ">= 0.1.14"
+  },
+  "dependencies": {},
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "eslint": "^5.16.0",
+    "rollup": "^1.13.1",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-terser": "^5.0.0",
     "tape": "^3.5.0"
   },
+  "bugs": "http://github.com/substack/node-deep-equal/issues",
   "repository": {
     "type": "git",
     "url": "http://github.com/substack/node-deep-equal.git"
   },
+  "homepage": "http://github.com/substack/node-deep-equal",
   "keywords": [
     "equality",
     "equal",
@@ -28,6 +42,7 @@
     "email": "mail@substack.net",
     "url": "http://substack.net"
   },
+  "contributors": [],
   "license": "MIT",
   "testling": {
     "files": "test/*.js",

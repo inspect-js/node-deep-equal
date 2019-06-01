@@ -1,7 +1,7 @@
 var test = require('tape');
 var equal = require('../');
-var isArguments = require('../lib/is_arguments.js');
-var objectKeys = require('../lib/keys.js');
+var isArguments = require('../dist/is_arguments.js');
+var objectKeys = require('../dist/keys.js');
 
 test('equal', function (t) {
     t.ok(equal(
@@ -59,10 +59,10 @@ test('arguments class', function (t) {
 test('test the arguments shim', function (t) {
     t.ok(isArguments.supported((function(){return arguments})()));
     t.notOk(isArguments.supported([1,2,3]));
-    
+
     t.ok(isArguments.unsupported((function(){return arguments})()));
     t.notOk(isArguments.unsupported([1,2,3]));
-    
+
     t.end();
 });
 
@@ -79,7 +79,7 @@ test('dates', function (t) {
 });
 
 test('buffers', function (t) {
-    t.ok(equal(Buffer('xyz'), Buffer('xyz')));
+    t.ok(equal(Buffer.from('xyz'), Buffer.from('xyz')));
     t.end();
 });
 
