@@ -7,7 +7,8 @@ var deepEqual = module.exports = function (actual, expected, opts) {
   // 7.1. All identical values are equivalent, as determined by ===.
   if (actual === expected) {
     return true;
-
+  } else if (typeof actual === 'function' && typeof expected === 'function') {
+    return deepEqual(actual(), expected());
   } else if (actual instanceof Date && expected instanceof Date) {
     return actual.getTime() === expected.getTime();
 
