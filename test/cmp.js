@@ -11,6 +11,40 @@ test('equal', function (t) {
     t.end();
 });
 
+test('function returning object literal with functions equal', function (t) {
+    const Test = (a) => {
+        return {
+            test() {
+                return a;
+            }
+        }
+    }
+    const a = Test('a');
+    const b = Test('a');
+    t.ok(equal(
+        a,
+        b
+    ));
+    t.end();
+});
+
+test('function returning object literal with functions not equal', function (t) {
+    const Test = (a) => {
+        return {
+            test() {
+                return a;
+            }
+        }
+    }
+    const a = Test('a');
+    const b = Test('c');
+    t.notOk(equal(
+        a,
+        b
+    ));
+    t.end();
+});
+
 test('not equal', function (t) {
     t.notOk(equal(
         { x : 5, y : [6] },
