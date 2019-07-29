@@ -9,7 +9,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tape test/*.js"
+    "tests-only": "tape test/*.js",
+    "test": "npm run tests-only"
   },
   "devDependencies": {
     "tape": "^3.5.0"
