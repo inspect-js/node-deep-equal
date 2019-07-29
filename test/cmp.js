@@ -80,6 +80,112 @@ test('booleans and arrays', function (t) {
   t.end();
 });
 
+test('arrays initiated', function (t) {
+  var a0 = [
+      undefined,
+      null,
+      -1,
+      0,
+      1,
+      false,
+      true,
+      undefined,
+      '',
+      'abc',
+      null,
+      undefined
+    ],
+    a1 = [
+      undefined,
+      null,
+      -1,
+      0,
+      1,
+      false,
+      true,
+      undefined,
+      '',
+      'abc',
+      null,
+      undefined
+    ];
+
+  t.ok(equal(a0, a1));
+  t.end();
+});
+
+// eslint-disable-next-line max-statements
+test('arrays assigned', function (t) {
+  var a0 = [
+      undefined,
+      null,
+      -1,
+      0,
+      1,
+      false,
+      true,
+      undefined,
+      '',
+      'abc',
+      null,
+      undefined
+    ],
+    a1 = [];
+
+  a1[0] = undefined;
+  a1[1] = null;
+  a1[2] = -1;
+  a1[3] = 0;
+  a1[4] = 1;
+  a1[5] = false;
+  a1[6] = true;
+  a1[7] = undefined;
+  a1[8] = '';
+  a1[9] = 'abc';
+  a1[10] = null;
+  a1[11] = undefined;
+  a1.length = 12;
+
+  t.ok(equal(a0, a1));
+  t.end();
+});
+
+// eslint-disable-next-line max-statements
+test('arrays push', function (t) {
+  var a0 = [
+      undefined,
+      null,
+      -1,
+      0,
+      1,
+      false,
+      true,
+      undefined,
+      '',
+      'abc',
+      null,
+      undefined
+    ],
+    a1 = [];
+
+  a1.push(undefined);
+  a1.push(null);
+  a1.push(-1);
+  a1.push(0);
+  a1.push(1);
+  a1.push(false);
+  a1.push(true);
+  a1.push(undefined);
+  a1.push('');
+  a1.push('abc');
+  a1.push(null);
+  a1.push(undefined);
+  a1.length = 12;
+
+  t.ok(equal(a0, a1));
+  t.end();
+});
+
 test('null == undefined', function (t) {
   t.ok(equal(null, undefined));
   t.notOk(equal(null, undefined, { strict: true }));
