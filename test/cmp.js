@@ -41,16 +41,24 @@ test('non-objects', function (t) {
 });
 
 test('arguments class', function (t) {
-    t.ok(equal(
-        (function(){return arguments})(1,2,3),
-        (function(){return arguments})(1,2,3),
-        "compares arguments"
-    ));
-    t.notOk(equal(
-        (function(){return arguments})(1,2,3),
-        [1,2,3],
-        "differenciates array and arguments"
-    ));
+    function getArgs() {
+      return arguments;
+    }
+    t.ok(
+       equal(getArgs(1, 2, 3), getArgs(1, 2, 3)),
+      'compares arguments'
+    );
+
+    t.notOk(
+       equal(getArgs(1, 2, 3), [1, 2, 3]),
+      'differentiates array and arguments'
+    );
+
+    t.notOk(
+      equal([1, 2, 3], getArgs(1, 2, 3)),
+      'differentiates arguments and array'
+    );
+
     t.end();
 });
 
