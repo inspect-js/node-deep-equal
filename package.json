@@ -9,6 +9,8 @@
     "test": "test"
   },
   "scripts": {
+    "pretest": "npm run lint",
+    "lint": "eslint .",
     "tests-only": "tape test/*.js",
     "test": "npm run tests-only"
   },
@@ -17,6 +19,8 @@
     "object-keys": "^1.1.1"
   },
   "devDependencies": {
+    "@ljharb/eslint-config": "^13.1.1",
+    "eslint": "^5.16.0",
     "tape": "^4.11.0"
   },
   "repository": {

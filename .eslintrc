@@ -1,0 +1,22 @@
+{
+  "root": true,
+  "extends": "@ljharb",
+  "rules": {
+    "complexity": 0,
+    "eqeqeq": 1,
+    "func-style": [2, "declaration"],
+    "indent": [2, 2],
+    "max-params": [2, 3],
+    "strict": 1,
+  },
+  "overrides": [
+    {
+      "files": ["example/**", "test/**"],
+      "rules": {
+        "array-bracket-newline": 0,
+        "no-console": 0,
+        "no-magic-numbers": 0,
+      },
+    },
+  ],
+}
