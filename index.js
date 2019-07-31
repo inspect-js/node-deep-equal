@@ -7,6 +7,7 @@ var isArray = require('isarray');
 var isDate = require('is-date-object');
 
 var getTime = Date.prototype.getTime;
+var gPO = Object.getPrototypeOf;
 
 function deepEqual(actual, expected, options) {
   var opts = options || {};
@@ -80,9 +81,13 @@ function objEquiv(a, b, opts) {
     return a.source === b.source && flags(a) === flags(b);
   }
 
-  if (isDate(a) && isDate(b)) {
-    return getTime.call(a) === getTime.call(b);
-  }
+  var aIsDate = isDate(a);
+  var bIsDate = isDate(b);
+  if (aIsDate !== bIsDate) { return false; }
+  if (aIsDate || bIsDate) { // && would work too, because both are true or both false here
+    if (getTime.call(a) !== getTime.call(b)) { return false; }
+    if (opts.strict && gPO && gPO(a) !== gPO(b)) { return false; }
+  } else if (gPO && gPO(a) !== gPO(b)) { return false; } // non-Dates always compare [[Prototype]]s
 
   var aIsBuffer = isBuffer(a);
   var bIsBuffer = isBuffer(b);

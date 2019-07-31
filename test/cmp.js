@@ -91,7 +91,13 @@ test('arguments class', function (t) {
 test('dates', function (t) {
   var d0 = new Date(1387585278000);
   var d1 = new Date('Fri Dec 20 2013 16:21:18 GMT-0800 (PST)');
-  t.deepEqualTest(d0, d1, 'equivalent Dates', true, true);
+
+  t.deepEqualTest(d0, d1, 'two Dates with the same timestamp', true, true);
+
+  d1.a = true;
+
+  t.deepEqualTest(d0, d1, 'two Dates with the same timestamp but different own properties', false, false);
+
   t.end();
 });
 
@@ -367,5 +373,31 @@ test('errors', function (t) {
 
 test('error = Object', function (t) {
   t.notOk(equal(new Error('a'), { message: 'a' }));
+  t.end();
+});
+
+test('[[Prototypes]]', { skip: !Object.getPrototypeOf }, function (t) {
+  function C() {}
+  var instance = new C();
+  delete instance.constructor;
+
+  t.deepEqualTest({}, instance, 'two identical objects with different [[Prototypes]]', false, false);
+
+  t.test('Dates with different prototypes', { skip: !Object.setPrototypeOf }, function (st) {
+    var d1 = new Date(0);
+    var d2 = new Date(0);
+
+    t.deepEqualTest(d1, d2, 'two dates with the same timestamp', true, true);
+
+    var newProto = {};
+    Object.setPrototypeOf(newProto, Date.prototype);
+    Object.setPrototypeOf(d2, newProto);
+    st.ok(d2 instanceof Date, 'd2 is still a Date instance after tweaking [[Prototype]]');
+
+    t.deepEqualTest(d1, d2, 'two dates with the same timestamp and different [[Prototype]]', true, false);
+
+    st.end();
+  });
+
   t.end();
 });
