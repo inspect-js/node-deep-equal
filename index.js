@@ -67,10 +67,10 @@ function objEquiv(a, b, opts) {
     return a.getTime() === b.getTime();
   }
 
-  if (isBuffer(a)) {
-    if (!isBuffer(b)) {
-      return false;
-    }
+  var aIsBuffer = isBuffer(a);
+  var bIsBuffer = isBuffer(b);
+  if (aIsBuffer !== bIsBuffer) { return false; }
+  if (aIsBuffer || bIsBuffer) { // && would work too, because both are true or both false here
     if (a.length !== b.length) { return false; }
     for (i = 0; i < a.length; i++) {
       if (a[i] !== b[i]) { return false; }

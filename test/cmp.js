@@ -72,7 +72,19 @@ test('dates', function (t) {
 
 test('buffers', function (t) {
   /* eslint no-buffer-constructor: 1, new-cap: 1 */
-  t.ok(equal(Buffer('xyz'), Buffer('xyz')));
+  t.ok(equal(Buffer('xyz'), Buffer('xyz')), 'buffers with same contents are equal');
+  t.ok(equal(Buffer('xyz'), Buffer('xyz'), { strict: true }), 'strict: buffers with same contents are equal');
+
+  t.notOk(equal(Buffer('abc'), Buffer('xyz')), 'buffers with different contents are not equal');
+  t.notOk(equal(Buffer('xyz'), Buffer('abc')), 'buffers with different contents are not equal');
+  t.notOk(equal(Buffer('abc'), Buffer('xyz'), { strict: true }), 'strict: buffers with different contents are not equal');
+  t.notOk(equal(Buffer('xyz'), Buffer('abc'), { strict: true }), 'strict: buffers with different contents are not equal');
+
+  t.notOk(equal(Buffer(''), []), 'empty buffer and empty array are not equal');
+  t.notOk(equal([], Buffer('')), 'empty array and empty buffer are not equal');
+  t.notOk(equal(Buffer(''), [], { strict: true }), 'strict: empty buffer and empty array are not equal');
+  t.notOk(equal([], Buffer(''), { strict: true }), 'strict: empty array and empty buffer are not equal');
+
   t.end();
 });
 
