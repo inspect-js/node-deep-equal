@@ -8,6 +8,7 @@
     "indent": [2, 2],
     "max-lines-per-function": [2, 75],
     "max-params": [2, 3],
+    "max-statements-per-line": [2, { "max": 2 }],
     "strict": 1,
   },
   "overrides": [
