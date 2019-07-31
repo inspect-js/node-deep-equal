@@ -15,6 +15,7 @@
       "files": ["example/**", "test/**"],
       "rules": {
         "array-bracket-newline": 0,
+        "max-statements": 0,
         "no-console": 0,
         "no-magic-numbers": 0,
       },

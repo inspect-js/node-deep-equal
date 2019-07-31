@@ -282,3 +282,25 @@ test('regexen', function (t) {
 
   t.end();
 });
+
+test('arrays and objects', function (t) {
+  t.ok(equal([], {}), 'empty array and empty object are equal');
+  t.ok(equal({}, []), 'empty object and empty array are equal');
+
+  t.ok(equal([], {}, { strict: true }), 'strict: empty array and empty object are equal');
+  t.ok(equal({}, [], { strict: true }), 'strict: empty object and empty array are equal');
+
+  t.notOk(equal([], { length: 0 }), 'empty array and empty arraylike object are not equal');
+  t.notOk(equal({ length: 0 }, []), 'empty arraylike object and empty array are not equal');
+
+  t.notOk(equal([], { length: 0 }, { strict: true }), 'strict: empty array and empty arraylike object are not equal');
+  t.notOk(equal({ length: 0 }, [], { strict: true }), 'strict: empty arraylike object and empty array are not equal');
+
+  t.ok(equal([1], { 0: 1 }), 'array and object are equal');
+  t.ok(equal({ 0: 1 }, [1]), 'object and array are equal');
+
+  t.ok(equal([1], { 0: 1 }, { strict: true }), 'strict: array and object are equal');
+  t.ok(equal({ 0: 1 }, [1], { strict: true }), 'strict: object and array are equal');
+
+  t.end();
+});
