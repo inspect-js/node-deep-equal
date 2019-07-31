@@ -3,6 +3,9 @@ var isArguments = require('is-arguments');
 var is = require('object-is');
 var isRegex = require('is-regex');
 var flags = require('regexp.prototype.flags');
+var isDate = require('is-date-object');
+
+var getTime = Date.prototype.getTime;
 
 function deepEqual(actual, expected, options) {
   var opts = options || {};
@@ -63,8 +66,8 @@ function objEquiv(a, b, opts) {
     return a.source === b.source && flags(a) === flags(b);
   }
 
-  if (a instanceof Date && b instanceof Date) {
-    return a.getTime() === b.getTime();
+  if (isDate(a) && isDate(b)) {
+    return getTime.call(a) === getTime.call(b);
   }
 
   var aIsBuffer = isBuffer(a);
