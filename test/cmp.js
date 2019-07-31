@@ -328,9 +328,9 @@ test('regexen', function (t) {
 });
 
 test('arrays and objects', function (t) {
-  t.deepEqualTest([], {}, 'empty array and empty object', true, true);
+  t.deepEqualTest([], {}, 'empty array and empty object', false, false);
   t.deepEqualTest([], { length: 0 }, 'empty array and empty arraylike object', false, false);
-  t.deepEqualTest([1], { 0: 1 }, 'array and similar object', true, true);
+  t.deepEqualTest([1], { 0: 1 }, 'array and similar object', false, false);
 
   t.end();
 });

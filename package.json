@@ -18,6 +18,7 @@
     "is-arguments": "^1.0.4",
     "is-date-object": "^1.0.1",
     "is-regex": "^1.0.4",
+    "isarray": "^2.0.5",
     "object-is": "^1.0.1",
     "object-keys": "^1.1.1",
     "regexp.prototype.flags": "^1.2.0"

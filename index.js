@@ -3,6 +3,7 @@ var isArguments = require('is-arguments');
 var is = require('object-is');
 var isRegex = require('is-regex');
 var flags = require('regexp.prototype.flags');
+var isArray = require('isarray');
 var isDate = require('is-date-object');
 
 var getTime = Date.prototype.getTime;
@@ -59,6 +60,10 @@ function objEquiv(a, b, opts) {
   if (a.prototype !== b.prototype) { return false; }
 
   if (isArguments(a) !== isArguments(b)) { return false; }
+
+  var aIsArray = isArray(a);
+  var bIsArray = isArray(b);
+  if (aIsArray !== bIsArray) { return false; }
 
   // TODO: replace when a cross-realm brand check is available
   var aIsError = a instanceof Error;
