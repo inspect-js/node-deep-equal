@@ -200,16 +200,12 @@ test('arrays push', function (t) {
 });
 
 test('null == undefined', function (t) {
-  t.ok(equal(null, undefined));
-  t.notOk(equal(null, undefined, { strict: true }));
-  t.end();
-});
-
-test('null == undefined', function (t) {
   t.ok(equal(null, undefined), 'null == undefined');
   t.ok(equal(undefined, null), 'undefined == null');
+
   t.notOk(equal(null, undefined, { strict: true }), 'null !== undefined');
   t.notOk(equal(undefined, null, { strict: true }), 'undefined !== null');
+
   t.end();
 });
 
