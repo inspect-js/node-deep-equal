@@ -5,7 +5,12 @@ test('equal', function (t) {
   t.ok(equal(
     { a: [2, 3], b: [4] },
     { a: [2, 3], b: [4] }
-  ));
+  ), 'two equal objects are equal');
+  t.ok(equal(
+    { a: [2, 3], b: [4] },
+    { a: [2, 3], b: [4] },
+    { strict: true }
+  ), 'strict: two equal objects are equal');
   t.end();
 });
 
@@ -13,31 +18,66 @@ test('not equal', function (t) {
   t.notOk(equal(
     { x: 5, y: [6] },
     { x: 5, y: 6 }
-  ));
+  ), 'two inequal objects are not equal');
+  t.notOk(equal(
+    { x: 5, y: [6] },
+    { x: 5, y: 6 },
+    { strict: true }
+  ), 'strict: two inequal objects are not equal');
   t.end();
 });
 
 test('nested nulls', function (t) {
-  t.ok(equal([null, null, null], [null, null, null]));
+  t.ok(equal([null, null, null], [null, null, null]), 'same-length arrays of nulls are equal');
+  t.ok(equal([null, null, null], [null, null, null], { strict: true }), 'strict: same-length arrays of nulls are equal');
   t.end();
 });
 
-test('strict equal', function (t) {
+test('objects with strings vs numbers', function (t) {
+  t.ok(equal(
+    [{ a: 3 }, { b: 4 }],
+    [{ a: '3' }, { b: '4' }]
+  ), 'objects with equivalent string/number values are equal');
   t.notOk(equal(
     [{ a: 3 }, { b: 4 }],
     [{ a: '3' }, { b: '4' }],
     { strict: true }
-  ));
+  ), 'strict: objects with equivalent string/number values are not equal');
   t.end();
 });
 
 test('non-objects', function (t) {
-  t.ok(equal(3, 3));
-  t.ok(equal(3, 3, { strict: true }));
-  t.ok(equal('beep', 'beep'));
-  t.ok(equal('3', 3));
-  t.notOk(equal('3', 3, { strict: true }));
+  t.ok(equal(3, 3), 'same numbers are equal');
+  t.ok(equal(3, 3, { strict: true }), 'strict: same numbers are equal');
+
+  t.ok(equal('beep', 'beep'), 'same strings are equal');
+  t.ok(equal('beep', 'beep', { strict: true }), 'strict: same strings are equal');
+
+  t.ok(equal('3', 3), 'numeric string and number are equal');
+  t.notOk(equal('3', 3, { strict: true }), 'strict: numeric string and number are not equal');
+  t.ok(equal(3, '3'), 'number and numeric string are equal');
+  t.notOk(equal(3, '3', { strict: true }), 'strict: number and numeric string are not equal');
+
   t.notOk(equal('3', [3]));
+  t.notOk(equal([3], '3'));
+  t.notOk(equal(3, [3]));
+  t.notOk(equal([3], 3));
+
+  t.end();
+});
+
+test('infinities', function (t) {
+  t.ok(equal(Infinity, Infinity), '∞ and ∞ are equal');
+  t.ok(equal(Infinity, Infinity, { strict: true }), 'strict: ∞ and ∞ are equal');
+
+  t.ok(equal(-Infinity, -Infinity), '-∞ and -∞ are equal');
+  t.ok(equal(-Infinity, -Infinity, { strict: true }), 'strict: -∞ and -∞ are equal');
+
+  t.notOk(equal(Infinity, -Infinity), '∞ and -∞ are not equal');
+  t.notOk(equal(Infinity, -Infinity, { strict: true }), 'strict: ∞ and -∞ are not equal');
+  t.notOk(equal(-Infinity, Infinity), '-∞ and ∞ are not equal');
+  t.notOk(equal(-Infinity, Infinity, { strict: true }), 'strict: -∞ and ∞ are not equal');
+
   t.end();
 });
 
@@ -54,10 +94,18 @@ test('arguments class', function (t) {
     equal(getArgs(1, 2, 3), [1, 2, 3]),
     'differentiates array and arguments'
   );
+  t.notOk(
+    equal(getArgs(1, 2, 3), [1, 2, 3], { strict: true }),
+    'strict: differentiates array and arguments'
+  );
 
   t.notOk(
     equal([1, 2, 3], getArgs(1, 2, 3)),
     'differentiates arguments and array'
+  );
+  t.notOk(
+    equal([1, 2, 3], getArgs(1, 2, 3), { strict: true }),
+    'strict: differentiates arguments and array'
   );
 
   t.end();
