@@ -419,3 +419,27 @@ test('toStringTag', { skip: !hasSymbols || !Symbol.toStringTag }, function (t) {
 
   t.end();
 });
+
+test('boxed primitives', function (t) {
+  t.deepEqualTest(Object(false), false, 'boxed and primitive `false`', true, true);
+  t.deepEqualTest(Object(true), true, 'boxed and primitive `true`', true, true);
+  t.deepEqualTest(Object(3), 3, 'boxed and primitive `3`', true, true);
+  t.deepEqualTest(Object(NaN), NaN, 'boxed and primitive `NaN`', false, true);
+  t.deepEqualTest(Object(''), '', 'boxed and primitive `""`', true, true);
+  t.deepEqualTest(Object('str'), 'str', 'boxed and primitive `"str"`', true, true);
+
+  t.test('symbol', { skip: !hasSymbols }, function (st) {
+    var s = Symbol('');
+    st.deepEqualTest(Object(s), s, 'boxed and primitive `Symbol()`', true, true);
+    st.end();
+  });
+
+  /* globals BigInt: false */
+  t.test('bigint', { skip: typeof BigInt !== 'function' }, function (st) {
+    var hhgtg = BigInt(42);
+    st.deepEqualTest(Object(hhgtg), hhgtg, 'boxed and primitive `BigInt(42)`', true, true);
+    st.end();
+  });
+
+  t.end();
+});

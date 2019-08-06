@@ -5,6 +5,8 @@ var isRegex = require('is-regex');
 var flags = require('regexp.prototype.flags');
 var isArray = require('isarray');
 var isDate = require('is-date-object');
+var isBoxedPrimitive = require('is-boxed-primitive');
+var toPrimitive = require('es-to-primitive/es2015'); // TODO: replace this with ES2020 once updated
 
 var getTime = Date.prototype.getTime;
 var gPO = Object.getPrototypeOf;
@@ -16,6 +18,12 @@ function deepEqual(actual, expected, options) {
   // 7.1. All identical values are equivalent, as determined by ===.
   if (opts.strict ? is(actual, expected) : actual === expected) {
     return true;
+  }
+
+  var actualBoxed = isBoxedPrimitive(actual);
+  var expectedBoxed = isBoxedPrimitive(expected);
+  if (actualBoxed || expectedBoxed) {
+    return deepEqual(toPrimitive(actual), toPrimitive(expected), opts);
   }
 
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
@@ -53,8 +61,9 @@ function isBuffer(x) {
 }
 
 function objEquiv(a, b, opts) {
-  /* eslint max-statements: [2, 70] */
+  /* eslint max-statements: [2, 70], max-lines-per-function: [2, 80] */
   var i, key;
+
   if (typeof a !== typeof b) { return false; }
   if (isUndefinedOrNull(a) || isUndefinedOrNull(b)) { return false; }
 
@@ -121,6 +130,7 @@ function objEquiv(a, b, opts) {
   for (i = ka.length - 1; i >= 0; i--) {
     if (ka[i] != kb[i]) { return false; }
   }
+
   // equivalent values for every corresponding key, and ~~~possibly expensive deep test
   for (i = ka.length - 1; i >= 0; i--) {
     key = ka[i];
