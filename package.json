@@ -11,7 +11,7 @@
   "scripts": {
     "pretest": "npm run lint",
     "lint": "eslint .",
-    "tests-only": "tape test/*.js",
+    "tests-only": "tape test/*",
     "test": "npm run tests-only"
   },
   "dependencies": {

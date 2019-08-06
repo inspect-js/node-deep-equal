@@ -1,82 +1,68 @@
 var test = require('tape');
+require('./_tape');
+
 var equal = require('../');
 
 test('equal', function (t) {
-  t.ok(equal(
-    { a: [2, 3], b: [4] },
-    { a: [2, 3], b: [4] }
-  ), 'two equal objects are equal');
-  t.ok(equal(
+  t.deepEqualTest(
     { a: [2, 3], b: [4] },
     { a: [2, 3], b: [4] },
-    { strict: true }
-  ), 'strict: two equal objects are equal');
+    'two equal objects',
+    true,
+    true,
+    false
+  );
   t.end();
 });
 
 test('not equal', function (t) {
-  t.notOk(equal(
-    { x: 5, y: [6] },
-    { x: 5, y: 6 }
-  ), 'two inequal objects are not equal');
-  t.notOk(equal(
+  t.deepEqualTest(
     { x: 5, y: [6] },
     { x: 5, y: 6 },
-    { strict: true }
-  ), 'strict: two inequal objects are not equal');
+    'two inequal objects are',
+    false,
+    false
+  );
   t.end();
 });
 
 test('nested nulls', function (t) {
-  t.ok(equal([null, null, null], [null, null, null]), 'same-length arrays of nulls are equal');
-  t.ok(equal([null, null, null], [null, null, null], { strict: true }), 'strict: same-length arrays of nulls are equal');
+  t.deepEqualTest(
+    [null, null, null],
+    [null, null, null],
+    'same-length arrays of nulls',
+    true,
+    true,
+    true
+  );
   t.end();
 });
 
 test('objects with strings vs numbers', function (t) {
-  t.ok(equal(
-    [{ a: 3 }, { b: 4 }],
-    [{ a: '3' }, { b: '4' }]
-  ), 'objects with equivalent string/number values are equal');
-  t.notOk(equal(
+  t.deepEqualTest(
     [{ a: 3 }, { b: 4 }],
     [{ a: '3' }, { b: '4' }],
-    { strict: true }
-  ), 'strict: objects with equivalent string/number values are not equal');
+    'objects with equivalent string/number values',
+    true,
+    false
+  );
   t.end();
 });
 
 test('non-objects', function (t) {
-  t.ok(equal(3, 3), 'same numbers are equal');
-  t.ok(equal(3, 3, { strict: true }), 'strict: same numbers are equal');
-
-  t.ok(equal('beep', 'beep'), 'same strings are equal');
-  t.ok(equal('beep', 'beep', { strict: true }), 'strict: same strings are equal');
-
-  t.ok(equal('3', 3), 'numeric string and number are equal');
-  t.notOk(equal('3', 3, { strict: true }), 'strict: numeric string and number are not equal');
-  t.ok(equal(3, '3'), 'number and numeric string are equal');
-  t.notOk(equal(3, '3', { strict: true }), 'strict: number and numeric string are not equal');
-
-  t.notOk(equal('3', [3]));
-  t.notOk(equal([3], '3'));
-  t.notOk(equal(3, [3]));
-  t.notOk(equal([3], 3));
+  t.deepEqualTest(3, 3, 'same numbers', true, true, true);
+  t.deepEqualTest('beep', 'beep', 'same strings', true, true, true);
+  t.deepEqualTest('3', 3, 'numeric string and number', true, false);
+  t.deepEqualTest('3', [3], 'numeric string and array containing number', false, false);
+  t.deepEqualTest(3, [3], 'number and array containing number', false, false);
 
   t.end();
 });
 
 test('infinities', function (t) {
-  t.ok(equal(Infinity, Infinity), '∞ and ∞ are equal');
-  t.ok(equal(Infinity, Infinity, { strict: true }), 'strict: ∞ and ∞ are equal');
-
-  t.ok(equal(-Infinity, -Infinity), '-∞ and -∞ are equal');
-  t.ok(equal(-Infinity, -Infinity, { strict: true }), 'strict: -∞ and -∞ are equal');
-
-  t.notOk(equal(Infinity, -Infinity), '∞ and -∞ are not equal');
-  t.notOk(equal(Infinity, -Infinity, { strict: true }), 'strict: ∞ and -∞ are not equal');
-  t.notOk(equal(-Infinity, Infinity), '-∞ and ∞ are not equal');
-  t.notOk(equal(-Infinity, Infinity, { strict: true }), 'strict: -∞ and ∞ are not equal');
+  t.deepEqualTest(Infinity, Infinity, '∞ and ∞', true, true, true);
+  t.deepEqualTest(-Infinity, -Infinity, '-∞ and -∞', true, true, true);
+  t.deepEqualTest(Infinity, -Infinity, '∞ and -∞', false, false);
 
   t.end();
 });
@@ -87,25 +73,15 @@ test('arguments class', function (t) {
   }
   t.ok(
     equal(getArgs(1, 2, 3), getArgs(1, 2, 3)),
-    'compares arguments'
+    'equivalent arguments objects are equal'
   );
 
-  t.notOk(
-    equal(getArgs(1, 2, 3), [1, 2, 3]),
-    'differentiates array and arguments'
-  );
-  t.notOk(
-    equal(getArgs(1, 2, 3), [1, 2, 3], { strict: true }),
-    'strict: differentiates array and arguments'
-  );
-
-  t.notOk(
-    equal([1, 2, 3], getArgs(1, 2, 3)),
-    'differentiates arguments and array'
-  );
-  t.notOk(
-    equal([1, 2, 3], getArgs(1, 2, 3), { strict: true }),
-    'strict: differentiates arguments and array'
+  t.deepEqualTest(
+    getArgs(1, 2, 3),
+    [1, 2, 3],
+    'array and arguments with same contents',
+    false,
+    false
   );
 
   t.end();
@@ -114,7 +90,7 @@ test('arguments class', function (t) {
 test('dates', function (t) {
   var d0 = new Date(1387585278000);
   var d1 = new Date('Fri Dec 20 2013 16:21:18 GMT-0800 (PST)');
-  t.ok(equal(d0, d1));
+  t.deepEqualTest(d0, d1, 'equivalent Dates', true, true);
   t.end();
 });
 
@@ -123,21 +99,40 @@ test('buffers', function (t) {
   t.ok(equal(Buffer('xyz'), Buffer('xyz')), 'buffers with same contents are equal');
   t.ok(equal(Buffer('xyz'), Buffer('xyz'), { strict: true }), 'strict: buffers with same contents are equal');
 
-  t.notOk(equal(Buffer('abc'), Buffer('xyz')), 'buffers with different contents are not equal');
-  t.notOk(equal(Buffer('xyz'), Buffer('abc')), 'buffers with different contents are not equal');
-  t.notOk(equal(Buffer('abc'), Buffer('xyz'), { strict: true }), 'strict: buffers with different contents are not equal');
-  t.notOk(equal(Buffer('xyz'), Buffer('abc'), { strict: true }), 'strict: buffers with different contents are not equal');
+  t.deepEqualTest(
+    Buffer('abc'),
+    Buffer('xyz'),
+    'buffers with different contents',
+    false,
+    false
+  );
 
-  t.notOk(equal(Buffer(''), []), 'empty buffer and empty array are not equal');
-  t.notOk(equal([], Buffer('')), 'empty array and empty buffer are not equal');
-  t.notOk(equal(Buffer(''), [], { strict: true }), 'strict: empty buffer and empty array are not equal');
-  t.notOk(equal([], Buffer(''), { strict: true }), 'strict: empty array and empty buffer are not equal');
+  t.deepEqualTest(
+    Buffer(''),
+    [],
+    'empty buffer and empty array',
+    false,
+    false
+  );
 
   t.end();
 });
 
 test('booleans and arrays', function (t) {
-  t.notOk(equal(true, []));
+  t.deepEqualTest(
+    true,
+    [],
+    'true and an empty array',
+    false,
+    false
+  );
+  t.deepEqualTest(
+    false,
+    [],
+    'false and an empty array',
+    true,
+    false
+  );
   t.end();
 });
 
@@ -178,20 +173,20 @@ test('arrays initiated', function (t) {
 // eslint-disable-next-line max-statements
 test('arrays assigned', function (t) {
   var a0 = [
-      undefined,
-      null,
-      -1,
-      0,
-      1,
-      false,
-      true,
-      undefined,
-      '',
-      'abc',
-      null,
-      undefined
-    ],
-    a1 = [];
+    undefined,
+    null,
+    -1,
+    0,
+    1,
+    false,
+    true,
+    undefined,
+    '',
+    'abc',
+    null,
+    undefined
+  ];
+  var a1 = [];
 
   a1[0] = undefined;
   a1[1] = null;
@@ -207,7 +202,7 @@ test('arrays assigned', function (t) {
   a1[11] = undefined;
   a1.length = 12;
 
-  t.ok(equal(a0, a1));
+  t.deepEqualTest(a0, a1, 'a literal array and an assigned array', true, true);
   t.end();
 });
 
@@ -243,16 +238,12 @@ test('arrays push', function (t) {
   a1.push(undefined);
   a1.length = 12;
 
-  t.ok(equal(a0, a1));
+  t.deepEqualTest(a0, a1, 'a literal array and a pushed array', true, true);
   t.end();
 });
 
 test('null == undefined', function (t) {
-  t.ok(equal(null, undefined), 'null == undefined');
-  t.ok(equal(undefined, null), 'undefined == null');
-
-  t.notOk(equal(null, undefined, { strict: true }), 'null !== undefined');
-  t.notOk(equal(undefined, null, { strict: true }), 'undefined !== null');
+  t.deepEqualTest(null, undefined, 'null and undefined', true, false);
 
   t.end();
 });
@@ -271,17 +262,9 @@ test('NaNs', function (t) {
 });
 
 test('zeroes', function (t) {
-  t.ok(equal(0, -0), '0 is -0');
-  t.ok(equal(-0, 0), '-0 is 0');
+  t.deepEqualTest(0, -0, '0 and -0', true, false);
 
-  t.notOk(equal(0, -0, { strict: true }), 'strict: 0 is -0');
-  t.notOk(equal(-0, 0, { strict: true }), 'strict: -0 is 0');
-
-  t.ok(equal({ a: 0 }, { a: -0 }), 'two objects with a same-keyed 0/-0 value are equal');
-  t.ok(equal({ a: -0 }, { a: 0 }), 'two objects with a same-keyed -0/0 value are equal');
-
-  t.notOk(equal({ a: 0 }, { a: -0 }, { strict: true }), 'strict: two objects with a same-keyed 0/-0 value are equal');
-  t.notOk(equal({ a: -0 }, { a: 0 }, { strict: true }), 'strict: two objects with a same-keyed -0/0 value are equal');
+  t.deepEqualTest({ a: 0 }, { a: -0 }, 'two objects with a same-keyed 0/-0 value', true, false);
 
   t.end();
 });
@@ -293,21 +276,35 @@ test('Object.create', { skip: !Object.create }, function (t) {
   var c = Object.create(a);
   c.b = 'C';
 
-  t.notOk(equal(b, c), 'two objects with the same [[Prototype]] but a different own property are not equal');
-  t.notOk(equal(c, b), 'two objects with the same [[Prototype]] but a different own property are not equal');
-
-  t.notOk(equal(b, c, { strict: true }), 'strict: two objects with the same [[Prototype]] but a different own property are not equal');
-  t.notOk(equal(c, b, { strict: true }), 'strict: two objects with the same [[Prototype]] but a different own property are not equal');
+  t.deepEqualTest(
+    b,
+    c,
+    'two objects with the same [[Prototype]] but a different own property',
+    false,
+    false
+  );
 
   t.end();
 });
 
 test('Object.create(null)', { skip: !Object.create }, function (t) {
-  t.ok(equal(Object.create(null), Object.create(null)), 'two empty null objects are deep equal');
-  t.ok(equal(Object.create(null), Object.create(null), { strict: true }), 'strict: two empty null objects are deep equal');
+  t.deepEqualTest(
+    Object.create(null),
+    Object.create(null),
+    'two empty null objects',
+    true,
+    true,
+    true
+  );
 
-  t.ok(equal(Object.create(null, { a: { value: 'b' } }), Object.create(null, { a: { value: 'b' } })), 'two null objects are deep equal');
-  t.ok(equal(Object.create(null, { a: { value: 'b' } }), Object.create(null, { a: { value: 'b' } }), { strict: true }), 'strict: two null objects are deep equal');
+  t.deepEqualTest(
+    Object.create(null, { a: { value: 'b' } }),
+    Object.create(null, { a: { value: 'b' } }),
+    'two null objects with the same property pair',
+    true,
+    true,
+    true
+  );
 
   t.end();
 });
@@ -316,47 +313,23 @@ test('regexes vs dates', function (t) {
   var d = new Date(1387585278000);
   var r = /abc/;
 
-  t.notOk(equal(d, r), 'date and regex are not equal');
-  t.notOk(equal(r, d), 'regex and date are not equal');
-
-  t.notOk(equal(d, r, { strict: true }), 'strict: date and regex are not equal');
-  t.notOk(equal(r, d, { strict: true }), 'strict: regex and date are not equal');
+  t.deepEqualTest(d, r, 'Date and RegExp', false, false);
 
   t.end();
 });
 
 test('regexen', function (t) {
-  t.notOk(equal(/abc/, /xyz/), 'two different regexes are not equal');
-  t.notOk(equal(/xyz/, /abc/), 'two different regexes are not equal');
-  t.ok(equal(/abc/, /abc/), 'two same regexes are equal');
-  t.ok(equal(/xyz/, /xyz/), 'two same regexes are equal');
-
-  t.notOk(equal(/abc/, /xyz/, { strict: true }), 'strict: two different regexes are not equal');
-  t.notOk(equal(/xyz/, /abc/, { strict: true }), 'strict: two different regexes are not equal');
-  t.ok(equal(/abc/, /abc/, { strict: true }), 'strict: two same regexes are not equal');
-  t.ok(equal(/xyz/, /xyz/, { strict: true }), 'strict: two same regexes are not equal');
+  t.deepEqualTest(/abc/, /xyz/, 'two different regexes', false, false);
+  t.deepEqualTest(/abc/, /abc/, 'two abc regexes', true, true, false);
+  t.deepEqualTest(/xyz/, /xyz/, 'two xyz regexes', true, true, false);
 
   t.end();
 });
 
 test('arrays and objects', function (t) {
-  t.ok(equal([], {}), 'empty array and empty object are equal');
-  t.ok(equal({}, []), 'empty object and empty array are equal');
-
-  t.ok(equal([], {}, { strict: true }), 'strict: empty array and empty object are equal');
-  t.ok(equal({}, [], { strict: true }), 'strict: empty object and empty array are equal');
-
-  t.notOk(equal([], { length: 0 }), 'empty array and empty arraylike object are not equal');
-  t.notOk(equal({ length: 0 }, []), 'empty arraylike object and empty array are not equal');
-
-  t.notOk(equal([], { length: 0 }, { strict: true }), 'strict: empty array and empty arraylike object are not equal');
-  t.notOk(equal({ length: 0 }, [], { strict: true }), 'strict: empty arraylike object and empty array are not equal');
-
-  t.ok(equal([1], { 0: 1 }), 'array and object are equal');
-  t.ok(equal({ 0: 1 }, [1]), 'object and array are equal');
-
-  t.ok(equal([1], { 0: 1 }, { strict: true }), 'strict: array and object are equal');
-  t.ok(equal({ 0: 1 }, [1], { strict: true }), 'strict: object and array are equal');
+  t.deepEqualTest([], {}, 'empty array and empty object', true, true);
+  t.deepEqualTest([], { length: 0 }, 'empty array and empty arraylike object', false, false);
+  t.deepEqualTest([1], { 0: 1 }, 'array and similar object', true, true);
 
   t.end();
 });
@@ -364,11 +337,8 @@ test('arrays and objects', function (t) {
 test('functions', function (t) {
   function f() {}
 
-  t.ok(equal(f, f), 'a function is equal to itself');
-  t.ok(equal(f, f, { strict: true }), 'strict: a function is equal to itself');
-
-  t.notOk(equal(function () {}, function () {}), 'two different functions are never equal');
-  t.notOk(equal(function () {}, function () {}, { strict: true }), 'strict: two different functions are never equal');
+  t.deepEqualTest(f, f, 'a function and itself', true, true, true);
+  t.deepEqualTest(function () {}, function () {}, 'two distinct functions', false, false, true);
 
   t.end();
 });
