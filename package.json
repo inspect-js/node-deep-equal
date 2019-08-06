@@ -26,6 +26,7 @@
   "devDependencies": {
     "@ljharb/eslint-config": "^13.1.1",
     "eslint": "^5.16.0",
+    "has-symbols": "^1.0.0",
     "object.assign": "^4.1.0",
     "tape": "^4.11.0"
   },

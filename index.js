@@ -8,6 +8,7 @@ var isDate = require('is-date-object');
 
 var getTime = Date.prototype.getTime;
 var gPO = Object.getPrototypeOf;
+var objToString = Object.prototype.toString;
 
 function deepEqual(actual, expected, options) {
   var opts = options || {};
@@ -59,6 +60,8 @@ function objEquiv(a, b, opts) {
 
   // an identical 'prototype' property.
   if (a.prototype !== b.prototype) { return false; }
+
+  if (objToString.call(a) !== objToString.call(b)) { return false; }
 
   if (isArguments(a) !== isArguments(b)) { return false; }
 

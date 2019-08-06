@@ -1,6 +1,7 @@
 var test = require('tape');
 require('./_tape');
 var assign = require('object.assign');
+var hasSymbols = require('has-symbols')();
 
 var equal = require('../');
 
@@ -398,6 +399,23 @@ test('[[Prototypes]]', { skip: !Object.getPrototypeOf }, function (t) {
 
     st.end();
   });
+
+  t.end();
+});
+
+test('toStringTag', { skip: !hasSymbols || !Symbol.toStringTag }, function (t) {
+  var o1 = {};
+  t.equal(Object.prototype.toString.call(o1), '[object Object]', 'o1: Symbol.toStringTag works');
+
+  var o2 = {};
+  t.equal(Object.prototype.toString.call(o2), '[object Object]', 'o2: original Symbol.toStringTag works');
+
+  t.deepEqualTest(o1, o2, 'two normal empty objects', true, true);
+
+  o2[Symbol.toStringTag] = 'jifasnif';
+  t.equal(Object.prototype.toString.call(o2), '[object jifasnif]', 'o2: modified Symbol.toStringTag works');
+
+  t.deepEqualTest(o1, o2, 'two normal empty objects with different toStringTags', false, false);
 
   t.end();
 });
