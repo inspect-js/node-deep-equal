@@ -89,7 +89,7 @@ test('arguments class', function (t) {
   t.end();
 });
 
-test('dates', function (t) {
+test('Dates', function (t) {
   var d0 = new Date(1387585278000);
   var d1 = new Date('Fri Dec 20 2013 16:21:18 GMT-0800 (PST)');
 
@@ -98,6 +98,14 @@ test('dates', function (t) {
   d1.a = true;
 
   t.deepEqualTest(d0, d1, 'two Dates with the same timestamp but different own properties', false, false);
+
+  t.test('overriding `getTime`', { skip: !Object.defineProperty }, function (st) {
+    var a = new Date('2000');
+    var b = new Date('2000');
+    Object.defineProperty(a, 'getTime', { value: function () { return 5; } });
+    st.deepEqualTest(a, b, 'two Dates with the same timestamp but one has overridden `getTime`', true, true);
+    st.end();
+  });
 
   t.end();
 });
@@ -441,5 +449,40 @@ test('boxed primitives', function (t) {
     st.end();
   });
 
+  t.end();
+});
+
+test('getters', { skip: !Object.defineProperty }, function (t) {
+  var a = {};
+  Object.defineProperty(a, 'a', { enumerable: true, get: function () { return 5; } });
+  var b = {};
+  Object.defineProperty(b, 'a', { enumerable: true, get: function () { return 6; } });
+
+  t.deepEqualTest(a, b, 'two objects with the same getter but producing different values', false, false);
+
+  t.end();
+});
+
+// eslint-disable-next-line no-proto
+test('fake arrays: extra keys will be tested', { skip: [].__proto__ !== Array.prototype }, function (t) {
+  var a = {
+    __proto__: Array.prototype,
+    0: 1,
+    1: 1,
+    2: 'broken',
+    length: 2
+  };
+  if (hasSymbols) {
+    Object.defineProperty(a, Symbol.toStringTag, {
+      value: 'Array'
+    });
+  }
+  if (Object.defineProperty) {
+    Object.defineProperty(a, 'length', {
+      enumerable: false
+    });
+  }
+
+  t.deepEqualTest(a, [1, 1], 'fake and real array with same contents and [[Prototype]]', false, false);
   t.end();
 });
