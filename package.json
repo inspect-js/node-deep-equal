@@ -15,7 +15,6 @@
     "test": "npm run tests-only"
   },
   "dependencies": {
-    "es-to-primitive": "^1.2.0",
     "is-arguments": "^1.0.4",
     "is-boxed-primitive": "^1.0.0",
     "is-date-object": "^1.0.1",
@@ -23,7 +22,8 @@
     "isarray": "^2.0.5",
     "object-is": "^1.0.1",
     "object-keys": "^1.1.1",
-    "regexp.prototype.flags": "^1.2.0"
+    "regexp.prototype.flags": "^1.2.0",
+    "unbox-primitive": "^1.0.0"
   },
   "devDependencies": {
     "@ljharb/eslint-config": "^13.1.1",

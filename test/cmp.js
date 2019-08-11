@@ -449,6 +449,17 @@ test('boxed primitives', function (t) {
     st.end();
   });
 
+  t.test('`valueOf` is not called for boxed primitives', function (st) {
+    var a = Object(5);
+    a.valueOf = function () { throw new Error('failed'); };
+    var b = Object(5);
+    b.valueOf = function () { throw new Error('failed'); };
+
+    st.deepEqualTest(a, b, 'two boxed numbers with a thrower valueOf', true, true);
+
+    st.end();
+  });
+
   t.end();
 });
 

@@ -6,7 +6,7 @@ var flags = require('regexp.prototype.flags');
 var isArray = require('isarray');
 var isDate = require('is-date-object');
 var isBoxedPrimitive = require('is-boxed-primitive');
-var toPrimitive = require('es-to-primitive/es2015'); // TODO: replace this with ES2020 once updated
+var unboxPrimitive = require('unbox-primitive');
 
 var getTime = Date.prototype.getTime;
 var gPO = Object.getPrototypeOf;
@@ -23,7 +23,11 @@ function deepEqual(actual, expected, options) {
   var actualBoxed = isBoxedPrimitive(actual);
   var expectedBoxed = isBoxedPrimitive(expected);
   if (actualBoxed || expectedBoxed) {
-    return deepEqual(toPrimitive(actual), toPrimitive(expected), opts);
+    return deepEqual(
+      actualBoxed ? unboxPrimitive(actual) : actual,
+      expectedBoxed ? unboxPrimitive(expected) : expected,
+      opts
+    );
   }
 
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
