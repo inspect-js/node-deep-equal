@@ -13,14 +13,15 @@
   },
   "overrides": [
     {
-      "files": ["example/**", "test/**"],
+      "files": "example/**",
       "rules": {
-        "array-bracket-newline": 0,
-        "max-lines": 0,
-        "max-params": 0,
-        "max-statements": 0,
         "no-console": 0,
-        "no-magic-numbers": 0,
+      }
+    },
+    {
+      "files": "test/**",
+      "rules": {
+        "max-params": 0,
       },
     },
   ],

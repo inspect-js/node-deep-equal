@@ -442,7 +442,6 @@ test('boxed primitives', function (t) {
     st.end();
   });
 
-  /* globals BigInt: false */
   t.test('bigint', { skip: typeof BigInt !== 'function' }, function (st) {
     var hhgtg = BigInt(42);
     st.deepEqualTest(Object(hhgtg), hhgtg, 'boxed and primitive `BigInt(42)`', true, true);
