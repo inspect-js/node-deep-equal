@@ -9,6 +9,7 @@
     "test": "test"
   },
   "scripts": {
+    "prepublish": "safe-publish-latest",
     "pretest": "npm run lint",
     "lint": "eslint .",
     "tests-only": "tape test/*",
@@ -24,8 +25,9 @@
     "regexp.prototype.flags": "^1.2.0"
   },
   "devDependencies": {
-    "@ljharb/eslint-config": "^13.1.1",
-    "eslint": "^5.16.0",
+    "@ljharb/eslint-config": "^15.0.1",
+    "eslint": "^6.6.0",
+    "safe-publish-latest": "^1.1.4",
     "tape": "^4.11.0"
   },
   "repository": {
