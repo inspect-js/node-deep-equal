@@ -44,6 +44,9 @@
     "email": "mail@substack.net",
     "url": "http://substack.net"
   },
+  "funding": {
+    "url": "https://github.com/sponsors/ljharb"
+  },
   "license": "MIT",
   "testling": {
     "files": "test/*.js",
