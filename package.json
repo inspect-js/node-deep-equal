@@ -88,5 +88,8 @@
     "unreleased": false,
     "commitLimit": false,
     "backfillLimit": false
+  },
+  "browser": {
+    "assert.js": false
   }
 }

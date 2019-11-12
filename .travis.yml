@@ -8,5 +8,13 @@ import:
  - ljharb/travis-ci:node/posttest.yml
  - ljharb/travis-ci:node/coverage.yml
 matrix:
+  include:
+    - node_js: "13"
+      env: ASSERT=true TEST=true
+    - node_js: "12"
+      env: ASSERT=true TEST=true
+    - node_js: "10"
+      env: ASSERT=true TEST=true
   allow_failures:
     - env: COVERAGE=true
+    - env: ASSERT=true TEST=true # some failures are node bugs, some are deep-equal v2 blockers

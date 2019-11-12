@@ -21,6 +21,7 @@
       "files": "test/**",
       "rules": {
         "max-params": 0,
+        "operator-linebreak": [2, "before"],
       },
     },
   ],
