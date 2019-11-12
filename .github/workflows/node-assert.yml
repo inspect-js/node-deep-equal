@@ -3,17 +3,27 @@ name: 'Tests: node.js `assert`'
 on: [pull_request, push]
 
 jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      requireds: ${{ steps.set-matrix.outputs.requireds }}
+      optionals: ${{ steps.set-matrix.outputs.optionals }}
+    steps:
+      - uses: ljharb/actions/node/matrix@main
+        id: set-matrix
+        with:
+          type: 'majors'
+          requireds: '^12.16 || >= 13.4'
+          optionals: '>= 8 < 12.16 || ^13.0 < 13.4'
+
   assert-required:
+    needs: [matrix]
     name: 'assert: required'
     runs-on: ubuntu-latest
 
     strategy:
-      matrix:
-        node-version:
-          - "15"
-          - "14"
-          - "13"
-          - "12"
+      fail-fast: false
+      matrix: ${{ fromJson(needs.matrix.outputs.requireds) }}
 
     steps:
       - uses: actions/checkout@v2
@@ -27,17 +37,14 @@ jobs:
       - uses: codecov/codecov-action@v1
 
   assert-optional:
+    needs: [matrix]
     name: 'assert: optional'
     runs-on: ubuntu-latest
     continue-on-error: true
 
     strategy:
-      matrix:
-        node-version:
-          - "11"
-          - "10"
-          - "9"
-          - "8"
+      fail-fast: false
+      matrix: ${{ fromJson(needs.matrix.outputs.optionals) }}
 
     steps:
       - uses: actions/checkout@v2
