@@ -3,8 +3,6 @@ require('./_tape');
 var assign = require('object.assign');
 var hasSymbols = require('has-symbols')();
 
-var equal = require('../');
-
 test('equal', function (t) {
   t.deepEqualTest(
     { a: [2, 3], b: [4] },
@@ -73,9 +71,14 @@ test('arguments class', function (t) {
   function getArgs() {
     return arguments;
   }
-  t.ok(
-    equal(getArgs(1, 2, 3), getArgs(1, 2, 3)),
-    'equivalent arguments objects are equal'
+
+  t.deepEqualTest(
+    getArgs(1, 2, 3),
+    getArgs(1, 2, 3),
+    'equivalent arguments objects are equal',
+    true,
+    true,
+    true
   );
 
   t.deepEqualTest(
@@ -112,8 +115,14 @@ test('Dates', function (t) {
 
 test('buffers', function (t) {
   /* eslint no-buffer-constructor: 1, new-cap: 1 */
-  t.ok(equal(Buffer('xyz'), Buffer('xyz')), 'buffers with same contents are equal');
-  t.ok(equal(Buffer('xyz'), Buffer('xyz'), { strict: true }), 'strict: buffers with same contents are equal');
+  t.deepEqualTest(
+    Buffer('xyz'),
+    Buffer('xyz'),
+    'buffers with same contents are equal',
+    true,
+    true,
+    true
+  );
 
   t.deepEqualTest(
     Buffer('abc'),
@@ -154,35 +163,42 @@ test('booleans and arrays', function (t) {
 
 test('arrays initiated', function (t) {
   var a0 = [
-      undefined,
-      null,
-      -1,
-      0,
-      1,
-      false,
-      true,
-      undefined,
-      '',
-      'abc',
-      null,
-      undefined
-    ],
-    a1 = [
-      undefined,
-      null,
-      -1,
-      0,
-      1,
-      false,
-      true,
-      undefined,
-      '',
-      'abc',
-      null,
-      undefined
-    ];
+    undefined,
+    null,
+    -1,
+    0,
+    1,
+    false,
+    true,
+    undefined,
+    '',
+    'abc',
+    null,
+    undefined
+  ];
+  var a1 = [
+    undefined,
+    null,
+    -1,
+    0,
+    1,
+    false,
+    true,
+    undefined,
+    '',
+    'abc',
+    null,
+    undefined
+  ];
 
-  t.ok(equal(a0, a1));
+  t.deepEqualTest(
+    a0,
+    a1,
+    'arrays with equal contents are equal',
+    true,
+    true,
+    true
+  );
   t.end();
 });
 
@@ -265,14 +281,23 @@ test('null == undefined', function (t) {
 });
 
 test('NaNs', function (t) {
-  t.notOk(equal(NaN, NaN), 'NaN is not NaN');
-  t.ok(equal(NaN, NaN, { strict: true }), 'strict: NaN is NaN');
+  t.deepEqualTest(
+    NaN,
+    NaN,
+    'two NaNs',
+    false,
+    true
+  );
 
-  t.notOk(equal({ a: NaN }, { a: NaN }), 'two equiv objects with a NaN value are not equiv');
-  t.ok(equal({ a: NaN }, { a: NaN }, { strict: true }), 'strict: two equiv objects with a NaN value are equiv');
+  t.deepEqualTest(
+    { a: NaN },
+    { a: NaN },
+    'two equiv objects with a NaN value',
+    false,
+    true
+  );
 
-  t.notOk(equal(NaN, 1), 'NaN !== 1');
-  t.notOk(equal(NaN, 1, { strict: true }), 'strict: NaN !== 1');
+  t.deepEqualTest(NaN, 1, 'NaN and 1', false, false);
 
   t.end();
 });
@@ -381,7 +406,13 @@ test('errors', function (t) {
 });
 
 test('error = Object', function (t) {
-  t.notOk(equal(new Error('a'), { message: 'a' }));
+  t.deepEqualTest(
+    new Error('a'),
+    { message: 'a' },
+    false,
+    false
+  );
+
   t.end();
 });
 
