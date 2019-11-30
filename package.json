@@ -19,6 +19,7 @@
     "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\""
   },
   "dependencies": {
+    "es-abstract": "^1.16.2",
     "is-arguments": "^1.0.4",
     "is-boxed-primitive": "^1.0.0",
     "is-date-object": "^1.0.1",

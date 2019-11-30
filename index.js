@@ -7,10 +7,11 @@ var isArray = require('isarray');
 var isDate = require('is-date-object');
 var isBoxedPrimitive = require('is-boxed-primitive');
 var unboxPrimitive = require('unbox-primitive');
+var callBound = require('es-abstract/helpers/callBound');
 
-var getTime = Date.prototype.getTime;
+var $getTime = callBound('Date.prototype.getTime');
 var gPO = Object.getPrototypeOf;
-var objToString = Object.prototype.toString;
+var $objToString = callBound('Object.prototype.toString');
 
 function deepEqual(actual, expected, options) {
   var opts = options || {};
@@ -74,7 +75,7 @@ function objEquiv(a, b, opts) {
   // an identical 'prototype' property.
   if (a.prototype !== b.prototype) { return false; }
 
-  if (objToString.call(a) !== objToString.call(b)) { return false; }
+  if ($objToString(a) !== $objToString(b)) { return false; }
 
   if (isArguments(a) !== isArguments(b)) { return false; }
 
@@ -101,7 +102,7 @@ function objEquiv(a, b, opts) {
   var bIsDate = isDate(b);
   if (aIsDate !== bIsDate) { return false; }
   if (aIsDate || bIsDate) { // && would work too, because both are true or both false here
-    if (getTime.call(a) !== getTime.call(b)) { return false; }
+    if ($getTime(a) !== $getTime(b)) { return false; }
     if (opts.strict && gPO && gPO(a) !== gPO(b)) { return false; }
   } else if (gPO && gPO(a) !== gPO(b)) { return false; } // non-Dates always compare [[Prototype]]s
 
