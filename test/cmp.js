@@ -461,32 +461,32 @@ test('toStringTag', { skip: !hasSymbols || !Symbol.toStringTag }, function (t) {
 });
 
 test('boxed primitives', function (t) {
-  t.deepEqualTest(Object(false), false, 'boxed and primitive `false`', true, true);
-  t.deepEqualTest(Object(true), true, 'boxed and primitive `true`', true, true);
-  t.deepEqualTest(Object(3), 3, 'boxed and primitive `3`', true, true);
-  t.deepEqualTest(Object(NaN), NaN, 'boxed and primitive `NaN`', false, true);
-  t.deepEqualTest(Object(''), '', 'boxed and primitive `""`', true, true);
-  t.deepEqualTest(Object('str'), 'str', 'boxed and primitive `"str"`', true, true);
+  t.deepEqualTest(Object(false), false, 'boxed and primitive `false`', false, false);
+  t.deepEqualTest(Object(true), true, 'boxed and primitive `true`', false, false);
+  t.deepEqualTest(Object(3), 3, 'boxed and primitive `3`', false, false);
+  t.deepEqualTest(Object(NaN), NaN, 'boxed and primitive `NaN`', false, false);
+  t.deepEqualTest(Object(''), '', 'boxed and primitive `""`', false, false);
+  t.deepEqualTest(Object('str'), 'str', 'boxed and primitive `"str"`', false, false);
 
   t.test('symbol', { skip: !hasSymbols }, function (st) {
     var s = Symbol('');
-    st.deepEqualTest(Object(s), s, 'boxed and primitive `Symbol()`', true, true);
+    st.deepEqualTest(Object(s), s, 'boxed and primitive `Symbol()`', false, false);
     st.end();
   });
 
   t.test('bigint', { skip: typeof BigInt !== 'function' }, function (st) {
     var hhgtg = BigInt(42);
-    st.deepEqualTest(Object(hhgtg), hhgtg, 'boxed and primitive `BigInt(42)`', true, true);
+    st.deepEqualTest(Object(hhgtg), hhgtg, 'boxed and primitive `BigInt(42)`', false, false);
     st.end();
   });
 
-  t.test('`valueOf` is not called for boxed primitives', function (st) {
+  t.test('`valueOf` is called for boxed primitives', function (st) {
     var a = Object(5);
     a.valueOf = function () { throw new Error('failed'); };
     var b = Object(5);
     b.valueOf = function () { throw new Error('failed'); };
 
-    st.deepEqualTest(a, b, 'two boxed numbers with a thrower valueOf', true, true);
+    st.deepEqualTest(a, b, 'two boxed numbers with a thrower valueOf', false, false);
 
     st.end();
   });

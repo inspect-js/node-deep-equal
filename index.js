@@ -5,8 +5,7 @@ var isRegex = require('is-regex');
 var flags = require('regexp.prototype.flags');
 var isArray = require('isarray');
 var isDate = require('is-date-object');
-var isBoxedPrimitive = require('is-boxed-primitive');
-var unboxPrimitive = require('unbox-primitive');
+var whichBoxedPrimitive = require('which-boxed-primitive');
 var callBound = require('es-abstract/helpers/callBound');
 
 var $getTime = callBound('Date.prototype.getTime');
@@ -21,14 +20,10 @@ function deepEqual(actual, expected, options) {
     return true;
   }
 
-  var actualBoxed = isBoxedPrimitive(actual);
-  var expectedBoxed = isBoxedPrimitive(expected);
-  if (actualBoxed || expectedBoxed) {
-    return deepEqual(
-      actualBoxed ? unboxPrimitive(actual) : actual,
-      expectedBoxed ? unboxPrimitive(expected) : expected,
-      opts
-    );
+  var actualBoxed = whichBoxedPrimitive(actual);
+  var expectedBoxed = whichBoxedPrimitive(expected);
+  if (actualBoxed !== expectedBoxed) {
+    return false;
   }
 
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
