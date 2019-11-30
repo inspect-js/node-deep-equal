@@ -422,7 +422,7 @@ test('[[Prototypes]]', { skip: !Object.getPrototypeOf }, function (t) {
   var instance = new C();
   delete instance.constructor;
 
-  t.deepEqualTest({}, instance, 'two identical objects with different [[Prototypes]]', false, false);
+  t.deepEqualTest({}, instance, 'two identical objects with different [[Prototypes]]', true, false);
 
   t.test('Dates with different prototypes', { skip: !Object.setPrototypeOf }, function (st) {
     var d1 = new Date(0);

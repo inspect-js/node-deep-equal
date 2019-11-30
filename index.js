@@ -104,8 +104,8 @@ function objEquiv(a, b, opts) {
   if (aIsDate !== bIsDate) { return false; }
   if (aIsDate || bIsDate) { // && would work too, because both are true or both false here
     if ($getTime(a) !== $getTime(b)) { return false; }
-    if (opts.strict && gPO && gPO(a) !== gPO(b)) { return false; }
-  } else if (gPO && gPO(a) !== gPO(b)) { return false; } // non-Dates always compare [[Prototype]]s
+  }
+  if (opts.strict && gPO && gPO(a) !== gPO(b)) { return false; }
 
   var aIsBuffer = isBuffer(a);
   var bIsBuffer = isBuffer(b);
