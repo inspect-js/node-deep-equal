@@ -7,10 +7,16 @@ var isArray = require('isarray');
 var isDate = require('is-date-object');
 var whichBoxedPrimitive = require('which-boxed-primitive');
 var callBound = require('es-abstract/helpers/callBound');
+var whichCollection = require('which-collection');
+var getIterator = require('es-get-iterator');
 
 var $getTime = callBound('Date.prototype.getTime');
 var gPO = Object.getPrototypeOf;
 var $objToString = callBound('Object.prototype.toString');
+
+var $mapHas = callBound('Map.prototype.has', true);
+var $mapGet = callBound('Map.prototype.get', true);
+var $setHas = callBound('Set.prototype.has', true);
 
 function deepEqual(actual, expected, options) {
   var opts = options || {};
@@ -136,6 +142,41 @@ function objEquiv(a, b, opts) {
   for (i = ka.length - 1; i >= 0; i--) {
     key = ka[i];
     if (!deepEqual(a[key], b[key], opts)) { return false; }
+  }
+
+  var aCollection = whichCollection(a);
+  var bCollection = whichCollection(b);
+  if (aCollection !== bCollection) {
+    return false;
+  }
+  if (aCollection === 'Map' || aCollection === 'Set') {
+    var iA = getIterator(a);
+    var iB = getIterator(b);
+    var resultA;
+    var resultB;
+    if (aCollection === 'Map') { // aCollection === bCollection
+      var aWithBKey;
+      var bWithAKey;
+      while ((resultA = iA.next()) && (resultB = iB.next()) && !resultA.done && !resultB.done) {
+        if (!$mapHas(a, resultB.value[0]) || !$mapHas(b, resultA.value[0])) { return false; }
+        if (resultA.value[0] === resultB.value[0]) { // optimization: keys are the same, no need to look up values
+          if (!deepEqual(resultA.value[1], resultB.value[1])) { return false; }
+        } else {
+          aWithBKey = $mapGet(a, resultB.value[0]);
+          bWithAKey = $mapGet(b, resultA.value[0]);
+          if (!deepEqual(resultA.value[1], bWithAKey) || !deepEqual(resultB.value[1], aWithBKey)) {
+            return false;
+          }
+        }
+      }
+    } else if (aCollection === 'Set') { // aCollection === bCollection
+      while ((resultA = iA.next()) && (resultB = iB.next()) && !resultA.done && !resultB.done) {
+        if (!$setHas(a, resultB.value) || !$setHas(b, resultA.value)) { return false; }
+      }
+    }
+    if (resultA && resultB && resultA.done !== resultB.done) {
+      return false;
+    }
   }
 
   return true;
