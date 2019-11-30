@@ -94,21 +94,27 @@ test('dates', function (t) {
   t.end();
 });
 
-test('buffers', function (t) {
-  /* eslint no-buffer-constructor: 1, new-cap: 1 */
-  t.ok(equal(Buffer('xyz'), Buffer('xyz')), 'buffers with same contents are equal');
-  t.ok(equal(Buffer('xyz'), Buffer('xyz'), { strict: true }), 'strict: buffers with same contents are equal');
+test('buffers', { skip: typeof Buffer !== 'function' }, function (t) {
+  var safeBuffer = Buffer.from || Buffer;
+  t.deepEqualTest(
+    safeBuffer('xyz'),
+    safeBuffer('xyz'),
+    'buffers with same contents are equal',
+    true,
+    true,
+    true
+  );
 
   t.deepEqualTest(
-    Buffer('abc'),
-    Buffer('xyz'),
+    safeBuffer('abc'),
+    safeBuffer('xyz'),
     'buffers with different contents',
     false,
     false
   );
 
   t.deepEqualTest(
-    Buffer(''),
+    safeBuffer(''),
     [],
     'empty buffer and empty array',
     false,
