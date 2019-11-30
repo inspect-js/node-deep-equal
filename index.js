@@ -33,6 +33,7 @@ function deepEqual(actual, expected, options) {
 
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
   if (!actual || !expected || (typeof actual !== 'object' && typeof expected !== 'object')) {
+    if ((actual === false && expected) || (actual && expected === false)) { return false; }
     return opts.strict ? is(actual, expected) : actual == expected;
   }
 

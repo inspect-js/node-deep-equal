@@ -156,7 +156,7 @@ test('booleans and arrays', function (t) {
     false,
     [],
     'false and an empty array',
-    true,
+    false,
     false
   );
   t.end();
