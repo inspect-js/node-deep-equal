@@ -13,25 +13,16 @@ test('equal', function (t) {
     false
   );
 
+  t.end();
+});
+
+test('Maps', { skip: typeof Map !== 'function' }, function (t) {
   t.deepEqualTest(
     new Map([['a', 1], ['b', 2]]),
     new Map([['b', 2], ['a', 1]]),
     'two equal Maps',
     true,
-    true,
-    false
-  );
-
-  t.end();
-});
-
-test('not equal', function (t) {
-  t.deepEqualTest(
-    { x: 5, y: [6] },
-    { x: 5, y: 6 },
-    'two inequal objects are',
-    false,
-    false
+    true
   );
 
   t.deepEqualTest(
@@ -46,6 +37,86 @@ test('not equal', function (t) {
     new Map([['a', 1]]),
     new Map([['b', 1]]),
     'two inequal Maps',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('WeakMaps', { skip: typeof WeakMap !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new WeakMap([[Object, null], [Function, true]]),
+    new WeakMap([[Function, true], [Object, null]]),
+    'two equal WeakMaps',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new WeakMap([[Object, null]]),
+    new WeakMap([[Object, true]]),
+    'two WeakMaps with inequal values on the same key',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new WeakMap([[Object, null], [Function, true]]),
+    new WeakMap([[Object, null]]),
+    'two inequal WeakMaps',
+    true,
+    true
+  );
+
+  t.end();
+});
+
+test('Sets', { skip: typeof Set !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new Set(['a', 1, 'b', 2]),
+    new Set(['b', 2, 'a', 1]),
+    'two equal Sets',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new Set(['a', 1]),
+    new Set(['b', 1]),
+    'two inequal Sets',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('WeakSets', { skip: typeof WeakSet !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new WeakSet([Object, Function]),
+    new WeakSet([Function, Object]),
+    'two equal WeakSets',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new WeakSet([Object, Function]),
+    new WeakSet([Object]),
+    'two inequal WeakSets',
+    true,
+    true
+  );
+
+  t.end();
+});
+
+test('not equal', function (t) {
+  t.deepEqualTest(
+    { x: 5, y: [6] },
+    { x: 5, y: 6 },
+    'two inequal objects are',
     false,
     false
   );

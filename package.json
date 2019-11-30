@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "es-abstract": "^1.16.2",
+    "es-get-iterator": "^1.0.1",
     "is-arguments": "^1.0.4",
     "is-date-object": "^1.0.1",
     "is-regex": "^1.0.4",
@@ -37,7 +38,8 @@
     "object-is": "^1.0.1",
     "object-keys": "^1.1.1",
     "regexp.prototype.flags": "^1.2.0",
-    "which-boxed-primitive": "^1.0.1"
+    "which-boxed-primitive": "^1.0.1",
+    "which-collection": "^1.0.0"
   },
   "devDependencies": {
     "@ljharb/eslint-config": "^15.0.2",
