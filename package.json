@@ -3,6 +3,16 @@
   "version": "1.1.1",
   "description": "node's assert.deepEqual algorithm",
   "main": "index.js",
+  "exports": {
+    ".": [
+      {
+        "default": "./index.js"
+      },
+      "./index.js"
+    ],
+    "./package": "./package.json",
+    "./package.json": "./package"
+  },
   "directories": {
     "lib": ".",
     "example": "example",
