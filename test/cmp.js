@@ -114,7 +114,7 @@ test('Dates', function (t) {
 });
 
 test('buffers', { skip: typeof Buffer !== 'function' }, function (t) {
-  var safeBuffer = Buffer.from || Buffer;
+  var safeBuffer = Buffer.from && Buffer.from.length > 1 ? Buffer.from : Buffer;
   /* eslint no-buffer-constructor: 1, new-cap: 1 */
   t.deepEqualTest(
     safeBuffer('xyz'),
