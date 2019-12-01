@@ -95,7 +95,7 @@ test('dates', function (t) {
 });
 
 test('buffers', { skip: typeof Buffer !== 'function' }, function (t) {
-  var safeBuffer = Buffer.from || Buffer;
+  var safeBuffer = Buffer.from && Buffer.from.length > 1 ? Buffer.from : Buffer;
   t.deepEqualTest(
     safeBuffer('xyz'),
     safeBuffer('xyz'),
