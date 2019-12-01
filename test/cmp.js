@@ -203,7 +203,6 @@ test('arrays initiated', function (t) {
   t.end();
 });
 
-// eslint-disable-next-line max-statements
 test('arrays assigned', function (t) {
   var a0 = [
     undefined,
@@ -239,7 +238,6 @@ test('arrays assigned', function (t) {
   t.end();
 });
 
-// eslint-disable-next-line max-statements
 test('arrays push', function (t) {
   var a0 = [
       undefined,
@@ -505,8 +503,9 @@ test('getters', { skip: !Object.defineProperty }, function (t) {
   t.end();
 });
 
+var isAssertAndNode1321 = process.env.ASSERT && process.version.replace(/^v/g, '').replace(/[^.]+(?:.)?/g, function (x, i) { return x * Math.pow(10, i); }) <= '1320000';
 // eslint-disable-next-line no-proto
-test('fake arrays: extra keys will be tested', { skip: [].__proto__ !== Array.prototype }, function (t) {
+test('fake arrays: extra keys will be tested', { skip: [].__proto__ !== Array.prototype || isAssertAndNode1321 }, function (t) {
   var a = {
     __proto__: Array.prototype,
     0: 1,

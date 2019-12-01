@@ -17,4 +17,3 @@ matrix:
       env: ASSERT=true TEST=true
   allow_failures:
     - env: COVERAGE=true
-    - env: ASSERT=true TEST=true # some failures are node bugs, some are deep-equal v2 blockers
