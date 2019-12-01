@@ -12,6 +12,103 @@ test('equal', function (t) {
     true,
     false
   );
+
+  t.end();
+});
+
+test('Maps', { skip: typeof Map !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new Map([['a', 1], ['b', 2]]),
+    new Map([['b', 2], ['a', 1]]),
+    'two equal Maps',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new Map([['a', [1, 2]]]),
+    new Map([['a', [2, 1]]]),
+    'two Maps with inequal values on the same key',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    new Map([['a', 1]]),
+    new Map([['b', 1]]),
+    'two inequal Maps',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('WeakMaps', { skip: typeof WeakMap !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new WeakMap([[Object, null], [Function, true]]),
+    new WeakMap([[Function, true], [Object, null]]),
+    'two equal WeakMaps',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new WeakMap([[Object, null]]),
+    new WeakMap([[Object, true]]),
+    'two WeakMaps with inequal values on the same key',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new WeakMap([[Object, null], [Function, true]]),
+    new WeakMap([[Object, null]]),
+    'two inequal WeakMaps',
+    true,
+    true
+  );
+
+  t.end();
+});
+
+test('Sets', { skip: typeof Set !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new Set(['a', 1, 'b', 2]),
+    new Set(['b', 2, 'a', 1]),
+    'two equal Sets',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new Set(['a', 1]),
+    new Set(['b', 1]),
+    'two inequal Sets',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('WeakSets', { skip: typeof WeakSet !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new WeakSet([Object, Function]),
+    new WeakSet([Function, Object]),
+    'two equal WeakSets',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new WeakSet([Object, Function]),
+    new WeakSet([Object]),
+    'two inequal WeakSets',
+    true,
+    true
+  );
+
   t.end();
 });
 
@@ -23,6 +120,7 @@ test('not equal', function (t) {
     false,
     false
   );
+
   t.end();
 });
 
