@@ -6,8 +6,9 @@
     "eqeqeq": 1,
     "func-style": [2, "declaration"],
     "indent": [2, 2],
-    "max-params": [2, 3],
+    "max-params": [2, 4],
     "max-statements-per-line": [2, { "max": 2 }],
+    "operator-linebreak": [2, "before"],
     "strict": 1,
   },
   "globals": {

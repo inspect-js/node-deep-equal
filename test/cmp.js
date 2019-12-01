@@ -625,3 +625,37 @@ test('fake arrays: extra keys will be tested', { skip: [].__proto__ !== Array.pr
   t.deepEqualTest(a, [1, 1], 'fake and real array with same contents and [[Prototype]]', false, false);
   t.end();
 });
+
+test('circular references', function (t) {
+  var b = {};
+  b.b = b;
+
+  var c = {};
+  c.b = c;
+
+  t.deepEqualTest(
+    b,
+    c,
+    'two self-referencing objects',
+    true,
+    true
+  );
+
+  var d = {};
+  d.a = 1;
+  d.b = d;
+
+  var e = {};
+  e.a = 1;
+  e.b = e.a;
+
+  t.deepEqualTest(
+    d,
+    e,
+    'two deeply self-referencing objects',
+    false,
+    false
+  );
+
+  t.end();
+});
