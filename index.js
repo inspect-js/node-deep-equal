@@ -160,11 +160,11 @@ function objEquiv(a, b, opts) {
       while ((resultA = iA.next()) && (resultB = iB.next()) && !resultA.done && !resultB.done) {
         if (!$mapHas(a, resultB.value[0]) || !$mapHas(b, resultA.value[0])) { return false; }
         if (resultA.value[0] === resultB.value[0]) { // optimization: keys are the same, no need to look up values
-          if (!deepEqual(resultA.value[1], resultB.value[1])) { return false; }
+          if (!deepEqual(resultA.value[1], resultB.value[1], opts)) { return false; }
         } else {
           aWithBKey = $mapGet(a, resultB.value[0]);
           bWithAKey = $mapGet(b, resultA.value[0]);
-          if (!deepEqual(resultA.value[1], bWithAKey) || !deepEqual(resultB.value[1], aWithBKey)) {
+          if (!deepEqual(resultA.value[1], bWithAKey, opts) || !deepEqual(resultB.value[1], aWithBKey, opts)) {
             return false;
           }
         }
