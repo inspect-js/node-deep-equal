@@ -3,6 +3,18 @@ require('./_tape');
 var assign = require('object.assign');
 var hasSymbols = require('has-symbols')();
 
+function tag(obj, value) {
+  if (hasSymbols && Symbol.toStringTags && Object.defineProperty) {
+    Object.defineProperty(obj, Symbol.toStringTag, {
+      value: value
+    });
+  }
+  return obj;
+}
+
+// eslint-disable-next-line no-proto
+var hasDunderProto = [].__proto__ === Array.prototype;
+
 test('equal', function (t) {
   t.deepEqualTest(
     { a: [2, 3], b: [4] },
@@ -602,20 +614,14 @@ test('getters', { skip: !Object.defineProperty }, function (t) {
 });
 
 var isAssertAndNode1321 = process.env.ASSERT && process.version.replace(/^v/g, '').replace(/[^.]+(?:.)?/g, function (x, i) { return x * Math.pow(10, i); }) <= '1320000';
-// eslint-disable-next-line no-proto
-test('fake arrays: extra keys will be tested', { skip: [].__proto__ !== Array.prototype || isAssertAndNode1321 }, function (t) {
-  var a = {
+test('fake arrays: extra keys will be tested', { skip: !hasDunderProto || isAssertAndNode1321 }, function (t) {
+  var a = tag({
     __proto__: Array.prototype,
     0: 1,
     1: 1,
     2: 'broken',
     length: 2
-  };
-  if (hasSymbols) {
-    Object.defineProperty(a, Symbol.toStringTag, {
-      value: 'Array'
-    });
-  }
+  }, 'Array');
   if (Object.defineProperty) {
     Object.defineProperty(a, 'length', {
       enumerable: false
