@@ -1,7 +1,14 @@
 var test = require('tape');
 require('./_tape');
 var assign = require('object.assign');
+var gOPDs = require('object.getownpropertydescriptors');
 var hasSymbols = require('has-symbols')();
+var hasTypedArrays = require('has-typed-arrays')();
+var semver = require('semver');
+
+var safeBuffer = typeof Buffer === 'function' ? Buffer.from && Buffer.from.length > 1 ? Buffer.from : Buffer : null;
+
+var isNode = typeof process === 'object' && typeof process.version === 'string';
 
 function tag(obj, value) {
   if (hasSymbols && Symbol.toStringTags && Object.defineProperty) {
@@ -220,11 +227,28 @@ test('Dates', function (t) {
     st.end();
   });
 
+  t.test('fake Date', { skip: !hasDunderProto }, function (st) {
+    var a = new Date(2000);
+    var b = tag(Object.create(
+      a.__proto__, // eslint-disable-line no-proto
+      gOPDs(a)
+    ), 'Date');
+
+    st.deepEqualTest(
+      a,
+      b,
+      'Date, and fake Date',
+      false,
+      false
+    );
+
+    st.end();
+  });
+
   t.end();
 });
 
 test('buffers', { skip: typeof Buffer !== 'function' }, function (t) {
-  var safeBuffer = Buffer.from && Buffer.from.length > 1 ? Buffer.from : Buffer;
   /* eslint no-buffer-constructor: 1, new-cap: 1 */
   t.deepEqualTest(
     safeBuffer('xyz'),
@@ -473,6 +497,18 @@ test('regexen', function (t) {
   t.deepEqualTest(/abc/, /abc/, 'two abc regexes', true, true, false);
   t.deepEqualTest(/xyz/, /xyz/, 'two xyz regexes', true, true, false);
 
+  t.test('fake RegExp', { skip: !hasDunderProto }, function (st) {
+    var a = /abc/g;
+    var b = tag(Object.create(
+      a.__proto__, // eslint-disable-line no-proto
+      gOPDs(a)
+    ), 'RegExp');
+
+    st.deepEqualTest(a, b, 'regex and fake regex', false, false);
+
+    st.end();
+  });
+
   t.end();
 });
 
@@ -506,6 +542,23 @@ test('Errors', function (t) {
     false
   );
 
+  t.test('fake error', { skip: !hasDunderProto }, function (st) {
+    var a = tag({
+      __proto__: null
+    }, 'Error');
+    var b = new RangeError('abc');
+    b.__proto__ = null; // eslint-disable-line no-proto
+
+    st.deepEqualTest(
+      a,
+      b,
+      'null object faking as an Error, RangeError with null proto',
+      false,
+      false
+    );
+    st.end();
+  });
+
   t.end();
 });
 
@@ -525,22 +578,23 @@ test('error = Object', function (t) {
   t.end();
 });
 
-test('[[Prototypes]]', { skip: !Object.getPrototypeOf }, function (t) {
+test('[[Prototypes]]', function (t) {
   function C() {}
   var instance = new C();
   delete instance.constructor;
 
   t.deepEqualTest({}, instance, 'two identical objects with different [[Prototypes]]', true, false);
 
-  t.test('Dates with different prototypes', { skip: !Object.setPrototypeOf }, function (st) {
+  t.test('Dates with different prototypes', { skip: !hasDunderProto }, function (st) {
     var d1 = new Date(0);
     var d2 = new Date(0);
 
     t.deepEqualTest(d1, d2, 'two dates with the same timestamp', true, true);
 
-    var newProto = {};
-    Object.setPrototypeOf(newProto, Date.prototype);
-    Object.setPrototypeOf(d2, newProto);
+    var newProto = {
+      __proto__: Date.prototype
+    };
+    d2.__proto__ = newProto; // eslint-disable-line no-proto
     st.ok(d2 instanceof Date, 'd2 is still a Date instance after tweaking [[Prototype]]');
 
     t.deepEqualTest(d1, d2, 'two dates with the same timestamp and different [[Prototype]]', true, false);
@@ -613,8 +667,8 @@ test('getters', { skip: !Object.defineProperty }, function (t) {
   t.end();
 });
 
-var isAssertAndNode1321 = process.env.ASSERT && process.version.replace(/^v/g, '').replace(/[^.]+(?:.)?/g, function (x, i) { return x * Math.pow(10, i); }) <= '1320000';
-test('fake arrays: extra keys will be tested', { skip: !hasDunderProto || isAssertAndNode1321 }, function (t) {
+var isAssertAndNode1321 = isNode && process.env.ASSERT && semver.satisfies(process.version, '>= 13.2.0');
+test('fake arrays: extra keys will be tested', { skip: !hasDunderProto || !isAssertAndNode1321 }, function (t) {
   var a = tag({
     __proto__: Array.prototype,
     0: 1,
@@ -629,6 +683,17 @@ test('fake arrays: extra keys will be tested', { skip: !hasDunderProto || isAsse
   }
 
   t.deepEqualTest(a, [1, 1], 'fake and real array with same contents and [[Prototype]]', false, false);
+
+  var b = tag(/abc/, 'Array');
+  b.__proto__ = Array.prototype; // eslint-disable-line no-proto
+  b.length = 3;
+  if (Object.defineProperty) {
+    Object.defineProperty(b, 'length', {
+      enumerable: false
+    });
+  }
+  t.deepEqualTest(b, ['a', 'b', 'c'], 'regex faking as array, and array', false, false);
+
   t.end();
 });
 
@@ -662,6 +727,53 @@ test('circular references', function (t) {
     false,
     false
   );
+
+  t.end();
+});
+
+// io.js v2 is the only version where `console.log(b)` below is catchable
+var isNodeWhereBufferBreaks = isNode && semver.satisfies(process.version, '< 3'); // eslint-disable-line id-length
+
+test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
+  t.test('Buffer faked as Uint8Array', { skip: typeof Buffer !== 'function' || !Object.create || !hasDunderProto }, function (st) {
+    var a = safeBuffer('test');
+    var b = tag(Object.create(
+      a.__proto__, // eslint-disable-line no-proto
+      assign(gOPDs(a), {
+        length: {
+          enumerable: false,
+          value: 4
+        }
+      })
+    ), 'Uint8Array');
+
+    st.deepEqualTest(
+      a,
+      b,
+      'Buffer and Uint8Array',
+      isNodeWhereBufferBreaks,
+      isNodeWhereBufferBreaks
+    );
+
+    st.end();
+  });
+
+  t.test('one TypedArray faking as another', { skip: !hasDunderProto }, function (st) {
+    /* globals Uint8Array, Int8Array */
+    var a = new Uint8Array(10);
+    var b = tag(new Int8Array(10), 'Uint8Array');
+    b.__proto__ = Uint8Array.prototype; // eslint-disable-line no-proto
+
+    st.deepEqualTest(
+      a,
+      b,
+      'Uint8Array, and Int8Array pretending to be a Uint8Array',
+      false,
+      false
+    );
+
+    st.end();
+  });
 
   t.end();
 });
