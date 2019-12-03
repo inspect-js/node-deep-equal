@@ -56,7 +56,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/substack/node-deep-equal.git"
+    "url": "http://github.com/inspect-js/node-deep-equal.git"
   },
   "keywords": [
     "equality",
@@ -68,6 +68,10 @@
     "email": "mail@substack.net",
     "url": "http://substack.net"
   },
+  "contributors": [
+    "James Halliday <mail@substack.net> (https://substack.net)",
+    "Jordan Harband <ljharb@gmail.com>"
+  ],
   "funding": {
     "url": "https://github.com/sponsors/ljharb"
   },

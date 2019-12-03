@@ -2,12 +2,9 @@
 
 Node's `assert.deepEqual() algorithm` as a standalone module.
 
-This module is around [5 times faster](https://gist.github.com/2790507)
-than wrapping `assert.deepEqual()` in a `try/catch`.
+This module is around [46 times faster](https://gist.github.com/substack/2790507#gistcomment-3099862) than wrapping `assert.deepEqual()` in a `try/catch`.
 
-[![browser support](https://ci.testling.com/substack/node-deep-equal.png)](https://ci.testling.com/substack/node-deep-equal)
-
-[![build status](https://secure.travis-ci.org/substack/node-deep-equal.png)](https://travis-ci.org/substack/node-deep-equal)
+[![build status](https://secure.travis-ci.com/inspect-js/node-deep-equal.png)](https://travis-ci.org/inspect-js/node-deep-equal)
 
 # example
 
@@ -42,7 +39,7 @@ The default is to use coercive equality (`==`) because that's how
 
 # install
 
-With [npm](http://npmjs.org) do:
+With [npm](https://npmjs.org) do:
 
 ```
 npm install deep-equal
@@ -50,7 +47,7 @@ npm install deep-equal
 
 # test
 
-With [npm](http://npmjs.org) do:
+With [npm](https://npmjs.org) do:
 
 ```
 npm test
