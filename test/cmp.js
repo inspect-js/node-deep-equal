@@ -261,6 +261,17 @@ test('Dates', function (t) {
     st.end();
   });
 
+  var a = new Date('2000');
+  var b = new Date('2000');
+  b.foo = true;
+  t.deepEqualTest(
+    a,
+    b,
+    'two identical Dates, one with an extra property',
+    false,
+    false
+  );
+
   t.end();
 });
 
@@ -287,6 +298,22 @@ test('buffers', { skip: typeof Buffer !== 'function' }, function (t) {
     safeBuffer(''),
     [],
     'empty buffer and empty array',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('Arrays', function (t) {
+  var a = [];
+  var b = [];
+  b.foo = true;
+
+  t.deepEqualTest(
+    a,
+    b,
+    'two identical arrays, one with an extra property',
     false,
     false
   );
@@ -524,6 +551,17 @@ test('regexen', function (t) {
 
     st.end();
   });
+
+  var a = /abc/gi;
+  var b = /abc/gi;
+  b.foo = true;
+  t.deepEqualTest(
+    a,
+    b,
+    'two identical regexes, one with an extra property',
+    false,
+    false
+  );
 
   t.end();
 });
