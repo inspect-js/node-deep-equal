@@ -1,8 +1,6 @@
 # deep-equal
 
-Node's `assert.deepEqual() algorithm` as a standalone module.
-
-This module is around [46 times faster](https://gist.github.com/substack/2790507#gistcomment-3099862) than wrapping `assert.deepEqual()` in a `try/catch`.
+Node's `assert.deepEqual() algorithm` as a standalone module. Use `util.isDeepStrictEqual()` in case you use Node.js v9.x or higher and only want the strict comparison.
 
 [![build status](https://secure.travis-ci.com/inspect-js/node-deep-equal.png)](https://travis-ci.org/inspect-js/node-deep-equal)
 
