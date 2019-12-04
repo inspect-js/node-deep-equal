@@ -6,6 +6,7 @@ var flags = require('regexp.prototype.flags');
 var isArray = require('isarray');
 var isDate = require('is-date-object');
 var whichBoxedPrimitive = require('which-boxed-primitive');
+var GetIntrinsic = require('es-abstract/GetIntrinsic');
 var callBound = require('es-abstract/helpers/callBound');
 var whichCollection = require('which-collection');
 var getIterator = require('es-get-iterator');
@@ -15,9 +16,93 @@ var $getTime = callBound('Date.prototype.getTime');
 var gPO = Object.getPrototypeOf;
 var $objToString = callBound('Object.prototype.toString');
 
+var $Set = GetIntrinsic('%Set%', true);
 var $mapHas = callBound('Map.prototype.has', true);
 var $mapGet = callBound('Map.prototype.get', true);
+var $mapSize = callBound('Map.prototype.size', true);
+var $setAdd = callBound('Set.prototype.add', true);
+var $setDelete = callBound('Set.prototype.delete', true);
 var $setHas = callBound('Set.prototype.has', true);
+var $setSize = callBound('Set.prototype.size', true);
+
+// taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L401-L414
+function setHasEqualElement(set, val1, strict, channel) {
+  var i = getIterator(set);
+  var result;
+  while ((result = i.next()) && !result.done) {
+    if (internalDeepEqual(val1, result.value, strict, channel)) { // eslint-disable-line no-use-before-define
+      // Remove the matching element to make sure we do not check that again.
+      $setDelete(set, result.value);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L416-L439
+function findLooseMatchingPrimitives(prim) {
+  if (typeof prim === 'undefined') {
+    return null;
+  }
+  if (typeof prim === 'object') { // Only pass in null as object!
+    return void 0;
+  }
+  if (typeof prim === 'symbol') {
+    return false;
+  }
+  if (typeof prim === 'string' || typeof prim === 'number') {
+    // Loose equal entries exist only if the string is possible to convert to a regular number and not NaN.
+    return +prim === +prim; // eslint-disable-line no-implicit-coercion
+  }
+  return true;
+}
+
+// taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L449-L460
+function mapMightHaveLoosePrim(a, b, prim, item, channel) {
+  var altValue = findLooseMatchingPrimitives(prim);
+  if (altValue != null) {
+    return altValue;
+  }
+  var curB = $mapGet(b, altValue);
+  // eslint-disable-next-line no-use-before-define
+  if ((typeof curB === 'undefined' && !$mapHas(b, altValue)) || !internalDeepEqual(item, curB, false, channel)) {
+    return false;
+  }
+  // eslint-disable-next-line no-use-before-define
+  return !$mapHas(a, altValue) && internalDeepEqual(item, curB, false, channel);
+}
+
+// taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L441-L447
+function setMightHaveLoosePrim(a, b, prim) {
+  var altValue = findLooseMatchingPrimitives(prim);
+  if (altValue != null) {
+    return altValue;
+  }
+
+  return $setHas(b, altValue) && !$setHas(a, altValue);
+}
+
+// taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L518-L533
+function mapHasEqualEntry(set, map, key1, item1, strict, channel) {
+  var i = getIterator(set);
+  var result;
+  var key2;
+  while ((result = i.next()) && !result.done) {
+    key2 = result.value;
+    if (
+      // eslint-disable-next-line no-use-before-define
+      internalDeepEqual(key1, key2, strict, channel)
+      // eslint-disable-next-line no-use-before-define
+      && internalDeepEqual(item1, $mapGet(map, key2), strict, channel)
+    ) {
+      $setDelete(set, key2);
+      return true;
+    }
+  }
+
+  return false;
+}
 
 function internalDeepEqual(actual, expected, options, channel) {
   var opts = options || {};
@@ -36,7 +121,7 @@ function internalDeepEqual(actual, expected, options, channel) {
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
   if (!actual || !expected || (typeof actual !== 'object' && typeof expected !== 'object')) {
     if ((actual === false && expected) || (actual && expected === false)) { return false; }
-    return opts.strict ? is(actual, expected) : actual == expected;
+    return opts.strict ? is(actual, expected) : actual == expected; // eslint-disable-line eqeqeq
   }
 
   /*
@@ -66,10 +151,6 @@ function internalDeepEqual(actual, expected, options, channel) {
   return objEquiv(actual, expected, opts, channel);
 }
 
-function isUndefinedOrNull(value) {
-  return value === null || value === undefined;
-}
-
 function isBuffer(x) {
   if (!x || typeof x !== 'object' || typeof x.length !== 'number') {
     return false;
@@ -83,12 +164,109 @@ function isBuffer(x) {
   return true;
 }
 
+function setEquiv(a, b, opts, channel) {
+  if ($setSize(a) !== $setSize(b)) {
+    return false;
+  }
+  var iA = getIterator(a);
+  var iB = getIterator(b);
+  var resultA;
+  var resultB;
+  var set;
+  while ((resultA = iA.next()) && !resultA.done) {
+    if (resultA.value && typeof resultA.value === 'object') {
+      if (!set) { set = new $Set(); }
+      $setAdd(set, resultA.value);
+    } else if (!$setHas(b, resultA.value)) {
+      if (opts.strict) { return false; }
+      if (!setMightHaveLoosePrim(a, b, resultA.value)) {
+        return false;
+      }
+      if (!set) { set = new $Set(); }
+      $setAdd(set, resultA.value);
+    }
+  }
+  if (set) {
+    while ((resultB = iB.next()) && !resultB.done) {
+      // We have to check if a primitive value is already matching and only if it's not, go hunting for it.
+      if (resultB.value && typeof resultB.value === 'object') {
+        if (!setHasEqualElement(set, resultB.value, opts.strict, channel)) {
+          return false;
+        }
+      } else if (
+        !opts.strict
+        && !$setHas(a, resultB.value)
+        && !setHasEqualElement(set, resultB.value, opts.strict, channel)
+      ) {
+        return false;
+      }
+    }
+    return $setSize(set) === 0;
+  }
+  return true;
+}
+
+function mapEquiv(a, b, opts, channel) {
+  if ($mapSize(a) !== $mapSize(b)) {
+    return false;
+  }
+  var iA = getIterator(a);
+  var iB = getIterator(b);
+  var resultA;
+  var resultB;
+  var set;
+  var key;
+  var item1;
+  var item2;
+  while ((resultA = iA.next()) && !resultA.done) {
+    key = resultA.value[0];
+    item1 = resultA.value[1];
+    if (key && typeof key === 'object') {
+      if (!set) { set = new $Set(); }
+      $setAdd(set, key);
+    } else {
+      item2 = $mapGet(b, key);
+      // if (typeof curB === 'undefined' && !$mapHas(b, altValue) || !internalDeepEqual(item, curB, false, channel)) {
+      if ((typeof item2 === 'undefined' && !$mapHas(b, key)) || !internalDeepEqual(item1, item2, opts.strict, channel)) {
+        if (opts.strict) {
+          return false;
+        }
+        if (!mapMightHaveLoosePrim(a, b, key, item1, channel)) {
+          return false;
+        }
+        if (!set) { set = new $Set(); }
+        $setAdd(set, key);
+      }
+    }
+  }
+
+  if (set) {
+    while ((resultB = iB.next()) && !resultB.done) {
+      key = resultB.value[0];
+      item1 = resultB.value[1];
+      if (key && typeof key === 'object') {
+        if (!mapHasEqualEntry(set, a, key, item1, opts.strict, channel)) {
+          return false;
+        }
+      } else if (
+        !opts.strict
+        && (!a.has(key) || !internalDeepEqual($mapGet(a, key), item1, false, channel))
+        && !mapHasEqualEntry(set, a, key, item1, false, channel)
+      ) {
+        return false;
+      }
+    }
+    return $setSize(set) === 0;
+  }
+  return true;
+}
+
 function objEquiv(a, b, opts, channel) {
   /* eslint max-statements: [2, 100], max-lines-per-function: [2, 120], max-depth: [2, 5] */
   var i, key;
 
   if (typeof a !== typeof b) { return false; }
-  if (isUndefinedOrNull(a) || isUndefinedOrNull(b)) { return false; }
+  if (a == null || b == null) { return false; }
 
   // an identical 'prototype' property.
   if (a.prototype !== b.prototype) { return false; }
@@ -151,7 +329,7 @@ function objEquiv(a, b, opts, channel) {
   kb.sort();
   // ~~~cheap key test
   for (i = ka.length - 1; i >= 0; i--) {
-    if (ka[i] != kb[i]) { return false; }
+    if (ka[i] != kb[i]) { return false; } // eslint-disable-line eqeqeq
   }
 
   // equivalent values for every corresponding key, and ~~~possibly expensive deep test
@@ -165,37 +343,11 @@ function objEquiv(a, b, opts, channel) {
   if (aCollection !== bCollection) {
     return false;
   }
-  if (aCollection === 'Map' || aCollection === 'Set') {
-    var iA = getIterator(a);
-    var iB = getIterator(b);
-    var resultA;
-    var resultB;
-    if (aCollection === 'Map') { // aCollection === bCollection
-      var aWithBKey;
-      var bWithAKey;
-      while ((resultA = iA.next()) && (resultB = iB.next()) && !resultA.done && !resultB.done) {
-        if (!$mapHas(a, resultB.value[0]) || !$mapHas(b, resultA.value[0])) { return false; }
-        if (resultA.value[0] === resultB.value[0]) { // optimization: keys are the same, no need to look up values
-          if (!internalDeepEqual(resultA.value[1], resultB.value[1], opts, channel)) { return false; }
-        } else {
-          aWithBKey = $mapGet(a, resultB.value[0]);
-          bWithAKey = $mapGet(b, resultA.value[0]);
-          if (
-            !internalDeepEqual(resultA.value[1], bWithAKey, opts, channel)
-            || !internalDeepEqual(resultB.value[1], aWithBKey, opts, channel)
-          ) {
-            return false;
-          }
-        }
-      }
-    } else if (aCollection === 'Set') { // aCollection === bCollection
-      while ((resultA = iA.next()) && (resultB = iB.next()) && !resultA.done && !resultB.done) {
-        if (!$setHas(a, resultB.value) || !$setHas(b, resultA.value)) { return false; }
-      }
-    }
-    if (resultA && resultB && resultA.done !== resultB.done) {
-      return false;
-    }
+  if (aCollection === 'Set' || bCollection === 'Set') { // aCollection === bCollection
+    return setEquiv(a, b, opts, channel);
+  }
+  if (aCollection === 'Map') { // aCollection === bCollection
+    return mapEquiv(a, b, opts, channel);
   }
 
   return true;

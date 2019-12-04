@@ -60,6 +60,14 @@ test('Maps', { skip: typeof Map !== 'function' }, function (t) {
     false
   );
 
+  t.deepEqualTest(
+    new Map([[{}, 1], [{}, 2], [{}, 1]]),
+    new Map([[{}, 1], [{}, 2], [{}, 1]]),
+    'two equal Maps in different orders',
+    true,
+    true
+  );
+
   t.end();
 });
 
@@ -106,6 +114,14 @@ test('Sets', { skip: typeof Set !== 'function' }, function (t) {
     'two inequal Sets',
     false,
     false
+  );
+
+  t.deepEqualTest(
+    new Set([{}, 1, {}, {}, 2]),
+    new Set([{}, 1, {}, 2, {}]),
+    'two equal Sets in different orders',
+    true,
+    true
   );
 
   t.end();
@@ -668,7 +684,6 @@ test('getters', { skip: !Object.defineProperty }, function (t) {
 });
 
 var isBrokenNode = isNode && process.env.ASSERT && semver.satisfies(process.version, '<= 13.3.0');
-console.log(isBrokenNode, hasDunderProto);
 test('fake arrays: extra keys will be tested', { skip: !hasDunderProto || isBrokenNode }, function (t) {
   var a = tag({
     __proto__: Array.prototype,
@@ -733,7 +748,7 @@ test('circular references', function (t) {
 });
 
 // io.js v2 is the only version where `console.log(b)` below is catchable
-var isNodeWhereBufferBreaks = isNode && semver.satisfies(process.version, '< 3'); // eslint-disable-line id-length
+var isNodeWhereBufferBreaks = isNode && semver.satisfies(process.version, '< 3');
 var isNode06 = isNode && semver.satisfies(process.version, '<= 0.6'); // segfaults in node 0.6, it seems
 
 test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
