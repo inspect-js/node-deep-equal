@@ -667,8 +667,9 @@ test('getters', { skip: !Object.defineProperty }, function (t) {
   t.end();
 });
 
-var isAssertAndNode1321 = isNode && process.env.ASSERT && semver.satisfies(process.version, '>= 13.2.0');
-test('fake arrays: extra keys will be tested', { skip: !hasDunderProto || !isAssertAndNode1321 }, function (t) {
+var isBrokenNode = isNode && process.env.ASSERT && semver.satisfies(process.version, '<= 13.3.0');
+console.log(isBrokenNode, hasDunderProto);
+test('fake arrays: extra keys will be tested', { skip: !hasDunderProto || isBrokenNode }, function (t) {
   var a = tag({
     __proto__: Array.prototype,
     0: 1,
@@ -733,9 +734,10 @@ test('circular references', function (t) {
 
 // io.js v2 is the only version where `console.log(b)` below is catchable
 var isNodeWhereBufferBreaks = isNode && semver.satisfies(process.version, '< 3'); // eslint-disable-line id-length
+var isNode06 = isNode && semver.satisfies(process.version, '<= 0.6'); // segfaults in node 0.6, it seems
 
 test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
-  t.test('Buffer faked as Uint8Array', { skip: typeof Buffer !== 'function' || !Object.create || !hasDunderProto }, function (st) {
+  t.test('Buffer faked as Uint8Array', { skip: typeof Buffer !== 'function' || !Object.create || !hasDunderProto || isNode06 }, function (st) {
     var a = safeBuffer('test');
     var b = tag(Object.create(
       a.__proto__, // eslint-disable-line no-proto
