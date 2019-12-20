@@ -29,16 +29,16 @@
     "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\""
   },
   "dependencies": {
-    "es-abstract": "^1.16.3",
-    "es-get-iterator": "^1.0.1",
+    "es-abstract": "^1.17.0-next.1",
+    "es-get-iterator": "^1.0.2",
     "is-arguments": "^1.0.4",
-    "is-date-object": "^1.0.1",
-    "is-regex": "^1.0.4",
+    "is-date-object": "^1.0.2",
+    "is-regex": "^1.0.5",
     "isarray": "^2.0.5",
-    "object-is": "^1.0.1",
+    "object-is": "^1.0.2",
     "object-keys": "^1.1.1",
-    "regexp.prototype.flags": "^1.2.0",
-    "side-channel": "^1.0.1",
+    "regexp.prototype.flags": "^1.3.0",
+    "side-channel": "^1.0.2",
     "which-boxed-primitive": "^1.0.1",
     "which-collection": "^1.0.0"
   },
