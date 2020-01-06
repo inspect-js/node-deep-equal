@@ -109,6 +109,9 @@
     "commitLimit": false,
     "backfillLimit": false
   },
+  "greenkeeper": {
+    "ignore": ["semver"]
+  },
   "browser": {
     "assert.js": false
   }
