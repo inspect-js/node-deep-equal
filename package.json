@@ -29,8 +29,8 @@
     "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\""
   },
   "dependencies": {
-    "es-abstract": "^1.17.0",
-    "es-get-iterator": "^1.0.2",
+    "es-abstract": "^1.17.4",
+    "es-get-iterator": "^1.1.0",
     "is-arguments": "^1.0.4",
     "is-date-object": "^1.0.2",
     "is-regex": "^1.0.5",
@@ -40,7 +40,7 @@
     "regexp.prototype.flags": "^1.3.0",
     "side-channel": "^1.0.2",
     "which-boxed-primitive": "^1.0.1",
-    "which-collection": "^1.0.0"
+    "which-collection": "^1.0.1"
   },
   "devDependencies": {
     "@ljharb/eslint-config": "^15.1.0",
@@ -110,7 +110,9 @@
     "backfillLimit": false
   },
   "greenkeeper": {
-    "ignore": ["semver"]
+    "ignore": [
+      "semver"
+    ]
   },
   "browser": {
     "assert.js": false
