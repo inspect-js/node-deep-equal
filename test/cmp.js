@@ -643,7 +643,7 @@ test('[[Prototypes]]', function (t) {
     var d1 = new Date(0);
     var d2 = new Date(0);
 
-    t.deepEqualTest(d1, d2, 'two dates with the same timestamp', true, true);
+    st.deepEqualTest(d1, d2, 'two dates with the same timestamp', true, true);
 
     var newProto = {
       __proto__: Date.prototype
@@ -651,7 +651,7 @@ test('[[Prototypes]]', function (t) {
     d2.__proto__ = newProto; // eslint-disable-line no-proto
     st.ok(d2 instanceof Date, 'd2 is still a Date instance after tweaking [[Prototype]]');
 
-    t.deepEqualTest(d1, d2, 'two dates with the same timestamp and different [[Prototype]]', true, false);
+    st.deepEqualTest(d1, d2, 'two dates with the same timestamp and different [[Prototype]]', true, false);
 
     st.end();
   });
