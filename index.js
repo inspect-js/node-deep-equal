@@ -271,9 +271,6 @@ function objEquiv(a, b, opts, channel) {
   if (typeof a !== typeof b) { return false; }
   if (a == null || b == null) { return false; }
 
-  // an identical 'prototype' property.
-  if (a.prototype !== b.prototype) { return false; }
-
   if ($objToString(a) !== $objToString(b)) { return false; }
 
   if (isArguments(a) !== isArguments(b)) { return false; }

@@ -568,6 +568,18 @@ test('regexen', function (t) {
   t.end();
 });
 
+test('object literals', function (t) {
+  t.deepEqualTest(
+    { prototype: 2 },
+    { prototype: '2' },
+    'two loosely equal, strictly inequal prototype properties',
+    true,
+    false
+  );
+
+  t.end();
+});
+
 test('arrays and objects', function (t) {
   t.deepEqualTest([], {}, 'empty array and empty object', false, false);
   t.deepEqualTest([], { length: 0 }, 'empty array and empty arraylike object', false, false);
