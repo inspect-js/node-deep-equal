@@ -1,3 +1,5 @@
+'use strict';
+
 var equal = require('../');
 console.dir([
   equal(

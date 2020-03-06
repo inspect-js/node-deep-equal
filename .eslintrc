@@ -12,7 +12,6 @@
     "new-cap": [2, { "capIsNewExceptions": ["GetIntrinsic"] }],
     "no-magic-numbers": [2, { "ignore": [0, 1] }],
     "operator-linebreak": [2, "before"],
-    "strict": 1,
   },
   "globals": {
     "WeakMap": false,

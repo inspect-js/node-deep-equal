@@ -1,3 +1,5 @@
+'use strict';
+
 var test = require('tape');
 require('./_tape');
 var assign = require('object.assign');

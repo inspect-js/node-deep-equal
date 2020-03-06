@@ -1,3 +1,5 @@
+'use strict';
+
 var Test = require('tape/lib/test');
 var is = require('object-is');
 
