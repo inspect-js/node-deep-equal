@@ -14,7 +14,7 @@ var buffersAreTypedArrays = typeof Buffer === 'function' && new Buffer(0) instan
 var isNode = typeof process === 'object' && typeof process.version === 'string';
 
 function tag(obj, value) {
-  if (hasSymbols && Symbol.toStringTags && Object.defineProperty) {
+  if (hasSymbols && Symbol.toStringTag && Object.defineProperty) {
     Object.defineProperty(obj, Symbol.toStringTag, {
       value: value
     });
@@ -917,7 +917,7 @@ test('Errors', function (t) {
     false
   );
 
-  t.test('fake error', { skip: !hasDunderProto }, function (st) {
+  t.test('fake error', { skip: !process.env.ASSERT || !hasDunderProto }, function (st) {
     var a = tag({
       __proto__: null
     }, 'Error');
