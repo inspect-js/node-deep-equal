@@ -13,6 +13,7 @@ var callBound = require('es-abstract/helpers/callBound');
 var whichCollection = require('which-collection');
 var getIterator = require('es-get-iterator');
 var getSideChannel = require('side-channel');
+var whichTypedArray = require('which-typed-array');
 
 var $getTime = callBound('Date.prototype.getTime');
 var gPO = Object.getPrototypeOf;
@@ -303,6 +304,10 @@ function objEquiv(a, b, opts, channel) {
     if ($getTime(a) !== $getTime(b)) { return false; }
   }
   if (opts.strict && gPO && gPO(a) !== gPO(b)) { return false; }
+
+  if (whichTypedArray(a) !== whichTypedArray(b)) {
+    return false;
+  }
 
   var aIsBuffer = isBuffer(a);
   var bIsBuffer = isBuffer(b);
