@@ -9,6 +9,7 @@ var hasTypedArrays = require('has-typed-arrays')();
 var semver = require('semver');
 
 var safeBuffer = typeof Buffer === 'function' ? Buffer.from && Buffer.from.length > 1 ? Buffer.from : Buffer : null;
+var buffersAreTypedArrays = typeof Buffer === 'function' && new Buffer(0) instanceof Uint8Array;
 
 var isNode = typeof process === 'object' && typeof process.version === 'string';
 
@@ -99,7 +100,22 @@ test('Maps', { skip: typeof Map !== 'function' }, function (t) {
     new Map([[undefined, null]]),
     'undefined keys, nullish values, loosely equal, strictly inequal',
     true,
-    false,
+    false
+  );
+
+  t.deepEqualTest(
+    new Map([[{}, null], [true, 2], [{}, 1], [undefined, {}]]),
+    new Map([[{}, 1], [true, 2], [{}, null], [undefined, {}]]),
+    'two equal Maps in different orders with primitive keys',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new Map([[false, 3], [{}, 2], [{}, 1]]),
+    new Map([[{}, 1], [{}, 2], [false, 3]]),
+    'two equal Maps in different orders with a mix of keys',
+    true,
     true
   );
 
@@ -376,6 +392,16 @@ test('arguments class', function (t) {
     false
   );
 
+  var args = getArgs();
+  var notArgs = tag({ length: 0 }, 'Arguments');
+  t.deepEqualTest(
+    args,
+    notArgs,
+    'args and similar arraylike object',
+    false,
+    false
+  );
+
   t.end();
 });
 
@@ -426,6 +452,14 @@ test('Dates', function (t) {
     false
   );
 
+  t.deepEqualTest(
+    new Date('2000'),
+    new Date('2001'),
+    'two inequal Dates',
+    false,
+    false
+  );
+
   t.end();
 });
 
@@ -436,8 +470,23 @@ test('buffers', { skip: typeof Buffer !== 'function' }, function (t) {
     safeBuffer('xyz'),
     'buffers with same contents are equal',
     true,
-    true,
     true
+  );
+
+  t.deepEqualTest(
+    safeBuffer('xyz'),
+    safeBuffer('xyy'),
+    'buffers with same length and different contents are inequal',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    safeBuffer('xyz'),
+    safeBuffer('xy'),
+    'buffers with different length are inequal',
+    false,
+    false
   );
 
   t.deepEqualTest(
@@ -448,13 +497,61 @@ test('buffers', { skip: typeof Buffer !== 'function' }, function (t) {
     false
   );
 
+  var emptyBuffer = safeBuffer('');
+
   t.deepEqualTest(
-    safeBuffer(''),
+    emptyBuffer,
     [],
     'empty buffer and empty array',
     false,
     false
   );
+
+  t.test('bufferlikes', { skip: !Object.defineProperty || !hasTypedArrays }, function (st) {
+    var fakeBuffer = {
+      0: 'a',
+      length: 1,
+      __proto__: emptyBuffer.__proto__, // eslint-disable-line no-proto
+      copy: emptyBuffer.copy,
+      slice: emptyBuffer.slice
+    };
+    Object.defineProperty(fakeBuffer, '0', { enumerable: false });
+    Object.defineProperty(fakeBuffer, 'length', { enumerable: false });
+    Object.defineProperty(fakeBuffer, 'copy', { enumerable: false });
+    Object.defineProperty(fakeBuffer, 'slice', { enumerable: false });
+
+    st.deepEqualTest(
+      safeBuffer('a'),
+      fakeBuffer,
+      'real buffer, and mildly fake buffer',
+      false,
+      false
+    );
+
+    st.test('bufferlike', { skip: buffersAreTypedArrays ? !hasSymbols || !Symbol.toStringTag : false }, function (s2t) {
+      var bufferlike = buffersAreTypedArrays ? new Uint8Array() : {};
+      Object.defineProperty(bufferlike, 'length', {
+        enumerable: false,
+        value: bufferlike.length || 0
+      });
+      Object.defineProperty(bufferlike, 'copy', {
+        enumerable: false,
+        value: emptyBuffer.copy
+      });
+      bufferlike.__proto__ = emptyBuffer.__proto__; // eslint-disable-line no-proto
+
+      s2t.deepEqualTest(
+        emptyBuffer,
+        bufferlike,
+        'empty buffer and empty bufferlike',
+        true,
+        true
+      );
+      s2t.end();
+    });
+
+    st.end();
+  });
 
   t.end();
 });
@@ -468,6 +565,36 @@ test('Arrays', function (t) {
     a,
     b,
     'two identical arrays, one with an extra property',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('booleans', function (t) {
+  t.deepEqualTest(
+    true,
+    true,
+    'trues',
+    true,
+    true,
+    false
+  );
+
+  t.deepEqualTest(
+    false,
+    false,
+    'falses',
+    true,
+    true,
+    false
+  );
+
+  t.deepEqualTest(
+    true,
+    false,
+    'true and false',
     false,
     false
   );
@@ -606,6 +733,7 @@ test('arrays push', function (t) {
 
 test('null == undefined', function (t) {
   t.deepEqualTest(null, undefined, 'null and undefined', true, false);
+  t.deepEqualTest([null], [undefined], '[null] and [undefined]', true, false);
 
   t.end();
 });
@@ -744,7 +872,13 @@ test('functions', function (t) {
   function f() {}
 
   t.deepEqualTest(f, f, 'a function and itself', true, true, true);
+  t.deepEqualTest([f], [f], 'a function and itself in an array', true, true, true);
+
   t.deepEqualTest(function () {}, function () {}, 'two distinct functions', false, false, true);
+  t.deepEqualTest([function () {}], [function () {}], 'two distinct functions in an array', false, false, true);
+
+  t.deepEqualTest(f, {}, 'function and object', false, false, true);
+  t.deepEqualTest([f], [{}], 'function and object in an array', false, false, true);
 
   t.end();
 });
@@ -753,6 +887,27 @@ test('Errors', function (t) {
   t.deepEqualTest(new Error('xyz'), new Error('xyz'), 'two errors of the same type with the same message', true, true, false);
   t.deepEqualTest(new Error('xyz'), new TypeError('xyz'), 'two errors of different types with the same message', false, false);
   t.deepEqualTest(new Error('xyz'), new Error('zyx'), 'two errors of the same type with a different message', false, false);
+
+  t.test('errorlike', { skip: !Object.defineProperty }, function (st) {
+    var err = new Error('foo');
+    // TODO: add `__proto__` when brand check is available
+    var errorlike = tag({ message: err.message, stack: err.stack, name: err.name, constructor: err.constructor }, 'Error');
+    Object.defineProperty(errorlike, 'message', { enumerable: false });
+    Object.defineProperty(errorlike, 'stack', { enumerable: false });
+    Object.defineProperty(errorlike, 'name', { enumerable: false });
+    Object.defineProperty(errorlike, 'constructor', { enumerable: false });
+    st.notOk(errorlike instanceof Error);
+    st.ok(err instanceof Error);
+    st.deepEqualTest(
+      err,
+      errorlike,
+      'error, and errorlike object',
+      false,
+      false
+    );
+
+    st.end();
+  });
 
   t.deepEqualTest(
     new Error('a'),
@@ -778,6 +933,18 @@ test('Errors', function (t) {
     );
     st.end();
   });
+
+  t.end();
+});
+
+test('object and null', function (t) {
+  t.deepEqualTest(
+    {},
+    null,
+    'null and an object',
+    false,
+    false
+  );
 
   t.end();
 });
