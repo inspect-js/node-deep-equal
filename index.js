@@ -164,7 +164,8 @@ function isBuffer(x) {
   if (x.length > 0 && typeof x[0] !== 'number') {
     return false;
   }
-  return true;
+
+  return !!(x.constructor && x.constructor.isBuffer && x.constructor.isBuffer(x));
 }
 
 function setEquiv(a, b, opts, channel) {
