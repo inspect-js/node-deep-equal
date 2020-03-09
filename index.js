@@ -14,6 +14,7 @@ var whichCollection = require('which-collection');
 var getIterator = require('es-get-iterator');
 var getSideChannel = require('side-channel');
 var whichTypedArray = require('which-typed-array');
+var assign = require('object.assign');
 
 var $getTime = callBound('Date.prototype.getTime');
 var gPO = Object.getPrototypeOf;
@@ -29,11 +30,11 @@ var $setHas = callBound('Set.prototype.has', true);
 var $setSize = callBound('Set.prototype.size', true);
 
 // taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L401-L414
-function setHasEqualElement(set, val1, strict, channel) {
+function setHasEqualElement(set, val1, opts, channel) {
   var i = getIterator(set);
   var result;
   while ((result = i.next()) && !result.done) {
-    if (internalDeepEqual(val1, result.value, strict, channel)) { // eslint-disable-line no-use-before-define
+    if (internalDeepEqual(val1, result.value, opts, channel)) { // eslint-disable-line no-use-before-define
       // Remove the matching element to make sure we do not check that again.
       $setDelete(set, result.value);
       return true;
@@ -62,18 +63,22 @@ function findLooseMatchingPrimitives(prim) {
 }
 
 // taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L449-L460
-function mapMightHaveLoosePrim(a, b, prim, item, channel) {
+function mapMightHaveLoosePrim(a, b, prim, item, opts, channel) {
   var altValue = findLooseMatchingPrimitives(prim);
   if (altValue != null) {
     return altValue;
   }
   var curB = $mapGet(b, altValue);
-  // eslint-disable-next-line no-use-before-define
-  if ((typeof curB === 'undefined' && !$mapHas(b, altValue)) || !internalDeepEqual(item, curB, false, channel)) {
+  var looseOpts = assign({}, opts, { strict: false });
+  if (
+    (typeof curB === 'undefined' && !$mapHas(b, altValue))
+    // eslint-disable-next-line no-use-before-define
+    || !internalDeepEqual(item, curB, looseOpts, channel)
+  ) {
     return false;
   }
   // eslint-disable-next-line no-use-before-define
-  return !$mapHas(a, altValue) && internalDeepEqual(item, curB, false, channel);
+  return !$mapHas(a, altValue) && internalDeepEqual(item, curB, looseOpts, channel);
 }
 
 // taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L441-L447
@@ -87,7 +92,7 @@ function setMightHaveLoosePrim(a, b, prim) {
 }
 
 // taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L518-L533
-function mapHasEqualEntry(set, map, key1, item1, strict, channel) {
+function mapHasEqualEntry(set, map, key1, item1, opts, channel) {
   var i = getIterator(set);
   var result;
   var key2;
@@ -95,9 +100,9 @@ function mapHasEqualEntry(set, map, key1, item1, strict, channel) {
     key2 = result.value;
     if (
       // eslint-disable-next-line no-use-before-define
-      internalDeepEqual(key1, key2, strict, channel)
+      internalDeepEqual(key1, key2, opts, channel)
       // eslint-disable-next-line no-use-before-define
-      && internalDeepEqual(item1, $mapGet(map, key2), strict, channel)
+      && internalDeepEqual(item1, $mapGet(map, key2), opts, channel)
     ) {
       $setDelete(set, key2);
       return true;
@@ -123,7 +128,6 @@ function internalDeepEqual(actual, expected, options, channel) {
 
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
   if (!actual || !expected || (typeof actual !== 'object' && typeof expected !== 'object')) {
-    if ((actual === false && expected) || (actual && expected === false)) { return false; }
     return opts.strict ? is(actual, expected) : actual == expected; // eslint-disable-line eqeqeq
   }
 
@@ -230,12 +234,11 @@ function mapEquiv(a, b, opts, channel) {
       $setAdd(set, key);
     } else {
       item2 = $mapGet(b, key);
-      // if (typeof curB === 'undefined' && !$mapHas(b, altValue) || !internalDeepEqual(item, curB, false, channel)) {
-      if ((typeof item2 === 'undefined' && !$mapHas(b, key)) || !internalDeepEqual(item1, item2, opts.strict, channel)) {
+      if ((typeof item2 === 'undefined' && !$mapHas(b, key)) || !internalDeepEqual(item1, item2, opts, channel)) {
         if (opts.strict) {
           return false;
         }
-        if (!mapMightHaveLoosePrim(a, b, key, item1, channel)) {
+        if (!mapMightHaveLoosePrim(a, b, key, item1, opts, channel)) {
           return false;
         }
         if (!set) { set = new $Set(); }
@@ -247,15 +250,15 @@ function mapEquiv(a, b, opts, channel) {
   if (set) {
     while ((resultB = iB.next()) && !resultB.done) {
       key = resultB.value[0];
-      item1 = resultB.value[1];
+      item2 = resultB.value[1];
       if (key && typeof key === 'object') {
-        if (!mapHasEqualEntry(set, a, key, item1, opts.strict, channel)) {
+        if (!mapHasEqualEntry(set, a, key, item2, opts, channel)) {
           return false;
         }
       } else if (
         !opts.strict
-        && (!a.has(key) || !internalDeepEqual($mapGet(a, key), item1, false, channel))
-        && !mapHasEqualEntry(set, a, key, item1, false, channel)
+        && (!a.has(key) || !internalDeepEqual($mapGet(a, key), item2, opts, channel))
+        && !mapHasEqualEntry(set, a, key, item2, assign({}, opts, { strict: false }), channel)
       ) {
         return false;
       }

@@ -34,6 +34,30 @@ test('equal', function (t) {
     false
   );
 
+  t.deepEqualTest(
+    { a: 2, b: '4' },
+    { a: 2, b: 4 },
+    'two loosely equal, strictly inequal objects',
+    true,
+    false
+  );
+
+  t.deepEqualTest(
+    { a: 2, b: 4 },
+    { a: 2, B: 4 },
+    'two inequal objects',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    '-000',
+    false,
+    '`false` and `"-000"`',
+    true,
+    false
+  );
+
   t.end();
 });
 
@@ -63,11 +87,84 @@ test('Maps', { skip: typeof Map !== 'function' }, function (t) {
   );
 
   t.deepEqualTest(
-    new Map([[{}, 1], [{}, 2], [{}, 1]]),
-    new Map([[{}, 1], [{}, 2], [{}, 1]]),
-    'two equal Maps in different orders',
+    new Map([[{}, 3], [{}, 2], [{}, 1]]),
+    new Map([[{}, 1], [{}, 2], [{}, 3]]),
+    'two equal Maps in different orders with object keys',
     true,
     true
+  );
+
+  t.deepEqualTest(
+    new Map([[undefined, undefined]]),
+    new Map([[undefined, null]]),
+    'undefined keys, nullish values, loosely equal, strictly inequal',
+    true,
+    false,
+    true
+  );
+
+  t.deepEqualTest(
+    new Map([[null, undefined]]),
+    new Map([[null, null]]),
+    'null keys, nullish values, loosely equal, strictly inequal',
+    true,
+    false
+  );
+
+  t.deepEqualTest(
+    new Map([[undefined, 3]]),
+    new Map([[null, 3]]),
+    'nullish keys, loosely equal, strictly inequal',
+    true,
+    false
+  );
+
+  t.deepEqualTest(
+    new Map([[{}, null], [true, 2], [{}, 1], [undefined, {}]]),
+    new Map([[{}, 1], [true, 2], [{}, null], [undefined, {}]]),
+    'two equal Maps in different orders with primitive keys',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new Map([[false, 3], [{}, 2], [{}, 1]]),
+    new Map([[{}, 1], [{}, 2], [false, 3]]),
+    'two equal Maps in different orders with a mix of keys',
+    true,
+    true
+  );
+
+  t.deepEqualTest(
+    new Map(),
+    new Map([[{}, 1]]),
+    'two inequal Maps',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    new Map([[{}, null], [false, 3]]),
+    new Map([[{}, null], [true, 2]]),
+    'two inequal maps, same size, primitive key, start with object key',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    new Map([[false, 3], [{}, null]]),
+    new Map([[true, 2], [{}, null]]),
+    'two inequal maps, same size, primitive key, start with primitive key',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    new Map([[undefined, null], ['+000', 2]]),
+    new Map([[null, undefined], [false, '2']]),
+    'primitive comparisons',
+    true,
+    false
   );
 
   t.end();
@@ -124,6 +221,61 @@ test('Sets', { skip: typeof Set !== 'function' }, function (t) {
     'two equal Sets in different orders',
     true,
     true
+  );
+
+  t.deepEqualTest(
+    new Set(),
+    new Set([1]),
+    'two inequally sized Sets',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    new Set([{ a: 1 }, 2]),
+    new Set(['2', { a: '1' }]),
+    'two loosely equal, strictly inequal Sets',
+    true,
+    false
+  );
+
+  t.deepEqualTest(
+    new Set([{ a: 1 }, 2]),
+    new Set(['2', { a: 2 }]),
+    'two inequal Sets',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    new Set([null, '', 1, 5, 2, false]),
+    new Set([undefined, 0, '5', true, '2', '-000']),
+    'more primitive comparisons',
+    true,
+    false
+  );
+
+  t.end();
+});
+
+test('Set and Map', { skip: !Object.defineProperty || typeof Set !== 'function' || typeof Map !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new Set(),
+    new Map(),
+    'Map and Set',
+    false,
+    false
+  );
+
+  var maplikeSet = new Set();
+  Object.defineProperty(maplikeSet, 'constructor', { enumerable: false, value: Map });
+  maplikeSet.__proto__ = Map.prototype; // eslint-disable-line no-proto
+  t.deepEqualTest(
+    maplikeSet,
+    new Map(),
+    'Map-like Set, and Map',
+    false,
+    false
   );
 
   t.end();
