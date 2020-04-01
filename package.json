@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@ljharb/eslint-config": "^16.0.0",
-    "auto-changelog": "^1.16.2",
+    "auto-changelog": "^1.16.3",
     "eslint": "^6.8.0",
     "has-symbols": "^1.0.1",
     "has-typed-arrays": "^1.0.0",
@@ -54,7 +54,7 @@
     "object.getownpropertydescriptors": "^2.1.0",
     "safe-publish-latest": "^1.1.4",
     "semver": "^6.3.0",
-    "tape": "^5.0.0-next.4"
+    "tape": "^5.0.0-next.5"
   },
   "repository": {
     "type": "git",
