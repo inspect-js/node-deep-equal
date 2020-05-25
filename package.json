@@ -45,17 +45,17 @@
     "which-typed-array": "^1.1.2"
   },
   "devDependencies": {
-    "@ljharb/eslint-config": "^17.0.0",
-    "aud": "^1.1.1",
+    "@ljharb/eslint-config": "^17.1.0",
+    "aud": "^1.1.2",
     "auto-changelog": "^2.0.0",
-    "eslint": "^7.0.0",
+    "eslint": "^7.1.0",
     "has-symbols": "^1.0.1",
     "has-typed-arrays": "^1.0.0",
     "nyc": "^10.3.2",
     "object.getownpropertydescriptors": "^2.1.0",
     "safe-publish-latest": "^1.1.4",
     "semver": "^6.3.0",
-    "tape": "^5.0.0"
+    "tape": "^5.0.1"
   },
   "repository": {
     "type": "git",
