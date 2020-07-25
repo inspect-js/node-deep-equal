@@ -287,21 +287,21 @@ function objEquiv(a, b, opts, channel) {
   var aIsError = a instanceof Error;
   var bIsError = b instanceof Error;
   if (aIsError !== bIsError) { return false; }
-  if (aIsError || bIsError) {
+  if (aIsError) {
     if (a.name !== b.name || a.message !== b.message) { return false; }
   }
 
   var aIsRegex = isRegex(a);
   var bIsRegex = isRegex(b);
   if (aIsRegex !== bIsRegex) { return false; }
-  if ((aIsRegex || bIsRegex) && (a.source !== b.source || flags(a) !== flags(b))) {
+  if (aIsRegex && (a.source !== b.source || flags(a) !== flags(b))) {
     return false;
   }
 
   var aIsDate = isDate(a);
   var bIsDate = isDate(b);
   if (aIsDate !== bIsDate) { return false; }
-  if (aIsDate || bIsDate) { // && would work too, because both are true or both false here
+  if (aIsDate) {
     if ($getTime(a) !== $getTime(b)) { return false; }
   }
   if (opts.strict && gPO && gPO(a) !== gPO(b)) { return false; }
@@ -313,15 +313,13 @@ function objEquiv(a, b, opts, channel) {
   var aIsBuffer = isBuffer(a);
   var bIsBuffer = isBuffer(b);
   if (aIsBuffer !== bIsBuffer) { return false; }
-  if (aIsBuffer || bIsBuffer) { // && would work too, because both are true or both false here
+  if (aIsBuffer) {
     if (a.length !== b.length) { return false; }
     for (i = 0; i < a.length; i++) {
       if (a[i] !== b[i]) { return false; }
     }
     return true;
   }
-
-  if (typeof a !== typeof b) { return false; }
 
   var ka = objectKeys(a);
   var kb = objectKeys(b);
