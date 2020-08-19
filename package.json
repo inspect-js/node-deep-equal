@@ -45,10 +45,10 @@
     "which-typed-array": "^1.1.2"
   },
   "devDependencies": {
-    "@ljharb/eslint-config": "^17.1.0",
+    "@ljharb/eslint-config": "^17.2.0",
     "aud": "^1.1.2",
-    "auto-changelog": "^2.0.0",
-    "eslint": "^7.1.0",
+    "auto-changelog": "^2.2.0",
+    "eslint": "^7.7.0",
     "has-symbols": "^1.0.1",
     "has-typed-arrays": "^1.0.0",
     "nyc": "^10.3.2",
@@ -110,7 +110,8 @@
     "template": "keepachangelog",
     "unreleased": false,
     "commitLimit": false,
-    "backfillLimit": false
+    "backfillLimit": false,
+    "hideCredit": true
   },
   "greenkeeper": {
     "ignore": [
