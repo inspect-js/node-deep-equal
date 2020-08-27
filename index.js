@@ -1,6 +1,6 @@
 'use strict';
 
-var objectKeys = require('object-keys');
+var ownKeys = require('reflect.ownkeys');
 var isArguments = require('is-arguments');
 var is = require('object-is');
 var isRegex = require('is-regex');
@@ -15,6 +15,7 @@ var getIterator = require('es-get-iterator');
 var getSideChannel = require('side-channel');
 var whichTypedArray = require('which-typed-array');
 var assign = require('object.assign');
+var symbolDescription = require('symbol.prototype.description');
 
 // TODO: use extracted package
 var byteLength = callBound('ArrayBuffer.prototype.byteLength', true);
@@ -42,6 +43,34 @@ var $setAdd = callBound('Set.prototype.add', true);
 var $setDelete = callBound('Set.prototype.delete', true);
 var $setHas = callBound('Set.prototype.has', true);
 var $setSize = callBound('Set.prototype.size', true);
+
+var $isEnumerable = callBound('Object.prototype.propertyIsEnumerable');
+var $localeCompare = callBound('String.prototype.localeCompare');
+
+function sortPropertyKeys(a, b) {
+  /* eslint no-magic-numbers: 0 */
+  if (typeof a === 'string') {
+    if (typeof b === 'string') {
+      return $localeCompare(a, b);
+    }
+    return 1;
+  }
+  if (typeof b === 'string') {
+    return -1;
+  }
+  return $localeCompare(symbolDescription(a), symbolDescription(b));
+}
+
+function ownEnumerableKeys(obj) {
+  var keys = ownKeys(obj);
+  var enumerableKeys = [];
+  for (var i = 0; i < keys.length; i += 1) {
+    if ($isEnumerable(obj, keys[i])) {
+      enumerableKeys[enumerableKeys.length] = keys[i];
+    }
+  }
+  return enumerableKeys;
+}
 
 // taken from https://github.com/browserify/commonjs-assert/blob/bba838e9ba9e28edf3127ce6974624208502f6bc/internal/util/comparisons.js#L401-L414
 function setHasEqualElement(set, val1, opts, channel) {
@@ -291,7 +320,9 @@ function objEquiv(a, b, opts, channel) {
 
   if ($objToString(a) !== $objToString(b)) { return false; }
 
-  if (isArguments(a) !== isArguments(b)) { return false; }
+  var aIsArgs = isArguments(a);
+  var bIsArgs = isArguments(b);
+  if (aIsArgs !== bIsArgs) { return false; }
 
   var aIsArray = isArray(a);
   var bIsArray = isArray(b);
@@ -346,14 +377,14 @@ function objEquiv(a, b, opts, channel) {
 
   if (typeof a !== typeof b) { return false; }
 
-  var ka = objectKeys(a);
-  var kb = objectKeys(b);
+  var ka = ownEnumerableKeys(a);
+  var kb = ownEnumerableKeys(b);
   // having the same number of owned properties (keys incorporates hasOwnProperty)
   if (ka.length !== kb.length) { return false; }
 
   // the same set of keys (although not necessarily the same order),
-  ka.sort();
-  kb.sort();
+  ka.sort(sortPropertyKeys);
+  kb.sort(sortPropertyKeys);
   // ~~~cheap key test
   for (i = ka.length - 1; i >= 0; i--) {
     if (ka[i] != kb[i]) { return false; } // eslint-disable-line eqeqeq

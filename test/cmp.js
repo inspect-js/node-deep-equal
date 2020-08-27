@@ -1238,3 +1238,50 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
 
   t.end();
 });
+
+test('Symbol properties', { skip: !hasSymbols }, function (t) {
+  var sym = Symbol();
+  var a = {};
+  a[sym] = 1;
+
+  var b = {};
+  b[sym] = '1';
+
+  t.deepEqualTest(
+    a,
+    b,
+    'Two objects with similar values on the same symbol key',
+    true,
+    false
+  );
+
+  var c = {};
+  c[sym] = function () {};
+
+  var d = {};
+  d[sym] = function () {};
+
+  t.deepEqualTest(
+    c,
+    d,
+    'Two objects with similar functions on the same symbol key',
+    false,
+    false
+  );
+
+  var e = {};
+  e[sym] = Symbol('a');
+
+  var f = {};
+  f[sym] = Symbol('a');
+
+  t.deepEqualTest(
+    e,
+    f,
+    'Two objects with similar symbols on the same symbol key',
+    false,
+    false
+  );
+
+  t.end();
+});
