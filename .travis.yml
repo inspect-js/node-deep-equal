@@ -8,6 +8,8 @@ import:
  - ljharb/travis-ci:node/posttest.yml
 matrix:
   include:
+    - node_js: "14"
+      env: ASSERT=true TEST=true
     - node_js: "13"
       env: ASSERT=true TEST=true
     - node_js: "12"

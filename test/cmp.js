@@ -738,12 +738,14 @@ test('null == undefined', function (t) {
   t.end();
 });
 
+// node 14 changed `deepEqual` to make two NaNs loosely equal. TODO, semver-major: change deep-equal in the same way.
+var isNode14 = isNode && process.env.ASSERT && semver.satisfies(process.version, '>= 14');
 test('NaNs', function (t) {
   t.deepEqualTest(
     NaN,
     NaN,
     'two NaNs',
-    false,
+    isNode14,
     true
   );
 
@@ -751,7 +753,7 @@ test('NaNs', function (t) {
     { a: NaN },
     { a: NaN },
     'two equiv objects with a NaN value',
-    false,
+    isNode14,
     true
   );
 
