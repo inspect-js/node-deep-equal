@@ -47,8 +47,8 @@
   "devDependencies": {
     "@ljharb/eslint-config": "^17.2.0",
     "aud": "^1.1.2",
-    "auto-changelog": "^2.2.0",
-    "eslint": "^7.7.0",
+    "auto-changelog": "^2.2.1",
+    "eslint": "^7.10.0",
     "has-symbols": "^1.0.1",
     "has-typed-arrays": "^1.0.0",
     "nyc": "^10.3.2",
