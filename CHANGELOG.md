@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.0.4](https://github.com/inspect-js/node-deep-equal/compare/v2.0.3...v2.0.4) - 2020-10-01
+
+### Fixed
+
+- [meta] fix incorrect `./package.json` exports entry [`#89`](https://github.com/inspect-js/node-deep-equal/issues/89)
+
+### Commits
+
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `auto-changelog` [`d6bfee3`](https://github.com/inspect-js/node-deep-equal/commit/d6bfee329e2a430a12e6a4aba7006c5d7c36020e)
+- [Tests] account for node 14+ making two NaNs loosely deep equal [`9367954`](https://github.com/inspect-js/node-deep-equal/commit/93679546d97dbd92d615b0f758d733ea1fb4eb4b)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `aud`, `tape` [`86a159b`](https://github.com/inspect-js/node-deep-equal/commit/86a159b72c3e3620285498113251220d3c5d05f0)
+- [Deps] update `es-abstract`, `object-is`, `object.assign` [`e87979d`](https://github.com/inspect-js/node-deep-equal/commit/e87979d311faa537622a6c9faee6e91cf9a08bcd)
+- [Deps] update `es-abstract`, `is-regex` [`d0cacca`](https://github.com/inspect-js/node-deep-equal/commit/d0cacca140b963d8abbe10f6bf640f22ef11f7b0)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `tape` [`375a9e1`](https://github.com/inspect-js/node-deep-equal/commit/375a9e1e4911b3210e328365432c8cf946d0a7e2)
+- [Dev Deps] update `eslint`, `auto-changelog` [`e562d4f`](https://github.com/inspect-js/node-deep-equal/commit/e562d4fadebf09b1fca02d6f43e1c933c6ef8242)
+- [Deps] update `side-channel` [`f092342`](https://github.com/inspect-js/node-deep-equal/commit/f092342373d4a33b3f679042f357fd800185caad)
+
 ## [v2.0.3](https://github.com/inspect-js/node-deep-equal/compare/v2.0.2...v2.0.3) - 2020-04-23
 
 ### Commits
