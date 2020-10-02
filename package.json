@@ -11,7 +11,7 @@
       "./index.js"
     ],
     "./package": "./package.json",
-    "./package.json": "./package"
+    "./package.json": "./package.json"
   },
   "directories": {
     "lib": ".",
