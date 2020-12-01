@@ -22,7 +22,7 @@
     "prepublish": "safe-publish-latest",
     "pretest": "npm run lint",
     "lint": "eslint .",
-    "tests-only": "nyc tape test/*",
+    "tests-only": "nyc tape 'test/**/*.js'",
     "test": "npm run tests-only",
     "posttest": "npx aud --production",
     "version": "auto-changelog && git add CHANGELOG.md",
