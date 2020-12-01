@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.0.5](https://github.com/inspect-js/node-deep-equal/compare/v2.0.4...v2.0.5) - 2020-12-01
+
+### Commits
+
+- [Tests] migrate tests to Github Actions [`4051a18`](https://github.com/inspect-js/node-deep-equal/commit/4051a1811612fd1b107743a092402361f597f89a)
+- [meta] add Automatic Rebase and Require Allow Edits workflows [`6682b15`](https://github.com/inspect-js/node-deep-equal/commit/6682b15417630d6c57c854d088dfcd6023b3e185)
+- [Deps] use `call-bind` and `get-intrinsic` instead of `es-abstract`; update `es-get-iterator`, `object-is`, `object.assign` [`a1d6d93`](https://github.com/inspect-js/node-deep-equal/commit/a1d6d931ebc80db8a6dba1bd453165356458f9e1)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `aud`, `object.getownpropertydescriptors` [`b142f4b`](https://github.com/inspect-js/node-deep-equal/commit/b142f4b9458c320b944dc06f57b9339530cf404e)
+
 ## [v2.0.4](https://github.com/inspect-js/node-deep-equal/compare/v2.0.3...v2.0.4) - 2020-10-01
 
 ### Fixed
