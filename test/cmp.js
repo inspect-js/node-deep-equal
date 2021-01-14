@@ -847,6 +847,16 @@ test('regexen', function (t) {
     false
   );
 
+  var c = /abc/g;
+  var d = /abc/i;
+  t.deepEqualTest(
+    c,
+    d,
+    'two regexes with the same source but different flags',
+    false,
+    false
+  );
+
   t.end();
 });
 
