@@ -4,7 +4,6 @@ var objectKeys = require('object-keys');
 var isArguments = require('is-arguments');
 var is = require('object-is');
 var isRegex = require('is-regex');
-var flags = require('regexp.prototype.flags');
 var isArray = require('isarray');
 var isDate = require('is-date-object');
 var whichBoxedPrimitive = require('which-boxed-primitive');
@@ -294,7 +293,7 @@ function objEquiv(a, b, opts, channel) {
   var aIsRegex = isRegex(a);
   var bIsRegex = isRegex(b);
   if (aIsRegex !== bIsRegex) { return false; }
-  if ((aIsRegex || bIsRegex) && (a.source !== b.source || flags(a) !== flags(b))) {
+  if ((aIsRegex || bIsRegex) && (a.source !== b.source || a.flags !== b.flags)) {
     return false;
   }
 
