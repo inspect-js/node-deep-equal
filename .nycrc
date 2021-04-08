@@ -4,25 +4,14 @@
     ".cjs",
     ".mjs"
   ],
-  "include": [
-    "*"
-  ],
+  "all": true,
+  "check-coverage": false,
+  "reporter": ["text-summary", "text", "html", "json", "lcov"],
   "exclude": [
     "coverage",
+    "example",
     "test"
   ],
-  "reporter": [
-    "text",
-    "html",
-    "json",
-    "lcov"
-  ],
-  "all": false,
-  "check-coverage": false,
-  "statements": 100,
-  "branches": 100,
-  "lines": 100,
-  "functions": 100,
   "sourceMap": true,
   "instrument": true
 }
