@@ -19,7 +19,8 @@
     "test": "test"
   },
   "scripts": {
-    "prepublish": "safe-publish-latest",
+    "prepublish": "not-in-publish || npm run prepublishOnly",
+    "prepublishOnly": "safe-publish-latest",
     "pretest": "npm run lint",
     "lint": "eslint .",
     "tests-only": "nyc tape 'test/**/*.js'",
