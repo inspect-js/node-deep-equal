@@ -47,10 +47,10 @@
     "which-typed-array": "^1.1.4"
   },
   "devDependencies": {
-    "@ljharb/eslint-config": "^17.5.1",
-    "aud": "^1.1.4",
+    "@ljharb/eslint-config": "^17.6.0",
+    "aud": "^1.1.5",
     "auto-changelog": "^2.2.1",
-    "eslint": "^7.23.0",
+    "eslint": "^7.27.0",
     "has-symbols": "^1.0.2",
     "has-typed-arrays": "^1.0.1",
     "nyc": "^10.3.2",
