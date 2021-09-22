@@ -1175,5 +1175,60 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
     st.end();
   });
 
+  t.test('ArrayBuffers', { skip: typeof ArrayBuffer !== 'function' }, function (st) {
+    var buffer1 = new ArrayBuffer(8); // initial value of 0's
+    var buffer2 = new ArrayBuffer(8); // initial value of 0's
+
+    var view1 = new Int8Array(buffer1);
+    var view2 = new Int8Array(buffer2);
+
+    st.deepEqualTest(
+      view1,
+      view2,
+      'Int8Arrays of similar ArrayBuffers',
+      true,
+      true
+    );
+
+    st.deepEqualTest(
+      buffer1,
+      buffer2,
+      'similar ArrayBuffers',
+      true,
+      true
+    );
+
+    view1.fill(9); // change all values to 9's
+
+    st.deepEqualTest(
+      view1,
+      view2,
+      'Int8Arrays of different ArrayBuffers',
+      false,
+      false
+    );
+
+    st.deepEqualTest(
+      buffer1,
+      buffer2,
+      'different ArrayBuffers',
+      false,
+      false
+    );
+
+    var empty4 = new ArrayBuffer(4);
+    var empty6 = new ArrayBuffer(6);
+    Object.defineProperty(empty6, 'byteLength', { value: 4 });
+    st.deepEqualTest(
+      empty4,
+      empty6,
+      'different-length ArrayBuffers, one lying',
+      false,
+      false
+    );
+
+    st.end();
+  });
+
   t.end();
 });

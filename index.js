@@ -16,6 +16,20 @@ var getSideChannel = require('side-channel');
 var whichTypedArray = require('which-typed-array');
 var assign = require('object.assign');
 
+// TODO: use extracted package
+var byteLength = callBound('ArrayBuffer.prototype.byteLength', true);
+function isArrayBuffer(buffer) {
+  if (!buffer || typeof buffer !== 'object' || !byteLength) {
+    return false;
+  }
+  try {
+    byteLength(buffer);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 var $getTime = callBound('Date.prototype.getTime');
 var gPO = Object.getPrototypeOf;
 var $objToString = callBound('Object.prototype.toString');
@@ -319,6 +333,15 @@ function objEquiv(a, b, opts, channel) {
       if (a[i] !== b[i]) { return false; }
     }
     return true;
+  }
+
+  var aIsArrayBuffer = isArrayBuffer(a);
+  var bIsArrayBuffer = isArrayBuffer(b);
+  if (aIsArrayBuffer !== bIsArrayBuffer) { return false; }
+  if (aIsArrayBuffer || bIsArrayBuffer) { // && would work too, because both are true or both false here
+    if (byteLength(a) !== byteLength(b)) { return false; }
+    /* global Uint8Array */
+    return typeof Uint8Array === 'function' && internalDeepEqual(new Uint8Array(a), new Uint8Array(b), opts, channel);
   }
 
   if (typeof a !== typeof b) { return false; }

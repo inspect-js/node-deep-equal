@@ -7,6 +7,7 @@
     "func-style": [2, "declaration"],
     "id-length": 0,
     "indent": [2, 2],
+    "max-lines": 0,
     "max-params": [2, 6],
     "max-statements-per-line": [2, { "max": 2 }],
     "new-cap": [2, { "capIsNewExceptions": ["GetIntrinsic"] }],
@@ -14,6 +15,7 @@
     "operator-linebreak": [2, "before"],
   },
   "globals": {
+    "ArrayBuffer": false,
     "WeakMap": false,
     "WeakSet": false,
   },
