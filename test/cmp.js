@@ -1198,7 +1198,9 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
       true
     );
 
-    view1.fill(9); // change all values to 9's
+    for (var i = 0; i < view1.byteLength; i += 1) {
+      view1[i] = 9; // change all values to 9's
+    }
 
     st.deepEqualTest(
       view1,
