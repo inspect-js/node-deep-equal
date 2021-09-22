@@ -1218,16 +1218,20 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
       false
     );
 
-    var empty4 = new ArrayBuffer(4);
-    var empty6 = new ArrayBuffer(6);
-    Object.defineProperty(empty6, 'byteLength', { value: 4 });
-    st.deepEqualTest(
-      empty4,
-      empty6,
-      'different-length ArrayBuffers, one lying',
-      false,
-      false
-    );
+    t.test('lies about byteLength', { skip: !('byteLength' in ArrayBuffer.prototype) }, function (s2t) {
+      var empty4 = new ArrayBuffer(4);
+      var empty6 = new ArrayBuffer(6);
+      Object.defineProperty(empty6, 'byteLength', { value: 4 });
+
+      s2t.deepEqualTest(
+        empty4,
+        empty6,
+        'different-length ArrayBuffers, one lying',
+        false,
+        false
+      );
+      s2t.end();
+    });
 
     st.end();
   });
