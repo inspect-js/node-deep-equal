@@ -5,7 +5,6 @@ var isArguments = require('is-arguments');
 var is = require('object-is');
 var isRegex = require('is-regex');
 var flags = require('regexp.prototype.flags');
-var isArray = require('isarray');
 var isDate = require('is-date-object');
 var whichBoxedPrimitive = require('which-boxed-primitive');
 var GetIntrinsic = require('get-intrinsic');
@@ -280,6 +279,10 @@ function mapEquiv(a, b, opts, channel) {
     return $setSize(set) === 0;
   }
   return true;
+}
+
+var isArray = Array.isArray || function (arr) {
+   return {}.toString(arr) === '[object Array]';
 }
 
 function objEquiv(a, b, opts, channel) {
