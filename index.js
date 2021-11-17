@@ -282,8 +282,8 @@ function mapEquiv(a, b, opts, channel) {
 }
 
 var isArray = Array.isArray || function (arr) {
-   return {}.toString(arr) === '[object Array]';
-}
+  return {}.toString(arr) === '[object Array]';
+};
 
 function objEquiv(a, b, opts, channel) {
   /* eslint max-statements: [2, 100], max-lines-per-function: [2, 120], max-depth: [2, 5] */
