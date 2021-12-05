@@ -283,7 +283,7 @@ function mapEquiv(a, b, opts, channel) {
 }
 
 function objEquiv(a, b, opts, channel) {
-  /* eslint max-statements: [2, 100], max-lines-per-function: [2, 120], max-depth: [2, 5] */
+  /* eslint max-statements: [2, 100], max-lines-per-function: [2, 120], max-depth: [2, 5], max-lines: [2, 400] */
   var i, key;
 
   if (typeof a !== typeof b) { return false; }
