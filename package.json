@@ -22,10 +22,10 @@
     "prepublish": "not-in-publish || npm run prepublishOnly",
     "prepublishOnly": "safe-publish-latest",
     "pretest": "npm run lint",
-    "lint": "eslint .",
+    "lint": "eslint --ext=js,mjs .",
     "tests-only": "nyc tape 'test/**/*.js'",
     "test": "npm run tests-only",
-    "posttest": "npx aud --production",
+    "posttest": "aud --production",
     "version": "auto-changelog && git add CHANGELOG.md",
     "postversion": "auto-changelog && git add CHANGELOG.md && git commit --no-edit --amend && git tag -f \"v$(node -e \"console.log(require('./package.json').version)\")\""
   },
@@ -47,10 +47,10 @@
     "which-typed-array": "^1.1.7"
   },
   "devDependencies": {
-    "@ljharb/eslint-config": "^19.1.0",
+    "@ljharb/eslint-config": "^20.0.0",
     "aud": "^1.1.5",
     "auto-changelog": "^2.3.0",
-    "eslint": "^8.4.0",
+    "eslint": "^8.4.1",
     "has-symbols": "^1.0.2",
     "has-typed-arrays": "^1.0.1",
     "nyc": "^10.3.2",
