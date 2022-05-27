@@ -1,7 +1,6 @@
 'use strict';
 
 var Test = require('tape/lib/test');
-var is = require('object-is');
 
 var deepEqual = require('../');
 var assert = require('../assert');
@@ -25,7 +24,7 @@ function equalReversed(t, a, b, isEqual, msg, isStrict, skipReversed) {
     : equal(a, b);
   var suffix = isEqual ? ' are equal' : ' are not equal';
   t.equal(actual, !!isEqual, msg + suffix);
-  if (typeof skipReversed === 'boolean' ? !skipReversed : !is(a, b)) {
+  if (typeof skipReversed === 'boolean' ? !skipReversed : !Object.is(a, b)) {
     var actualReverse = isStrict
       ? equal(b, a, { strict: true })
       : equal(b, a);

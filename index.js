@@ -2,7 +2,6 @@
 
 var objectKeys = require('object-keys');
 var isArguments = require('is-arguments');
-var is = require('object-is');
 var isRegex = require('is-regex');
 var flags = require('regexp.prototype.flags');
 var isDate = require('is-date-object');
@@ -129,7 +128,7 @@ function internalDeepEqual(actual, expected, options, channel) {
   var opts = options || {};
 
   // 7.1. All identical values are equivalent, as determined by ===.
-  if (opts.strict ? is(actual, expected) : actual === expected) {
+  if (opts.strict ? Object.is(actual, expected) : actual === expected) {
     return true;
   }
 
@@ -141,7 +140,7 @@ function internalDeepEqual(actual, expected, options, channel) {
 
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
   if (!actual || !expected || (typeof actual !== 'object' && typeof expected !== 'object')) {
-    return opts.strict ? is(actual, expected) : actual == expected; // eslint-disable-line eqeqeq
+    return opts.strict ? Object.is(actual, expected) : actual == expected; // eslint-disable-line eqeqeq
   }
 
   /*
