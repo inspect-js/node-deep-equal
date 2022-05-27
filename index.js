@@ -5,7 +5,6 @@ var isArguments = require('is-arguments');
 var is = require('object-is');
 var isRegex = require('is-regex');
 var flags = require('regexp.prototype.flags');
-var isArray = require('isarray');
 var isDate = require('is-date-object');
 var whichBoxedPrimitive = require('which-boxed-primitive');
 var GetIntrinsic = require('get-intrinsic');
@@ -293,8 +292,8 @@ function objEquiv(a, b, opts, channel) {
 
   if (isArguments(a) !== isArguments(b)) { return false; }
 
-  var aIsArray = isArray(a);
-  var bIsArray = isArray(b);
+  var aIsArray = Array.isArray(a);
+  var bIsArray = Array.isArray(b);
   if (aIsArray !== bIsArray) { return false; }
 
   // TODO: replace when a cross-realm brand check is available
