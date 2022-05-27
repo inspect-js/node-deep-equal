@@ -11,7 +11,6 @@ var whichCollection = require('which-collection');
 var getIterator = require('es-get-iterator');
 var getSideChannel = require('side-channel');
 var whichTypedArray = require('which-typed-array');
-var assign = require('object.assign');
 
 // TODO: use extracted package
 var byteLength = callBound('ArrayBuffer.prototype.byteLength', true);
@@ -80,7 +79,7 @@ function mapMightHaveLoosePrim(a, b, prim, item, opts, channel) {
     return altValue;
   }
   var curB = $mapGet(b, altValue);
-  var looseOpts = assign({}, opts, { strict: false });
+  var looseOpts = Object.assign({}, opts, { strict: false });
   if (
     (typeof curB === 'undefined' && !$mapHas(b, altValue))
     // eslint-disable-next-line no-use-before-define
@@ -269,7 +268,7 @@ function mapEquiv(a, b, opts, channel) {
       } else if (
         !opts.strict
         && (!a.has(key) || !internalDeepEqual($mapGet(a, key), item2, opts, channel))
-        && !mapHasEqualEntry(set, a, key, item2, assign({}, opts, { strict: false }), channel)
+        && !mapHasEqualEntry(set, a, key, item2, Object.assign({}, opts, { strict: false }), channel)
       ) {
         return false;
       }

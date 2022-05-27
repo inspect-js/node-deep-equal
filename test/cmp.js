@@ -2,7 +2,6 @@
 
 var test = require('tape');
 require('./_tape');
-var assign = require('object.assign');
 var gOPDs = require('object.getownpropertydescriptors');
 var hasSymbols = require('has-symbols')();
 var hasTypedArrays = require('has-typed-arrays')();
@@ -923,7 +922,7 @@ test('Errors', function (t) {
 
   t.deepEqualTest(
     new Error('a'),
-    assign(new Error('a'), { code: 10 }),
+    Object.assign(new Error('a'), { code: 10 }),
     'two otherwise equal errors with different own properties',
     false,
     false
@@ -1139,7 +1138,7 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
     var a = safeBuffer('test');
     var b = tag(Object.create(
       a.__proto__, // eslint-disable-line no-proto
-      assign(gOPDs(a), {
+      Object.assign(gOPDs(a), {
         length: {
           enumerable: false,
           value: 4
