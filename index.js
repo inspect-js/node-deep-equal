@@ -1,6 +1,5 @@
 'use strict';
 
-var objectKeys = require('object-keys');
 var isArguments = require('is-arguments');
 var isRegex = require('is-regex');
 var flags = require('regexp.prototype.flags');
@@ -344,8 +343,8 @@ function objEquiv(a, b, opts, channel) {
 
   if (typeof a !== typeof b) { return false; }
 
-  var ka = objectKeys(a);
-  var kb = objectKeys(b);
+  var ka = Object.keys(a);
+  var kb = Object.keys(b);
   // having the same number of owned properties (keys incorporates hasOwnProperty)
   if (ka.length !== kb.length) { return false; }
 
