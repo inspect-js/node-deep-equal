@@ -45,7 +45,7 @@
     "side-channel": "^1.0.4",
     "which-boxed-primitive": "^1.0.2",
     "which-collection": "^1.0.1",
-    "which-typed-array": "^1.1.8"
+    "which-typed-array": "^1.1.9"
   },
   "devDependencies": {
     "@ljharb/eslint-config": "^21.0.0",
