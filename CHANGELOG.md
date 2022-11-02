@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.1.0](https://github.com/inspect-js/node-deep-equal/compare/v2.0.5...v2.1.0) - 2022-11-02
+
+### Fixed
+
+- [New] add support for `ArrayBuffer` [`#94`](https://github.com/inspect-js/node-deep-equal/issues/94)
+
+### Commits
+
+- [actions] reuse common workflows [`12de287`](https://github.com/inspect-js/node-deep-equal/commit/12de2873def84c621421b1e3d4a96babf2ceb30a)
+- [actions] use `node/install` instead of `node/run`; use `codecov` action [`ec248b9`](https://github.com/inspect-js/node-deep-equal/commit/ec248b96f4f91eb4c5971dfec74d6d91f04b39cd)
+- [Tests] run assert tests on a dynamic matrix [`695aebd`](https://github.com/inspect-js/node-deep-equal/commit/695aebd50945621984bfa7e60b5c99f79dbacf1a)
+- [readme] add badges [`492e159`](https://github.com/inspect-js/node-deep-equal/commit/492e1591585233184151b5526cf5413e61a2aa89)
+- [Test] ArrayBuffers in node &lt; 0.12 have a nonconfigurable own `byteLength` property [`40f4b87`](https://github.com/inspect-js/node-deep-equal/commit/40f4b8719658f6262399b24791d4ccb5960ca8ea)
+- [meta] use `npmignore` to autogenerate an npmignore file [`2627269`](https://github.com/inspect-js/node-deep-equal/commit/26272693147d68ec3ae2216b1f3ac5d30b79b3da)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `safe-publish-latest`, `tape` [`7a05bb7`](https://github.com/inspect-js/node-deep-equal/commit/7a05bb7482817616243fc89956abf48710d77fea)
+- [Deps] update `call-bind`, `es-get-iterator`, `get-intrinsic`, `is-arguments`, `is-regex`, `regexp.prototype.flags`, `side-channel`, `which-boxed-primitive`, `which-typed-array` [`c0844e6`](https://github.com/inspect-js/node-deep-equal/commit/c0844e629ba3dc5193fd41a75ebcedaba976c1af)
+- [actions] update codecov uploader [`b1b0552`](https://github.com/inspect-js/node-deep-equal/commit/b1b0552fe3dc23029a2717f84642e53548902e68)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `aud`, `auto-changelog`, `has-symbols`, `object.getownpropertydescriptors`, `tape` [`9a1ccf5`](https://github.com/inspect-js/node-deep-equal/commit/9a1ccf5285317962fe37baa211c2b20081be71ef)
+- [meta] do not publish github action workflow files [`2d63384`](https://github.com/inspect-js/node-deep-equal/commit/2d63384d6676b593c2a74b45747ac81cea3da76e)
+- [actions] update rebase action to use reusable workflow [`69d21f5`](https://github.com/inspect-js/node-deep-equal/commit/69d21f55af0bcff1c41447a6ac396ae556fda226)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `aud`, `has-symbols`, `object.getownpropertydescriptors`, `tape` [`297aae8`](https://github.com/inspect-js/node-deep-equal/commit/297aae88f619b1e058418be32e37fc29770b4f21)
+- [Tests] add tests for regexes with the same source but different flags [`29c8a0d`](https://github.com/inspect-js/node-deep-equal/commit/29c8a0da09567b3bbe6614c1e235d5a87d7bdaf2)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config` [`9e64ec9`](https://github.com/inspect-js/node-deep-equal/commit/9e64ec93a8c5cbe87315d30dd62a8fe6dcf842b4)
+- [Deps] update `is-arguments`, `is-date-object`, `is-regex`, `which-typed-array` [`edfb752`](https://github.com/inspect-js/node-deep-equal/commit/edfb752810699790c06bb424174f38b449a4b8fb)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `auto-changelog`, `tape` [`7b5f7a3`](https://github.com/inspect-js/node-deep-equal/commit/7b5f7a348b2bb78ca1c00003d0dd3444d5a372a6)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `has-typed-arrays`, `tape` [`e328a23`](https://github.com/inspect-js/node-deep-equal/commit/e328a237ba9c262d8c2d178a65d5e1f744cbbd6b)
+- [Deps] update `get-intrinsic`, `regexp.prototype.flags`, `which-typed-array` [`29123a7`](https://github.com/inspect-js/node-deep-equal/commit/29123a71857c27cce497ac991fa9be0e5921adce)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `aud` [`b7039ef`](https://github.com/inspect-js/node-deep-equal/commit/b7039effc1b751cb579095f9738ee019d8458a41)
+- [Dev Deps] update `aud`, `tape` [`9d0b2e0`](https://github.com/inspect-js/node-deep-equal/commit/9d0b2e07df24dfd1d4d9bf32cdca07e6e1377f23)
+- [actions] update workflows [`a5f5a7e`](https://github.com/inspect-js/node-deep-equal/commit/a5f5a7ed570e35cefad08ed32652cb8647d0166c)
+- [Deps] update `get-intrinsic`, `object.assign` [`02025e2`](https://github.com/inspect-js/node-deep-equal/commit/02025e21dfbce6a4d52421c4892ba743dd7a7540)
+- [Test] node &lt; 4 lacks `ArrayBuffer.prototype.fill` [`bb65b07`](https://github.com/inspect-js/node-deep-equal/commit/bb65b07d39eeea03ca066a92892a06a607641ed7)
+- [Deps] update `is-date-object`, `is-regex` [`a463ed2`](https://github.com/inspect-js/node-deep-equal/commit/a463ed26ba7ca4b818db4929e4e946ddc0590bce)
+- [Deps] update `get-intrinsic`, `object-is` [`2a33cce`](https://github.com/inspect-js/node-deep-equal/commit/2a33cced17827df191676ecdd9b9bc4f0d814aa6)
+- [actions] update workflows [`d905278`](https://github.com/inspect-js/node-deep-equal/commit/d90527855a35bcaeef70d3e21370580d7d182c8d)
+- [meta] use `prepublishOnly` script for npm 7+ [`7b66184`](https://github.com/inspect-js/node-deep-equal/commit/7b661846aedb0ad5768f1118e93c662d214c85f8)
+- [Dev Deps] update `object.getownpropertydescriptors` [`d970dbc`](https://github.com/inspect-js/node-deep-equal/commit/d970dbcf4a95c58d5bbd6ea507455bbfa1e7ec02)
+
 ## [v2.0.5](https://github.com/inspect-js/node-deep-equal/compare/v2.0.4...v2.0.5) - 2020-12-01
 
 ### Commits
