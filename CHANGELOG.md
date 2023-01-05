@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.0](https://github.com/inspect-js/node-deep-equal/compare/v2.1.0...v2.2.0) - 2023-01-05
+
+### Commits
+
+- [New] add support for `SharedArrayBuffer` [`0ef51c7`](https://github.com/inspect-js/node-deep-equal/commit/0ef51c79b7dcd6ae5890b2dce4304be7c8ebe314)
+- [Refactor] use `is-array-buffer` package [`0360ee1`](https://github.com/inspect-js/node-deep-equal/commit/0360ee1f1bb6e5804c15a9a4aa75ff84120a33e1)
+- [Fix] `whichTypedArray` can return false in both cases [`df3e3c4`](https://github.com/inspect-js/node-deep-equal/commit/df3e3c4e30552b7a7892b62dc45fccd31eac9bfe)
+- [Dev Deps] update `aud`, `object.getownpropertydescriptors` [`6d62ea4`](https://github.com/inspect-js/node-deep-equal/commit/6d62ea4f2b82d4f861fd3e0c2d67916939b1edbc)
+- [Dev Deps] update `@ljharb/eslint-config` [`15aab59`](https://github.com/inspect-js/node-deep-equal/commit/15aab59d647628e05b77d1897036d73884f7a107)
+- [Deps] update `which-typed-array` [`8dfce27`](https://github.com/inspect-js/node-deep-equal/commit/8dfce27f333721c697b90569b26e4bded0d61d88)
+- [eslint] remove `.eslintignore` [`af46773`](https://github.com/inspect-js/node-deep-equal/commit/af46773b281dc67d7743280505a22248f0f0748d)
+
 ## [v2.1.0](https://github.com/inspect-js/node-deep-equal/compare/v2.0.5...v2.1.0) - 2022-11-02
 
 ### Fixed
