@@ -320,7 +320,9 @@ function objEquiv(a, b, opts, channel) {
   }
   if (opts.strict && gPO && gPO(a) !== gPO(b)) { return false; }
 
-  if (whichTypedArray(a) !== whichTypedArray(b)) {
+  var aWhich = whichTypedArray(a);
+  var bWhich = whichTypedArray(b);
+  if ((aWhich || bWhich) && aWhich !== bWhich) {
     return false;
   }
 
