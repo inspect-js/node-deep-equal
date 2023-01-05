@@ -38,6 +38,7 @@
     "is-array-buffer": "^3.0.1",
     "is-date-object": "^1.0.5",
     "is-regex": "^1.1.4",
+    "is-shared-array-buffer": "^1.0.2",
     "isarray": "^2.0.5",
     "object-is": "^1.1.5",
     "object-keys": "^1.1.1",

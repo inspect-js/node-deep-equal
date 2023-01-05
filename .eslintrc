@@ -25,7 +25,7 @@
       "files": "example/**",
       "rules": {
         "no-console": 0,
-		"no-magic-numbers": 0,
+        "no-magic-numbers": 0,
       }
     },
     {

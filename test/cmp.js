@@ -1236,5 +1236,66 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
     st.end();
   });
 
+  t.test('SharedArrayBuffers', { skip: typeof SharedArrayBuffer !== 'function' }, function (st) {
+    var buffer1 = new SharedArrayBuffer(8); // initial value of 0's
+    var buffer2 = new SharedArrayBuffer(8); // initial value of 0's
+
+    var view1 = new Int8Array(buffer1);
+    var view2 = new Int8Array(buffer2);
+
+    st.deepEqualTest(
+      view1,
+      view2,
+      'Int8Arrays of similar SharedArrayBuffers',
+      true,
+      true
+    );
+
+    st.deepEqualTest(
+      buffer1,
+      buffer2,
+      'similar SharedArrayBuffers',
+      true,
+      true
+    );
+
+    for (var i = 0; i < view1.byteLength; i += 1) {
+      view1[i] = 9; // change all values to 9's
+    }
+
+    st.deepEqualTest(
+      view1,
+      view2,
+      'Int8Arrays of different SharedArrayBuffers',
+      false,
+      false
+    );
+
+    st.deepEqualTest(
+      buffer1,
+      buffer2,
+      'different SharedArrayBuffers',
+      false,
+      false
+    );
+
+    t.test('lies about byteLength', { skip: !('byteLength' in SharedArrayBuffer.prototype) }, function (s2t) {
+      var empty4 = new SharedArrayBuffer(4);
+      var empty6 = new SharedArrayBuffer(6);
+      Object.defineProperty(empty6, 'byteLength', { value: 4 });
+
+      s2t.deepEqualTest(
+        empty4,
+        empty6,
+        'different-length SharedArrayBuffers, one lying',
+        false,
+        false
+      );
+      s2t.end();
+    });
+
+    st.end();
+  });
+
   t.end();
 });

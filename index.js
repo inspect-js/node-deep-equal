@@ -1,24 +1,26 @@
 'use strict';
 
-var objectKeys = require('object-keys');
-var isArguments = require('is-arguments');
-var is = require('object-is');
-var isRegex = require('is-regex');
-var flags = require('regexp.prototype.flags');
-var isArray = require('isarray');
-var isDate = require('is-date-object');
-var whichBoxedPrimitive = require('which-boxed-primitive');
-var GetIntrinsic = require('get-intrinsic');
+var assign = require('object.assign');
 var callBound = require('call-bind/callBound');
-var whichCollection = require('which-collection');
+var flags = require('regexp.prototype.flags');
+var GetIntrinsic = require('get-intrinsic');
 var getIterator = require('es-get-iterator');
 var getSideChannel = require('side-channel');
-var whichTypedArray = require('which-typed-array');
-var assign = require('object.assign');
+var is = require('object-is');
+var isArguments = require('is-arguments');
+var isArray = require('isarray');
 var isArrayBuffer = require('is-array-buffer');
+var isDate = require('is-date-object');
+var isRegex = require('is-regex');
+var isSharedArrayBuffer = require('is-shared-array-buffer');
+var objectKeys = require('object-keys');
+var whichBoxedPrimitive = require('which-boxed-primitive');
+var whichCollection = require('which-collection');
+var whichTypedArray = require('which-typed-array');
 
-var byteLength = callBound('%ArrayBuffer.prototype.byteLength%', true)
+var byteLength = callBound('ArrayBuffer.prototype.byteLength', true)
 	|| function byteLength(ab) { return ab.byteLength; }; // in node < 0.11, byteLength is an own nonconfigurable property
+var sabByteLength = callBound('SharedArrayBuffer.prototype.byteLength', true);
 
 var $getTime = callBound('Date.prototype.getTime');
 var gPO = Object.getPrototypeOf;
@@ -332,6 +334,14 @@ function objEquiv(a, b, opts, channel) {
   if (aIsArrayBuffer !== bIsArrayBuffer) { return false; }
   if (aIsArrayBuffer || bIsArrayBuffer) { // && would work too, because both are true or both false here
     if (byteLength(a) !== byteLength(b)) { return false; }
+    return typeof Uint8Array === 'function' && internalDeepEqual(new Uint8Array(a), new Uint8Array(b), opts, channel);
+  }
+
+  var aIsSAB = isSharedArrayBuffer(a);
+  var bIsSAB = isSharedArrayBuffer(b);
+  if (aIsSAB !== bIsSAB) { return false; }
+  if (aIsSAB || bIsSAB) { // && would work too, because both are true or both false here
+    if (sabByteLength(a) !== sabByteLength(b)) { return false; }
     return typeof Uint8Array === 'function' && internalDeepEqual(new Uint8Array(a), new Uint8Array(b), opts, channel);
   }
 
