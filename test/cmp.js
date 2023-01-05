@@ -1159,7 +1159,6 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
   });
 
   t.test('one TypedArray faking as another', { skip: !hasDunderProto }, function (st) {
-    /* globals Uint8Array, Int8Array */
     var a = new Uint8Array(10);
     var b = tag(new Int8Array(10), 'Uint8Array');
     b.__proto__ = Uint8Array.prototype; // eslint-disable-line no-proto
@@ -1218,6 +1217,7 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
       false
     );
 
+    // node < 0.11 has a nonconfigurable own byteLength property
     t.test('lies about byteLength', { skip: !('byteLength' in ArrayBuffer.prototype) }, function (s2t) {
       var empty4 = new ArrayBuffer(4);
       var empty6 = new ArrayBuffer(6);

@@ -15,6 +15,11 @@
     "no-magic-numbers": [2, { "ignore": [0, 1] }],
   },
 
+  "globals": {
+    "Int8Array": false,
+    "Uint8Array": false,
+  },
+
   "overrides": [
     {
       "files": "example/**",
