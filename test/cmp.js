@@ -7,6 +7,7 @@ var gOPDs = require('object.getownpropertydescriptors');
 var hasSymbols = require('has-symbols')();
 var hasTypedArrays = require('has-typed-arrays')();
 var semver = require('semver');
+var keys = require('object-keys');
 
 var safeBuffer = typeof Buffer === 'function' ? Buffer.from && Buffer.from.length > 1 ? Buffer.from : Buffer : null;
 var buffersAreTypedArrays = typeof Buffer === 'function' && new Buffer(0) instanceof Uint8Array;
@@ -33,6 +34,18 @@ test('equal', function (t) {
     true,
     true,
     false
+  );
+
+  var obj1 = { a: [2, 3], b: [4] };
+  var obj2 = { b: [4], a: [2, 3] };
+  t.notDeepEqual(keys(obj1), keys(obj2), 'keys are in a different order');
+  t.deepEqual(keys(obj1), keys(obj2).reverse(), 'keys are in opposite order');
+  t.deepEqualTest(
+    obj1,
+    obj2,
+    'two equal objects, in different order',
+    true,
+    true
   );
 
   t.deepEqualTest(
