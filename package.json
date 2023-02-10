@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "call-bind": "^1.0.2",
-    "es-get-iterator": "^1.1.2",
-    "get-intrinsic": "^1.1.3",
+    "es-get-iterator": "^1.1.3",
+    "get-intrinsic": "^1.2.0",
     "is-arguments": "^1.1.1",
     "is-array-buffer": "^3.0.1",
     "is-date-object": "^1.0.5",
