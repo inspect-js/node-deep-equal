@@ -59,7 +59,7 @@
     "in-publish": "^2.0.1",
     "npmignore": "^0.3.0",
     "nyc": "^10.3.2",
-    "object.getownpropertydescriptors": "^2.1.5",
+    "object.getownpropertydescriptors": "^2.1.6",
     "safe-publish-latest": "^2.0.0",
     "semver": "^6.3.0",
     "tape": "^5.6.3"
