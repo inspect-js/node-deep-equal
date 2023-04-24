@@ -17,9 +17,8 @@ var objectKeys = require('object-keys');
 var whichBoxedPrimitive = require('which-boxed-primitive');
 var whichCollection = require('which-collection');
 var whichTypedArray = require('which-typed-array');
+var byteLength = require('array-buffer-byte-length');
 
-var byteLength = callBound('ArrayBuffer.prototype.byteLength', true)
-	|| function byteLength(ab) { return ab.byteLength; }; // in node < 0.11, byteLength is an own nonconfigurable property
 var sabByteLength = callBound('SharedArrayBuffer.prototype.byteLength', true);
 
 var $getTime = callBound('Date.prototype.getTime');
