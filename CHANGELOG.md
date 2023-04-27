@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.1](https://github.com/inspect-js/node-deep-equal/compare/v2.2.0...v2.2.1) - 2023-04-27
+
+### Commits
+
+- [Tests] add passing tests covering object key ordering [`51c9ff6`](https://github.com/inspect-js/node-deep-equal/commit/51c9ff6b4c5d4371e0f444ce1160e416bf88e21f)
+- [Refactor] use `array-buffer-byte-length` [`f47822c`](https://github.com/inspect-js/node-deep-equal/commit/f47822cf0c188caa71dfbb107b081324fcb6b99d)
+- [Deps] update `is-array-buffer`, `regexp.prototype.flags` [`160d851`](https://github.com/inspect-js/node-deep-equal/commit/160d8513335d63256f9826835b35d1a462c76771)
+- [Deps] update `es-get-iterator`, `get-intrinsic` [`2e08e95`](https://github.com/inspect-js/node-deep-equal/commit/2e08e956a43c839246d2280cfaaa3f3200937bbd)
+- [Dev Deps] update `object.getownpropertydescriptors` [`63e9ab7`](https://github.com/inspect-js/node-deep-equal/commit/63e9ab7450212bf7e393c1bf725293389cb4626a)
+- [Dev Deps] update `tape` [`c8db964`](https://github.com/inspect-js/node-deep-equal/commit/c8db964f605834388b0df20c5fce49cfbaa541bc)
+
 ## [v2.2.0](https://github.com/inspect-js/node-deep-equal/compare/v2.1.0...v2.2.0) - 2023-01-05
 
 ### Commits
