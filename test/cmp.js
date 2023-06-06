@@ -10,6 +10,7 @@ var semver = require('semver');
 var keys = require('object-keys');
 var availableTypedArrays = require('available-typed-arrays')();
 var forEach = require('for-each');
+var hasProto = require('has-proto')();
 
 var safeBuffer = typeof Buffer === 'function' ? Buffer.from && Buffer.from.length > 1 ? Buffer.from : Buffer : null;
 var buffersAreTypedArrays = typeof Buffer === 'function' && new Buffer(0) instanceof Uint8Array;
@@ -24,9 +25,6 @@ function tag(obj, value) {
   }
   return obj;
 }
-
-// eslint-disable-next-line no-proto
-var hasDunderProto = [].__proto__ === Array.prototype;
 
 test('equal', function (t) {
   t.deepEqualTest(
@@ -438,7 +436,7 @@ test('Dates', function (t) {
     st.end();
   });
 
-  t.test('fake Date', { skip: !hasDunderProto }, function (st) {
+  t.test('fake Date', { skip: !hasProto }, function (st) {
     var a = new Date(2000);
     var b = tag(Object.create(
       a.__proto__, // eslint-disable-line no-proto
@@ -839,7 +837,7 @@ test('regexen', function (t) {
   t.deepEqualTest(/abc/, /abc/, 'two abc regexes', true, true, false);
   t.deepEqualTest(/xyz/, /xyz/, 'two xyz regexes', true, true, false);
 
-  t.test('fake RegExp', { skip: !hasDunderProto }, function (st) {
+  t.test('fake RegExp', { skip: !hasProto }, function (st) {
     var a = /abc/g;
     var b = tag(Object.create(
       a.__proto__, // eslint-disable-line no-proto
@@ -944,7 +942,7 @@ test('Errors', function (t) {
     false
   );
 
-  t.test('fake error', { skip: !process.env.ASSERT || !hasDunderProto }, function (st) {
+  t.test('fake error', { skip: !process.env.ASSERT || !hasProto }, function (st) {
     var a = tag({
       __proto__: null
     }, 'Error');
@@ -999,7 +997,7 @@ test('[[Prototypes]]', function (t) {
 
   t.deepEqualTest({}, instance, 'two identical objects with different [[Prototypes]]', true, false);
 
-  t.test('Dates with different prototypes', { skip: !hasDunderProto }, function (st) {
+  t.test('Dates with different prototypes', { skip: !hasProto }, function (st) {
     var d1 = new Date(0);
     var d2 = new Date(0);
 
@@ -1082,7 +1080,7 @@ test('getters', { skip: !Object.defineProperty }, function (t) {
 });
 
 var isBrokenNode = isNode && process.env.ASSERT && semver.satisfies(process.version, '<= 13.3.0');
-test('fake arrays: extra keys will be tested', { skip: !hasDunderProto || isBrokenNode }, function (t) {
+test('fake arrays: extra keys will be tested', { skip: !hasProto || isBrokenNode }, function (t) {
   var a = tag({
     __proto__: Array.prototype,
     0: 1,
@@ -1150,7 +1148,7 @@ var isNodeWhereBufferBreaks = isNode && semver.satisfies(process.version, '< 3')
 var isNode06 = isNode && semver.satisfies(process.version, '<= 0.6'); // segfaults in node 0.6, it seems
 
 test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
-  t.test('Buffer faked as Uint8Array', { skip: typeof Buffer !== 'function' || !Object.create || !hasDunderProto || isNode06 }, function (st) {
+  t.test('Buffer faked as Uint8Array', { skip: typeof Buffer !== 'function' || !Object.create || !hasProto || isNode06 }, function (st) {
     var a = safeBuffer('test');
     var b = tag(Object.create(
       a.__proto__, // eslint-disable-line no-proto
@@ -1199,7 +1197,7 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
     });
   });
 
-  t.test('one TypedArray faking as another', { skip: !hasDunderProto }, function (st) {
+  t.test('one TypedArray faking as another', { skip: !hasProto }, function (st) {
     var a = new Uint8Array(10);
     var b = tag(new Int8Array(10), 'Uint8Array');
     b.__proto__ = Uint8Array.prototype; // eslint-disable-line no-proto
