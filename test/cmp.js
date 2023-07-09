@@ -8,6 +8,8 @@ var hasSymbols = require('has-symbols')();
 var hasTypedArrays = require('has-typed-arrays')();
 var semver = require('semver');
 var keys = require('object-keys');
+var availableTypedArrays = require('available-typed-arrays')();
+var forEach = require('for-each');
 
 var safeBuffer = typeof Buffer === 'function' ? Buffer.from && Buffer.from.length > 1 ? Buffer.from : Buffer : null;
 var buffersAreTypedArrays = typeof Buffer === 'function' && new Buffer(0) instanceof Uint8Array;
@@ -1169,6 +1171,32 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
     );
 
     st.end();
+  });
+
+  forEach(availableTypedArrays, function (name) {
+    t.test(name + 's', function (st) {
+      var TA = global[name];
+      var isBigInt = name.slice(0, 3) === 'Big';
+      var Z = isBigInt ? BigInt : Number;
+
+      st.deepEqualTest(
+        new TA([Z(1), Z(2), Z(3)]),
+        new TA([Z(1), Z(2), Z(3)]),
+        'two ' + name + 's with the same contents',
+        true,
+        true
+      );
+
+      st.deepEqualTest(
+        new TA([Z(1), Z(2), Z(3)]),
+        new TA([Z(1), Z(2), Z(4)]),
+        'two ' + name + 's with different contents',
+        false,
+        false
+      );
+
+      st.end();
+    });
   });
 
   t.test('one TypedArray faking as another', { skip: !hasDunderProto }, function (st) {

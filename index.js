@@ -313,8 +313,15 @@ function objEquiv(a, b, opts, channel) {
 
   var aWhich = whichTypedArray(a);
   var bWhich = whichTypedArray(b);
-  if ((aWhich || bWhich) && aWhich !== bWhich) {
+  if (aWhich !== bWhich) {
     return false;
+  }
+  if (aWhich || bWhich) { // && would work too, because both are true or both false here
+    if (a.length !== b.length) { return false; }
+    for (i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) { return false; }
+    }
+    return true;
   }
 
   var aIsBuffer = isBuffer(a);
