@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.2](https://github.com/inspect-js/node-deep-equal/compare/v2.2.1...v2.2.2) - 2023-07-10
+
+### Commits
+
+- [Fix] avoid an infinite loop in node 0.8 with Typed Arrays [`f247282`](https://github.com/inspect-js/node-deep-equal/commit/f247282e66060087c51221f77b9170fa0e2e461b)
+- [Dev Deps] update `@ljharb/eslint-config`, `aud`, `tape` [`fa25583`](https://github.com/inspect-js/node-deep-equal/commit/fa255839c1afed228c41ca76177a8c239ec9305a)
+- [Deps] update `get-intrinsic` [`3638470`](https://github.com/inspect-js/node-deep-equal/commit/3638470e71ed6185e06a0f0694e77cbf4c2b791c)
+
 ## [v2.2.1](https://github.com/inspect-js/node-deep-equal/compare/v2.2.0...v2.2.1) - 2023-04-27
 
 ### Commits
