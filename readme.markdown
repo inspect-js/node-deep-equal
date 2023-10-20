@@ -1,4 +1,4 @@
-# deep-equal <sup>[![Version Badge][2]][1]</sup>
+# deep-equal <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
 
 Node's `assert.deepEqual() algorithm` as a standalone module, that also works in browser environments.
 
@@ -6,12 +6,10 @@ It mirrors the robustness of node's own `assert.deepEqual` and is robust against
 
 [![github actions][actions-image]][actions-url]
 [![coverage][codecov-image]][codecov-url]
-[![dependency status][5]][6]
-[![dev dependency status][7]][8]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
 
-[![npm badge][11]][1]
+[![npm badge][npm-badge-png]][package-url]
 
 # example
 
@@ -37,12 +35,10 @@ var deepEqual = require('deep-equal')
 
 ## deepEqual(a, b, opts)
 
-Compare objects `a` and `b`, returning whether they are equal according to a
-recursive equality algorithm.
+Compare objects `a` and `b`, returning whether they are equal according to a recursive equality algorithm.
 
 If `opts.strict` is `true`, use strict equality (`===`) to compare leaf nodes.
-The default is to use coercive equality (`==`) because that's how
-`assert.deepEqual()` works by default.
+The default is to use coercive equality (`==`) because that's how `assert.deepEqual()` works by default.
 
 # install
 
@@ -60,13 +56,13 @@ With [npm](https://npmjs.org) do:
 npm test
 ```
 
-[1]: https://npmjs.org/package/deep-equal
-[2]: https://versionbadg.es/inspect-js/node-deep-equal.svg
-[5]: https://david-dm.org/inspect-js/node-deep-equal.svg
-[6]: https://david-dm.org/inspect-js/node-deep-equal
-[7]: https://david-dm.org/inspect-js/node-deep-equal/dev-status.svg
-[8]: https://david-dm.org/inspect-js/node-deep-equal#info=devDependencies
-[11]: https://nodei.co/npm/deep-equal.png?downloads=true&stars=true
+[package-url]: https://npmjs.org/package/deep-equal
+[npm-version-svg]: https://versionbadg.es/inspect-js/deep-equal.svg
+[deps-svg]: https://david-dm.org/inspect-js/node-deep-equal.svg
+[deps-url]: https://david-dm.org/inspect-js/node-deep-equal
+[dev-deps-svg]: https://david-dm.org/inspect-js/node-deep-equal/dev-status.svg
+[dev-deps-url]: https://david-dm.org/inspect-js/node-deep-equal#info=devDependencies
+[npm-badge-png]: https://nodei.co/npm/deep-equal.png?downloads=true&stars=true
 [license-image]: https://img.shields.io/npm/l/deep-equal.svg
 [license-url]: LICENSE
 [downloads-image]: https://img.shields.io/npm/dm/deep-equal.svg
