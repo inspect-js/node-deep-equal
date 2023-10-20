@@ -67,7 +67,7 @@ npm test
 [license-url]: LICENSE
 [downloads-image]: https://img.shields.io/npm/dm/deep-equal.svg
 [downloads-url]: https://npm-stat.com/charts.html?package=deep-equal
-[codecov-image]: https://codecov.io/gh/inspect-js/node-deep-equal/branch/master/graphs/badge.svg
+[codecov-image]: https://codecov.io/gh/inspect-js/node-deep-equal/branch/main/graphs/badge.svg
 [codecov-url]: https://app.codecov.io/gh/inspect-js/node-deep-equal/
 [actions-image]: https://img.shields.io/endpoint?url=https://github-actions-badge-u3jn4tfpocch.runkit.sh/inspect-js/node-deep-equal
 [actions-url]: https://github.com/inspect-js/node-deep-equal/actions
