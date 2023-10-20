@@ -41,7 +41,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/substack/node-deep-equal.git"
+    "url": "http://github.com/inspect-js/node-deep-equal.git"
   },
   "keywords": [
     "equality",
