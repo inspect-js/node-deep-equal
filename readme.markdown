@@ -1,8 +1,8 @@
 # deep-equal <sup>[![Version Badge][2]][1]</sup>
 
-Node's `assert.deepEqual() algorithm` as a standalone module.
+Node's `assert.deepEqual() algorithm` as a standalone module, that also works in browser environments.
 
-This module is around [46 times faster](https://gist.github.com/substack/2790507#gistcomment-3099862) than wrapping `assert.deepEqual()` in a `try/catch`.
+It mirrors the robustness of node's own `assert.deepEqual` and is robust against later builtin modification.
 
 [![github actions][actions-image]][actions-url]
 [![coverage][codecov-image]][codecov-url]
