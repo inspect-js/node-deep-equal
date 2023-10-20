@@ -63,10 +63,10 @@
     "in-publish": "^2.0.1",
     "npmignore": "^0.3.0",
     "nyc": "^10.3.2",
-    "object.getownpropertydescriptors": "^2.1.6",
+    "object.getownpropertydescriptors": "^2.1.7",
     "safe-publish-latest": "^2.0.0",
     "semver": "^6.3.1",
-    "tape": "^5.6.6"
+    "tape": "^5.7.1"
   },
   "repository": {
     "type": "git",
