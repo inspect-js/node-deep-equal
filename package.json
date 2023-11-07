@@ -66,7 +66,7 @@
     "object.getownpropertydescriptors": "^2.1.7",
     "safe-publish-latest": "^2.0.0",
     "semver": "^6.3.1",
-    "tape": "^5.7.1"
+    "tape": "^5.7.2"
   },
   "repository": {
     "type": "git",
