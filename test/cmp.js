@@ -1250,12 +1250,13 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
       false
     );
 
+    var isHigherThanNode010 = isNode && semver.satisfies(process.version, '> 0.10');
     st.deepEqualTest(
       buffer1,
       buffer2,
       'different ArrayBuffers',
-      true,
-      true
+      isHigherThanNode010,
+      isHigherThanNode010
     );
 
     // node < 0.11 has a nonconfigurable own byteLength property
