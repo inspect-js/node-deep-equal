@@ -90,6 +90,9 @@
     "url": "https://github.com/sponsors/ljharb"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">= 0.4"
+  },
   "testling": {
     "files": "test/*.js",
     "browsers": {
@@ -123,12 +126,6 @@
     "commitLimit": false,
     "backfillLimit": false,
     "hideCredit": true
-  },
-  "greenkeeper": {
-    "ignore": [
-      "nyc",
-      "semver"
-    ]
   },
   "browser": {
     "assert.js": false
