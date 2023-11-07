@@ -13,7 +13,13 @@
   "overrides": [
     {
       "files": ["example/**", "test/**"],
+      "globals": {
+        "Uint8Array": false,
+        "Int8Array": false,
+      },
       "rules": {
+        "id-length": 0,
+        "max-lines-per-function": 0,
         "max-params": 0,
         "no-console": 0,
       },
