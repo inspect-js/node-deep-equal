@@ -11,6 +11,7 @@ var keys = require('object-keys');
 var availableTypedArrays = require('available-typed-arrays')();
 var forEach = require('for-each');
 var hasProto = require('has-proto')();
+var defineDataProperty = require('define-data-property');
 
 var safeBuffer = typeof Buffer === 'function' ? Buffer.from && Buffer.from.length > 1 ? Buffer.from : Buffer : null;
 var buffersAreTypedArrays = typeof Buffer === 'function' && new Buffer(0) instanceof Uint8Array;
@@ -1201,13 +1202,14 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
     var a = new Uint8Array(10);
     var b = tag(new Int8Array(10), 'Uint8Array');
     b.__proto__ = Uint8Array.prototype; // eslint-disable-line no-proto
+    defineDataProperty(b, 'length', 10);
 
     st.deepEqualTest(
       a,
       b,
       'Uint8Array, and Int8Array pretending to be a Uint8Array',
-      true,
-      true
+      false,
+      false
     );
 
     st.end();

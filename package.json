@@ -32,6 +32,7 @@
     "@ljharb/eslint-config": "^21.1.0",
     "aud": "^2.0.3",
     "auto-changelog": "^2.4.0",
+    "define-data-property": "^1.1.1",
     "eslint": "=8.8.0",
     "has-typed-arrays": "^1.0.1",
     "in-publish": "^2.0.1",
