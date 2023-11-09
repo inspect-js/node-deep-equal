@@ -143,7 +143,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Fix] check extra properties on regexps [`1eac46b`](https://github.com/inspect-js/node-deep-equal/commit/1eac46b69c7b499cecb7e3b555b6e260de2043fd)
 - [Tests] update test skipping logic [`8adf08d`](https://github.com/inspect-js/node-deep-equal/commit/8adf08dcb91146590f2c57b614de6a853054f297)
 
-## [v2.0.0](https://github.com/inspect-js/node-deep-equal/compare/v1.1.1...v2.0.0) - 2019-12-03
+## [v2.0.0](https://github.com/inspect-js/node-deep-equal/compare/v1.1.2...v2.0.0) - 2019-12-03
 
 ### Fixed
 
@@ -184,6 +184,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Dev Deps] update `eslint` [`7cc1dd9`](https://github.com/inspect-js/node-deep-equal/commit/7cc1dd986fc30946ca06ba6496ef856cfb911cf3)
 - Merge tag 'v1.1.1' [`f9d3c6d`](https://github.com/inspect-js/node-deep-equal/commit/f9d3c6d1e4a895c448ba7d8766f8616d0e235c9a)
 - Merge tag 'v1.1.0' [`0aeca99`](https://github.com/inspect-js/node-deep-equal/commit/0aeca9988dba6fe3318f46c47c933e6926175278)
+
+## [v1.1.2](https://github.com/inspect-js/node-deep-equal/compare/v1.1.1...v1.1.2) - 2023-11-08
+
+### Commits
+
+- [Tests] port tests from main; only diff should be true/falses [`e02cadb`](https://github.com/inspect-js/node-deep-equal/commit/e02cadb650ef9d75684c015a35d2c59e029d5174)
+- [Dev Deps] update `@ljharb/eslint-config`, `auto-changelog`, `aud`, `eslint`, `set-publish-latest`, `tape` [`11bd45b`](https://github.com/inspect-js/node-deep-equal/commit/11bd45b63943466c13a5ae97276796396a8f2619)
+- [Tests] update `.github` from default branch [`58885d3`](https://github.com/inspect-js/node-deep-equal/commit/58885d3280fd25909ca5a17c7cec1e54bdd25233)
+- [readme] update readme from default branch [`b0bca9a`](https://github.com/inspect-js/node-deep-equal/commit/b0bca9a1158a9596ec51a0404a6a8272b70ee204)
+- [Tests] add `nyc` for coverage [`e25bc37`](https://github.com/inspect-js/node-deep-equal/commit/e25bc3716c7ec0390b06bd7b6fac0c9ab0968ab4)
+- [Tests] use `Buffer.from` when available [`f0d4a42`](https://github.com/inspect-js/node-deep-equal/commit/f0d4a42fb87854e17d78cb2d6e9ec0156ea3d2f3)
+- [Deps] update `is-arguments`, `is-date-object`, `is-regex`, `object-is`, `regexp.prototype.flags` [`80c15ca`](https://github.com/inspect-js/node-deep-equal/commit/80c15cae82164c888de8635287c3b44ab84b3fd4)
+- [meta] use `npmignore` to autogenerate an npmignore file [`e0770e5`](https://github.com/inspect-js/node-deep-equal/commit/e0770e594ec683ded32fd1b14e876f087fc04f4a)
+- [Deps] update `is-date-object`, `is-regex`, `object-is`, `regexp.prototype.flags` [`e4fb8c6`](https://github.com/inspect-js/node-deep-equal/commit/e4fb8c6459aa13d3a110b45e5612c31890a5d94e)
+- [Tests] handle ported test failures in iojs v2 [`3798ff4`](https://github.com/inspect-js/node-deep-equal/commit/3798ff490286ee9ba70cf50c339914be355eea18)
+- [Dev Deps] update `eslint`, `@ljharb/eslint-config`, `tape` [`0f8ca75`](https://github.com/inspect-js/node-deep-equal/commit/0f8ca7575e44c66fdf1dc2b6ad4e69e1b549369f)
+- [Tests] handle some additional test differences in node &lt;= 0.10 [`197a220`](https://github.com/inspect-js/node-deep-equal/commit/197a2203f0a95828c62ff2b3c980ddf16736913c)
+- [meta] add missing `engines.node` [`e158993`](https://github.com/inspect-js/node-deep-equal/commit/e158993fcf913aca8a1ffdc037abfeeb3a5cb4e5)
+- [meta] update `.gitignore` from default branch [`6ee186b`](https://github.com/inspect-js/node-deep-equal/commit/6ee186bd39199a1c05421e200b1e8e31a83cf363)
+- [Dev Deps] update `tape` [`270d34b`](https://github.com/inspect-js/node-deep-equal/commit/270d34b48401ee40792bf18d06614044246776dd)
+- [meta] fix URLs [`a269c18`](https://github.com/inspect-js/node-deep-equal/commit/a269c183bccb78dfdd2c88a149fe5373f13af4c0)
+- [Tests] only use `Buffer.from` when it has a length of &gt; 1 [`f7e5776`](https://github.com/inspect-js/node-deep-equal/commit/f7e577622d943da78c2c9cd1e070eb786cf7a68b)
 
 ## [v1.1.1](https://github.com/inspect-js/node-deep-equal/compare/v1.1.0...v1.1.1) - 2019-11-12
 
