@@ -1,4 +1,4 @@
-# deep-equal <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
+# deep-equal
 
 Node's `assert.deepEqual() algorithm` as a standalone module, that also works in browser environments.
 
