@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@ljharb/eslint-config": "^21.1.0",
-    "aud": "^2.0.3",
+    "aud": "^2.0.4",
     "auto-changelog": "^2.4.0",
     "available-typed-arrays": "^1.0.5",
     "eslint": "=8.8.0",
@@ -61,12 +61,12 @@
     "has-symbols": "^1.0.3",
     "has-typed-arrays": "^1.0.1",
     "in-publish": "^2.0.1",
-    "npmignore": "^0.3.0",
+    "npmignore": "^0.3.1",
     "nyc": "^10.3.2",
     "object.getownpropertydescriptors": "^2.1.7",
     "safe-publish-latest": "^2.0.0",
     "semver": "^6.3.1",
-    "tape": "^5.7.2"
+    "tape": "^5.7.4"
   },
   "repository": {
     "type": "git",
