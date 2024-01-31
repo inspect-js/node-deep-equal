@@ -1,10 +1,9 @@
-# deep-equal <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
+# deep-equal
 
 Node's `assert.deepEqual() algorithm` as a standalone module, that also works in browser environments.
 
 It mirrors the robustness of node's own `assert.deepEqual` and is robust against later builtin modification.
 
-[![github actions][actions-image]][actions-url]
 [![coverage][codecov-image]][codecov-url]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
