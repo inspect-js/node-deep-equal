@@ -1,7 +1,7 @@
 'use strict';
 
 var assign = require('object.assign');
-var callBound = require('call-bind/callBound');
+var callBound = require('call-bound');
 var flags = require('regexp.prototype.flags');
 var GetIntrinsic = require('get-intrinsic');
 var getIterator = require('es-get-iterator');
