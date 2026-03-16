@@ -51,21 +51,22 @@
     "which-typed-array": "^1.1.13"
   },
   "devDependencies": {
-    "@ljharb/eslint-config": "^21.1.0",
-    "auto-changelog": "^2.4.0",
-    "available-typed-arrays": "^1.0.5",
-    "eslint": "=8.8.0",
-    "for-each": "^0.3.3",
-    "has-proto": "^1.0.1",
-    "has-symbols": "^1.0.3",
-    "has-typed-arrays": "^1.0.1",
+    "@ljharb/eslint-config": "^22.2.0",
+    "auto-changelog": "^2.5.0",
+    "available-typed-arrays": "^1.0.7",
+    "encoding": "^0.1.13",
+    "eslint": "^8.57.1",
+    "for-each": "^0.3.5",
+    "has-proto": "^1.2.0",
+    "has-symbols": "^1.1.0",
+    "has-typed-arrays": "^1.1.0",
     "in-publish": "^2.0.1",
-    "npmignore": "^0.3.1",
+    "npmignore": "^0.3.5",
     "nyc": "^10.3.2",
-    "object.getownpropertydescriptors": "^2.1.7",
+    "object.getownpropertydescriptors": "^2.1.9",
     "safe-publish-latest": "^2.0.0",
     "semver": "^6.3.1",
-    "tape": "^5.7.4"
+    "tape": "^5.9.0"
   },
   "repository": {
     "type": "git",
