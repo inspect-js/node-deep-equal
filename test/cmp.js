@@ -1338,3 +1338,176 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
 
   t.end();
 });
+
+test('Sets with symbols', { skip: !hasSymbols || typeof Set !== 'function' }, function (t) {
+  var s1 = Symbol('a');
+  var s2 = Symbol('b');
+
+  t.deepEqualTest(
+    new Set([s1, 'a', {}]),
+    new Set([s2, 'a', {}]),
+    'two Sets with different symbols and object values',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    new Set([s1, {}]),
+    new Set([s2, {}]),
+    'two inequal Sets with different symbols and objects',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('Maps with null key, loose prim mismatch', { skip: typeof Map !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new Map([[null, 1]]),
+    new Map([['x', 1]]),
+    'Map with null key vs Map with string key',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('fake buffer objects', { skip: typeof Buffer !== 'function' }, function (t) {
+  var fakeBuffer1 = {
+    length: 3,
+    0: 1,
+    1: 2,
+    2: 3,
+    copy: function () {},
+    slice: function () {},
+    constructor: { isBuffer: function () { return true; } }
+  };
+  var fakeBuffer2 = {
+    length: 3,
+    0: 1,
+    1: 2,
+    2: 3,
+    copy: function () {},
+    slice: function () {},
+    constructor: { isBuffer: function () { return true; } }
+  };
+
+  t.deepEqualTest(
+    fakeBuffer1,
+    fakeBuffer2,
+    'two fake buffers with same contents',
+    true,
+    true
+  );
+
+  var fakeBuffer3 = {
+    length: 3,
+    0: 1,
+    1: 2,
+    2: 4,
+    copy: function () {},
+    slice: function () {},
+    constructor: { isBuffer: function () { return true; } }
+  };
+
+  t.deepEqualTest(
+    fakeBuffer1,
+    fakeBuffer3,
+    'two fake buffers with different contents',
+    false,
+    false
+  );
+
+  var fakeBuffer4 = {
+    length: 2,
+    0: 1,
+    1: 2,
+    copy: function () {},
+    slice: function () {},
+    constructor: { isBuffer: function () { return true; } }
+  };
+
+  t.deepEqualTest(
+    fakeBuffer1,
+    fakeBuffer4,
+    'two fake buffers with different lengths',
+    false,
+    false
+  );
+
+  t.deepEqualTest(
+    fakeBuffer1,
+    { length: 3, 0: 1, 1: 2, 2: 3 },
+    'fake buffer vs plain object',
+    false,
+    false
+  );
+
+  var nonNumericBuffer = {
+    length: 1,
+    0: 'a',
+    copy: function () {},
+    slice: function () {},
+    constructor: { isBuffer: function () { return true; } }
+  };
+
+  t.deepEqualTest(
+    nonNumericBuffer,
+    fakeBuffer1,
+    'fake buffer with non-numeric element vs fake buffer',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('Sets with loose primitives failing in b iteration', { skip: typeof Set !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new Set([{}, 1]),
+    new Set([{}, '2']),
+    'Sets where loose primitive in b does not match any in set from a',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('Maps with non-matching object keys in b', { skip: typeof Map !== 'function' }, function (t) {
+  t.deepEqualTest(
+    new Map([[{ a: 1 }, 'x'], [{ b: 2 }, 'y']]),
+    new Map([[{ a: 1 }, 'x'], [{ c: 3 }, 'y']]),
+    'Maps with different object keys in b',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('ArrayBuffer vs non-ArrayBuffer', { skip: typeof ArrayBuffer !== 'function' || !hasSymbols || !Symbol.toStringTag }, function (t) {
+  t.deepEqualTest(
+    new ArrayBuffer(0),
+    tag({}, 'ArrayBuffer'),
+    'ArrayBuffer vs fake ArrayBuffer',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('SharedArrayBuffer vs non-SharedArrayBuffer', { skip: typeof SharedArrayBuffer !== 'function' || !hasSymbols || !Symbol.toStringTag }, function (t) {
+  t.deepEqualTest(
+    new SharedArrayBuffer(0),
+    tag({}, 'SharedArrayBuffer'),
+    'SharedArrayBuffer vs fake SharedArrayBuffer',
+    false,
+    false
+  );
+
+  t.end();
+});
