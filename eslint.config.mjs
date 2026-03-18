@@ -3,6 +3,12 @@ import ljharbConfig from '@ljharb/eslint-config/flat';
 export default [
   ...ljharbConfig,
   {
+    languageOptions: {
+      globals: {
+        Int8Array: 'readonly',
+        Uint8Array: 'readonly',
+      },
+    },
     rules: {
       complexity: 'off',
       eqeqeq: [
@@ -29,6 +35,12 @@ export default [
   },
   {
     files: ['test/**'],
+    languageOptions: {
+      globals: {
+        Int8Array: 'readonly',
+        Uint8Array: 'readonly',
+      },
+    },
     rules: {
       'max-lines-per-function': 'off',
       'max-params': 'off',
