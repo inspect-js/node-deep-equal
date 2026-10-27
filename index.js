@@ -14,6 +14,7 @@ var isDate = require('is-date-object');
 var isRegex = require('is-regex');
 var isSharedArrayBuffer = require('is-shared-array-buffer');
 var objectKeys = require('object-keys');
+var unboxPrimitive = require('unbox-primitive');
 var whichBoxedPrimitive = require('which-boxed-primitive');
 var whichCollection = require('which-collection');
 var whichTypedArray = require('which-typed-array');
@@ -130,6 +131,8 @@ function internalDeepEqual(actual, expected, options, channel) {
   if (actualBoxed !== expectedBoxed) {
     return false;
   }
+  // two boxed primitives of the same kind are equal only if the primitives they wrap are the same
+  if (actualBoxed && !is(unboxPrimitive(actual), unboxPrimitive(expected))) { return false; }
 
   // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
   if (!actual || !expected || (typeof actual !== 'object' && typeof expected !== 'object')) {

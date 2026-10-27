@@ -1042,15 +1042,31 @@ test('boxed primitives', function (t) {
   t.deepEqualTest(Object(''), '', 'boxed and primitive `""`', false, false);
   t.deepEqualTest(Object('str'), 'str', 'boxed and primitive `"str"`', false, false);
 
+  t.deepEqualTest(Object(3), Object(3), 'two boxed `3`s', true, true);
+  t.deepEqualTest(Object(3), Object(4), 'boxed `3` and boxed `4`', false, false);
+  t.deepEqualTest(Object(NaN), Object(NaN), 'two boxed `NaN`s', true, true);
+  t.deepEqualTest(Object(0), Object(-0), 'boxed `0` and boxed `-0`', false, false);
+  t.deepEqualTest(Object(true), Object(true), 'two boxed `true`s', true, true);
+  t.deepEqualTest(Object(true), Object(false), 'boxed `true` and boxed `false`', false, false);
+  t.deepEqualTest(Object('str'), Object('str'), 'two boxed `"str"`s', true, true);
+  t.deepEqualTest(Object('str'), Object('other'), 'boxed `"str"` and boxed `"other"`', false, false);
+  t.deepEqualTest([Object(3)], [Object(4)], 'boxed numbers that differ, in arrays', false, false);
+  t.deepEqualTest({ a: Object(3) }, { a: Object(4) }, 'boxed numbers that differ, in objects', false, false);
+  t.deepEqualTest({ a: Object(3) }, { a: Object(3) }, 'boxed numbers that match, in objects', true, true);
+
   t.test('symbol', { skip: !hasSymbols }, function (st) {
     var s = Symbol('');
     st.deepEqualTest(Object(s), s, 'boxed and primitive `Symbol()`', false, false);
+    st.deepEqualTest(Object(s), Object(s), 'two boxes of the same `Symbol()`', true, true);
+    st.deepEqualTest(Object(s), Object(Symbol('')), 'boxes of two different symbols', false, false);
     st.end();
   });
 
   t.test('bigint', { skip: typeof BigInt !== 'function' }, function (st) {
     var hhgtg = BigInt(42);
     st.deepEqualTest(Object(hhgtg), hhgtg, 'boxed and primitive `BigInt(42)`', false, false);
+    st.deepEqualTest(Object(hhgtg), Object(BigInt(42)), 'two boxed `BigInt(42)`s', true, true);
+    st.deepEqualTest(Object(hhgtg), Object(BigInt(43)), 'boxed `BigInt(42)` and boxed `BigInt(43)`', false, false);
     st.end();
   });
 
@@ -1061,6 +1077,54 @@ test('boxed primitives', function (t) {
     b.valueOf = function () { throw new Error('failed'); };
 
     st.deepEqualTest(a, b, 'two boxed numbers with a thrower valueOf', false, false);
+
+    st.end();
+  });
+
+  t.test('an overridden `valueOf` is not used to read the wrapped value', function (st) {
+    function valueOf() { return 1; }
+    var three = Object(3);
+    three.valueOf = valueOf;
+    var four = Object(4);
+    four.valueOf = valueOf;
+    var otherThree = Object(3);
+    otherThree.valueOf = valueOf;
+
+    st.deepEqualTest(three, four, 'boxed `3` and boxed `4` sharing an own `valueOf`', false, false);
+    st.deepEqualTest(three, otherThree, 'two boxed `3`s sharing an own `valueOf`', true, true);
+
+    st.end();
+  });
+
+  t.test('boxed primitives with a different [[Prototype]]', { skip: !hasProto }, function (st) {
+    var proto = {
+      __proto__: Number.prototype,
+      valueOf: function () { return 1; }
+    };
+    var three = Object(3);
+    three.__proto__ = proto; // eslint-disable-line no-proto
+    var four = Object(4);
+    four.__proto__ = proto; // eslint-disable-line no-proto
+
+    st.deepEqualTest(three, four, 'boxed `3` and boxed `4` sharing a [[Prototype]] that overrides `valueOf`', false, false);
+    st.deepEqualTest(three, Object(4), 'boxed `3` with a different [[Prototype]] and boxed `4`', false, false);
+
+    st.end();
+  });
+
+  t.test('boxed primitives in Sets', { skip: typeof Set !== 'function' }, function (st) {
+    st.deepEqualTest(new Set([Object(3)]), new Set([Object(4)]), 'Sets of boxed `3` and boxed `4`', false, false);
+    st.deepEqualTest(new Set([Object(3)]), new Set([Object(3)]), 'Sets of two boxed `3`s', true, true);
+    st.deepEqualTest(new Set([Object(true)]), new Set([Object(false)]), 'Sets of boxed `true` and boxed `false`', false, false);
+
+    st.end();
+  });
+
+  t.test('boxed primitives in Maps', { skip: typeof Map !== 'function' }, function (st) {
+    st.deepEqualTest(new Map([[1, Object(3)]]), new Map([[1, Object(4)]]), 'Maps with boxed `3` and boxed `4` values', false, false);
+    st.deepEqualTest(new Map([[1, Object(3)]]), new Map([[1, Object(3)]]), 'Maps with two boxed `3` values', true, true);
+    st.deepEqualTest(new Map([[Object(3), 1]]), new Map([[Object(4), 1]]), 'Maps with boxed `3` and boxed `4` keys', false, false);
+    st.deepEqualTest(new Map([[Object(3), 1]]), new Map([[Object(3), 1]]), 'Maps with two boxed `3` keys', true, true);
 
     st.end();
   });

@@ -46,6 +46,7 @@
     "object.assign": "^4.1.7",
     "regexp.prototype.flags": "^1.5.4",
     "side-channel": "^1.1.0",
+    "unbox-primitive": "^1.1.0",
     "which-boxed-primitive": "^1.1.1",
     "which-collection": "^1.0.2",
     "which-typed-array": "^1.1.20"
