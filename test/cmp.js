@@ -1400,6 +1400,70 @@ test('TypedArrays', { skip: !hasTypedArrays }, function (t) {
     st.end();
   });
 
+  t.test('DataViews', { skip: typeof DataView !== 'function' }, function (st) {
+    st.deepEqualTest(
+      new DataView(new Uint8Array([1, 2, 3]).buffer),
+      new DataView(new Uint8Array([1, 2, 3]).buffer),
+      'DataViews with the same contents',
+      true,
+      true
+    );
+
+    st.deepEqualTest(
+      new DataView(new Uint8Array([1, 2, 3]).buffer),
+      new DataView(new Uint8Array([4, 5, 6]).buffer),
+      'DataViews with different contents',
+      false,
+      false
+    );
+
+    st.deepEqualTest(
+      new DataView(new ArrayBuffer(2)),
+      new DataView(new ArrayBuffer(3)),
+      'DataViews with different byte lengths',
+      false,
+      false
+    );
+
+    var bytes = new Uint8Array([1, 2, 1, 2]);
+
+    // node < 0.12 puts `buffer`, `byteOffset`, and `byteLength` on each DataView as own enumerable properties
+    var hasOwnByteOffset = Object.prototype.hasOwnProperty.call(new DataView(new ArrayBuffer(1)), 'byteOffset');
+
+    st.test('at different offsets, with the same contents', { skip: hasOwnByteOffset }, function (s2t) {
+      s2t.deepEqualTest(
+        new DataView(bytes.buffer, 0, 2),
+        new DataView(bytes.buffer, 2, 2),
+        'DataViews at different offsets, with the same contents',
+        true,
+        true
+      );
+
+      s2t.end();
+    });
+
+    st.deepEqualTest(
+      new DataView(bytes.buffer, 0, 2),
+      new DataView(bytes.buffer, 1, 2),
+      'DataViews at different offsets, with different contents',
+      false,
+      false
+    );
+
+    var withKey = new DataView(new ArrayBuffer(1));
+    withKey.foo = 'bar';
+
+    st.deepEqualTest(
+      withKey,
+      new DataView(new ArrayBuffer(1)),
+      'DataViews with the same contents, one with an extra key',
+      false,
+      false
+    );
+
+    st.end();
+  });
+
   t.end();
 });
 
@@ -1569,6 +1633,18 @@ test('SharedArrayBuffer vs non-SharedArrayBuffer', { skip: typeof SharedArrayBuf
     new SharedArrayBuffer(0),
     tag({}, 'SharedArrayBuffer'),
     'SharedArrayBuffer vs fake SharedArrayBuffer',
+    false,
+    false
+  );
+
+  t.end();
+});
+
+test('DataView vs non-DataView', { skip: typeof DataView !== 'function' || !hasSymbols || !Symbol.toStringTag }, function (t) {
+  t.deepEqualTest(
+    new DataView(new ArrayBuffer(0)),
+    tag({}, 'DataView'),
+    'DataView vs fake DataView',
     false,
     false
   );

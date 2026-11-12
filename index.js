@@ -2,6 +2,9 @@
 
 var assign = require('object.assign');
 var callBound = require('call-bound');
+var dataViewBuffer = require('data-view-buffer');
+var dataViewByteLength = require('data-view-byte-length');
+var dataViewByteOffset = require('data-view-byte-offset');
 var flags = require('regexp.prototype.flags');
 var GetIntrinsic = require('get-intrinsic');
 var getIterator = require('es-get-iterator');
@@ -10,6 +13,7 @@ var is = require('object-is');
 var isArguments = require('is-arguments');
 var isArray = require('isarray');
 var isArrayBuffer = require('is-array-buffer');
+var isDataView = require('is-data-view');
 var isDate = require('is-date-object');
 var isRegex = require('is-regex');
 var isSharedArrayBuffer = require('is-shared-array-buffer');
@@ -276,8 +280,12 @@ function mapEquiv(a, b, opts, channel) {
   return true;
 }
 
+function dataViewBytes(view) {
+  return new Uint8Array(dataViewBuffer(view), dataViewByteOffset(view), dataViewByteLength(view));
+}
+
 function objEquiv(a, b, opts, channel) {
-  /* eslint max-statements: [2, 100], max-lines-per-function: [2, 120], max-depth: [2, 5], max-lines: [2, 400] */
+  /* eslint max-statements: [2, 105], max-lines-per-function: [2, 120], max-depth: [2, 5], max-lines: [2, 420] */
   var i, key;
 
   if (typeof a !== typeof b) { return false; }
@@ -352,6 +360,13 @@ function objEquiv(a, b, opts, channel) {
   if (aIsSAB || bIsSAB) { // && would work too, because both are true or both false here
     if (sabByteLength(a) !== sabByteLength(b)) { return false; }
     return typeof Uint8Array === 'function' && internalDeepEqual(new Uint8Array(a), new Uint8Array(b), opts, channel);
+  }
+
+  var aIsDataView = isDataView(a);
+  var bIsDataView = isDataView(b);
+  if (aIsDataView !== bIsDataView) { return false; }
+  if (aIsDataView && !internalDeepEqual(dataViewBytes(a), dataViewBytes(b), opts, channel)) { // bIsDataView is the same here
+    return false;
   }
 
   if (typeof a !== typeof b) { return false; }

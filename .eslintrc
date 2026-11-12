@@ -16,6 +16,7 @@
   },
 
   "globals": {
+    "DataView": false,
     "Int8Array": false,
     "Uint8Array": false,
   },
