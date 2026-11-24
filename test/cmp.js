@@ -746,9 +746,11 @@ test('arrays push', function (t) {
   t.end();
 });
 
+// node 22.16 and 24 broke `deepEqual` loosely equating `null` and `undefined` in arrays; 24.14 and 25.6 fixed it
+var brokenNullArrays = isNode && process.env.ASSERT && semver.satisfies(process.version, '^22.16 || >= 24 < 24.14 || ^25 < 25.6');
 test('null == undefined', function (t) {
   t.deepEqualTest(null, undefined, 'null and undefined', true, false);
-  t.deepEqualTest([null], [undefined], '[null] and [undefined]', true, false);
+  t.deepEqualTest([null], [undefined], '[null] and [undefined]', !brokenNullArrays, false);
 
   t.end();
 });
