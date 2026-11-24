@@ -199,29 +199,31 @@ test('Maps', { skip: typeof Map !== 'function' }, function (t) {
   t.end();
 });
 
+// node 22.16 and 23 changed `assert` to compare `WeakMap`s and `WeakSet`s by identity
+var weakByIdentity = isNode && process.env.ASSERT && semver.satisfies(process.version, '^22.16 || >= 23');
 test('WeakMaps', { skip: typeof WeakMap !== 'function' }, function (t) {
   t.deepEqualTest(
     new WeakMap([[Object, null], [Function, true]]),
     new WeakMap([[Function, true], [Object, null]]),
     'two equal WeakMaps',
-    true,
-    true
+    !weakByIdentity,
+    !weakByIdentity
   );
 
   t.deepEqualTest(
     new WeakMap([[Object, null]]),
     new WeakMap([[Object, true]]),
     'two WeakMaps with inequal values on the same key',
-    true,
-    true
+    !weakByIdentity,
+    !weakByIdentity
   );
 
   t.deepEqualTest(
     new WeakMap([[Object, null], [Function, true]]),
     new WeakMap([[Object, null]]),
     'two inequal WeakMaps',
-    true,
-    true
+    !weakByIdentity,
+    !weakByIdentity
   );
 
   t.end();
@@ -315,16 +317,16 @@ test('WeakSets', { skip: typeof WeakSet !== 'function' }, function (t) {
     new WeakSet([Object, Function]),
     new WeakSet([Function, Object]),
     'two equal WeakSets',
-    true,
-    true
+    !weakByIdentity,
+    !weakByIdentity
   );
 
   t.deepEqualTest(
     new WeakSet([Object, Function]),
     new WeakSet([Object]),
     'two inequal WeakSets',
-    true,
-    true
+    !weakByIdentity,
+    !weakByIdentity
   );
 
   t.end();
