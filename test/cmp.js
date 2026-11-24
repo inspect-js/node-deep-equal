@@ -992,6 +992,8 @@ test('error = Object', function (t) {
   t.end();
 });
 
+// node 22.16 and 24 changed `deepStrictEqual` to compare a Date's constructor, rather than its [[Prototype]]
+var datesByConstructor = isNode && process.env.ASSERT && semver.satisfies(process.version, '^22.16 || >= 24');
 test('[[Prototypes]]', function (t) {
   function C() {}
   var instance = new C();
@@ -1011,7 +1013,7 @@ test('[[Prototypes]]', function (t) {
     d2.__proto__ = newProto; // eslint-disable-line no-proto
     st.ok(d2 instanceof Date, 'd2 is still a Date instance after tweaking [[Prototype]]');
 
-    st.deepEqualTest(d1, d2, 'two dates with the same timestamp and different [[Prototype]]', true, false);
+    st.deepEqualTest(d1, d2, 'two dates with the same timestamp and different [[Prototype]]', true, datesByConstructor);
 
     st.end();
   });
