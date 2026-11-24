@@ -1458,12 +1458,13 @@ test('fake buffer objects', { skip: typeof Buffer !== 'function' }, function (t)
     constructor: { isBuffer: function () { return true; } }
   };
 
+  // node's `assert` also compares their `copy` and `slice` methods, which are different functions
   t.deepEqualTest(
     fakeBuffer1,
     fakeBuffer2,
     'two fake buffers with same contents',
-    true,
-    true
+    !process.env.ASSERT,
+    !process.env.ASSERT
   );
 
   var fakeBuffer3 = {
