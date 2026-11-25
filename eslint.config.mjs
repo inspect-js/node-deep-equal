@@ -5,6 +5,7 @@ export default [
   {
     languageOptions: {
       globals: {
+        DataView: 'readonly',
         Int8Array: 'readonly',
         Uint8Array: 'readonly',
       },
@@ -37,6 +38,7 @@ export default [
     files: ['test/**'],
     languageOptions: {
       globals: {
+        DataView: 'readonly',
         Int8Array: 'readonly',
         Uint8Array: 'readonly',
       },
